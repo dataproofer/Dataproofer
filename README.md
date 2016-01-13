@@ -2,6 +2,24 @@
 
 Spellcheck for data
 
+## Dev
+
+While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master)
+```
+cd core-suite
+npm link
+cd ../dataproofer
+npm link dataproofer-core-suite
+```
+You can run the CLI version with a file name or it will prompt you for one
+```
+node index sample-datasets/isis-attack-sites.csv
+```
+or
+```
+node index
+```
+
 ## Sources
 
 - [A Guide to Bulletproofing Your Data](https://github.com/propublica/guides/blob/master/data-bulletproofing.md), by [ProPublica](https://www.propublica.org/)
