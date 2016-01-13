@@ -1,8 +1,14 @@
 var fs = require('fs');
 var d3 = require('d3');
-// TODO: this should be somehow configured to render to different environments
-var Rendering = require('./rendering')
 
+// TODO: This may be overridden somehow in the future
+var Renderer = require('./rendering')
+
+/**
+ * The 
+ * @param  {Object} configuration including filename and suites
+ * @return {undefined}
+ */
 exports.run = function(config) {
   var file = config.file;
   var suites = config.suites;
@@ -14,7 +20,11 @@ exports.run = function(config) {
     testSuites.push(require(suite))
   })
 
-  var renderer = new Rendering(config)
+  // TODO: this should be somehow configured to render to different environments
+  var renderer = new Renderer({
+    file: config.file, 
+    suites: testSuites
+  });
 
   //READ FILE
   fs.readFile(file, function(err, data) {
@@ -32,12 +42,14 @@ exports.run = function(config) {
       // TODO: use async module to run asynchronously
       suite.tests.forEach(function(test) {
         try {
+          // run the test!
           var result = test(rows, str)
+          // incrementally report as tests run
           renderer.addResult(suite.name, test.name, result);
         } catch(e) {
-
+          // uh oh! report an error (different from failing a test)
+          renderer.addError(suite.name, test.name, e);
         }
-        // incrementally report as tests run
       })
     })
     renderer.done();

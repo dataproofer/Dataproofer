@@ -1,28 +1,57 @@
 
-module.exports = function(config) {
-  console.log("rendering", config)
+module.exports = Renderer;
+/** 
+ * Render the results for all tests in a given set of suites for a dataset
+ * @class
+ * @param  {Object} configuration including filename and suites
+ * @return {undefined}
+ */
+function Renderer(config) {
+  console.log("new renderer", config)
+  var results = this.results = {}
+  config.suites.forEach(function(suite) {
+    results[suite.name] = {};
+  })
 
-  var results = []
+}
 
+/** 
+ * A horrible run-time error has occured, we should let the user know and abort everything.
+ * @param  {Object} error object. should contain a `message` property
+ * @return {undefined}
+ */
+Renderer.prototype.error = function(error) {
+  console.log("MAY DAY")
+  console.error(error);
+}
 
-  this.error = function() {
-    // a horrible run-time error has occured, we should let the user know and abort everything.
-    console.log("MAY DAY")
-  }
+/** 
+ * The renderer can render results as they come so we can show progress to the user as tests complete.
+ * @param {String} the name of the suite
+ * @param {String} the name of the test
+ * @param {Object} the result object.
+ */
+Renderer.prototype.addResult = function(suite, test, result) {
+  console.log("add result", suite, test, result)
+  this.results[suite][test] = result;
+  // TODO: update rendering
+}
 
-  this.addResult = function() {
-    console.log("add result", arguments)
+/** 
+ * Notify that an error occurred while running a specific test
+ * @param {String} the name of the suite
+ * @param {String} the name of the test
+ * @param {Object} the error object. should contain a `message` property
+ */
+Renderer.prototype.addError = function(suite, test, error) {
 
-    // update rendering
-  }
-  // an error occurred 
-  this.addError = function() {
+}
 
-  }
-
-  this.done = function() {
-    // finish up
-    console.log("proofed.")
-  }
-  return this;
+/** 
+ * Indicate that we are finished rendering
+ * @return {undefined}
+ */
+Renderer.prototype.done = function() {
+  // finish up
+  console.log("proofed.")
 }
