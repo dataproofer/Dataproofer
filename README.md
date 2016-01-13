@@ -2,6 +2,17 @@
 
 Spellcheck for data
 
+## Bootstrap
+
+```
+git clone git clone git@github.com:dataproofer/dataproofer.git
+git clone git@github.com:dataproofer/core-suite.git
+cd core-suite/
+npm install
+cd ../Dataproofer
+npm install
+```
+
 ## Dev
 
 While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master)
