@@ -1,17 +1,33 @@
 var _ = require('lodash')
 var d3 = require('d3')
-var s = `this 
-  is a string`
 
-console.log("S!", s)
+// TODO: make this requirable from ./processor.js
+//module.exports = HTMLRenderer;
+function HTMLRenderer(config) {
+  console.log("new renderer", config)
+  var results = this.results = {}
+  config.suites.forEach(function(suite) {
+    results[suite.name] = {};
+  })
+}
 
-const ipcRenderer = require('electron').ipcRenderer;
-console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
+HTMLRenderer.prototype.error = function(error) {
+  console.log("MAY DAY")
+  console.error(error);
+}
 
-ipcRenderer.on('asynchronous-reply', function(event, arg) {
-  //console.log(arg); // prints "pong"
-});
-ipcRenderer.send('asynchronous-message', 'ping'); 
-ipcRenderer.on('render-test', function(event, arg1, arg2){
-  //console.log("got render-test message", arg1)
-})
+HTMLRenderer.prototype.addResult = function(suite, test, result) {
+  console.log("add result", suite, test, result)
+  this.results[suite][test] = result;
+  // TODO: update rendering
+}
+
+HTMLRenderer.prototype.addError = function(suite, test, error) {
+
+}
+
+HTMLRenderer.prototype.done = function() {
+  // finish up
+  console.log("proofed.")
+}
+

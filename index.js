@@ -4,6 +4,7 @@
  */
 
 var processing = require('./src/processing')
+var Renderer = require('./rendering')
 
 // this module is being run from the command line
 if(require.main === module) {
@@ -32,9 +33,17 @@ if(require.main === module) {
   inquirer.prompt(questions, function( answers ) {
     // TODO: check for file existing
     var config = {
-      file: filename || answers.file,
-      suites: answers.suites
+      suites: answers.suites,
+      renderer: Renderer
     }
-    processing.run(config)
+    var filename = filename || answers.file;
+    //READ FILE
+    fs.readFile(filename, function(err, data) {
+      if(err) {
+        // no file no cry
+        return console.error(err);
+      }
+      config.fileString = data.toString(); 
+      processing.run(config)
   });
 }
