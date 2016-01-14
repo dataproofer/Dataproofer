@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+/**
+ * CLI Interface to Dataproofer
+ */
 
-var processing = require('./processing')
-
-exports.processing = processing;
+var processing = require('./src/processing')
 
 // this module is being run from the command line
 if(require.main === module) {

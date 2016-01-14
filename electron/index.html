@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Data Proofer</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/photon.css">
+    <link rel="stylesheet" href="css/dataproofer.css">
+
+    <!-- Javascript -->
+    <script src="js/renderer.js"></script>
+  </head>
+  <body>
+    <div class="window">
+
+      <!-- .toolbar-header sits at the top of your app -->
+      <header class="toolbar toolbar-header">
+        <h1 class="title">Photon</h1>
+      </header>
+
+      <!-- All our content goes inside .window-content -->
+      <div class="window-content">
+        <div class="pane-group">
+          <div class="pane pane-sm sidebar">
+            <nav class="nav-group">
+              <h5 class="nav-group-title">Load Data</h5>
+              <input type="file" />
+              <div id="filename"></div>
+
+              <h5 class="nav-group-title">Test Suites</h5>
+              <span class="nav-group-item">
+                <span class="icon icon-inbox"></span>
+                Mapping and Geography
+              </span>
+              <span class="nav-group-item">
+                <span class="icon icon-inbox"></span>
+                Statistics
+              </span>
+            </nav>
+          </div>
+
+          <div class="pane">
+            <!-- <table class="table-striped"> -->
+            <table>
+              <thead>
+                <tr>
+                  <th>Pass/Fail</th>
+                  <th>Test</th>
+                  <th>Purpose</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="icon icon-check"></span></td>
+                  <td>Column Headers</td>
+                  <td>Make sure column headers are present</td>
+                  <td>All column headers are present</td>
+                </tr>
+                <tr>
+                  <td><span class="icon icon-cancel-circled"></span></td>
+                  <td>Foo bar</td>
+                  <td>Make sure the bars are foo'd</td>
+                  <td>It appears your 5th row is not foobar'd</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

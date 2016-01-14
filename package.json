@@ -2,7 +2,7 @@
   "name": "dataproofer",
   "version": "0.1.0",
   "description": "It's like spell-check for datasets",
-  "main": "index.js",
+  "main": "electron/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
     "d3": "^3.5.12",
+    "electron-prebuilt": "^0.36.3",
     "inquirer": "^0.11.2"
   }
 }

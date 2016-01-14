@@ -11,6 +11,8 @@ cd core-suite/
 npm install
 cd ../Dataproofer
 npm install
+cd electron
+npm install
 ```
 
 ## Dev
@@ -19,9 +21,15 @@ While we are developing you will need to clone [core-suite](https://github.com/d
 ```
 cd core-suite
 npm link
-cd ../dataproofer
+cd ../Dataproofer
 npm link dataproofer-core-suite
 ```
+You can run the electron app from the `Dataproofer/electron` folder
+```
+cd Dataproofer/electron
+npm run electron
+```
+
 You can run the CLI version with a file name or it will prompt you for one
 ```
 node index sample-datasets/isis-attack-sites.csv
@@ -30,6 +38,10 @@ or
 ```
 node index
 ```
+
+## Directory structure
+
+
 
 ## Sources
 

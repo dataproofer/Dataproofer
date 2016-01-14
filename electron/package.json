@@ -1,0 +1,14 @@
+{
+  "name": "dataproofer-electron",
+  "version": "1.0.0",
+  "description": "DataProofer",
+  "main": "app.js",
+  "author": "DataProofer",
+  "scripts": {
+    "electron": "../node_modules/.bin/electron ."
+  },
+  "dependencies": {
+    "d3": "^3.5.12",
+    "lodash": "^4.0.0"
+  }
+}
