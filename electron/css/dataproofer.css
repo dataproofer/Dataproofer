@@ -43,11 +43,11 @@ button.reload {
   font-weight: bold;
 }
 .test-results .test .test-column {
-  margin-left: 20px;
   font-size: 12px;
   font-weight: bold;
   font-style: italic;
 }
 .test-results .test .test-value {
+  font-weight: bold;
   font-family; Courier;
 }
