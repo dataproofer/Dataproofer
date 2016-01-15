@@ -44,6 +44,7 @@ Renderer.prototype.addResult = function(suite, test, result) {
  * @param {Object} the error object. should contain a `message` property
  */
 Renderer.prototype.addError = function(suite, test, error) {
+  console.log("Test error", suite, test, error)
 
 }
 
