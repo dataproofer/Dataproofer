@@ -29,13 +29,27 @@ button.reload {
   padding: 5px;
 }
 .test-results .test {
-  margin: 5px;
+  margin: 3px;
+  padding: 10px;
   margin-top: 10px;
+  width: 100%;
+  float: left;
+  clear: left;
+  background-color: white;
+  border-radius: 3px;
+}
+.test-results .test:nth-child(odd) {
+  background-color: #efefef;
 }
 
 .test-results .test .passfail {
   width: 20px;
   float:left;
+}
+
+.test-results .test .message {
+  float:left;
+  width: calc(100% - 220px);
 }
 
 .test-results .test .test-header {
@@ -50,4 +64,9 @@ button.reload {
 .test-results .test .test-value {
   font-weight: bold;
   font-family; Courier;
+}
+
+.test-results .test .fingerprint {
+  width: 200px;
+  float: right;
 }
