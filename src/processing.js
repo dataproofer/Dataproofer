@@ -20,19 +20,21 @@ exports.run = function(config) {
     testSuites.push(require(suite))
   })
 
-  // TODO: this should be somehow configured to render to different environments
-  var renderer = new Renderer({
-    filename: filename, 
-    suites: testSuites
-  });
-
   // Parse the csv with d3
   var rows = d3.csv.parse(fileString);
-  console.log("ROWS", rows)
+  //console.log("ROWS", rows)
+
+  // Initialize the renderer
+  var renderer = new Renderer({
+    filename: filename, 
+    suites: testSuites,
+    fileString: fileString,
+    rows: rows
+  });
 
   // TODO: use async series? can run suites in series for better UX?
   testSuites.forEach(function(suite) {
-    // TODO: use async module to run asynchronously
+    // TODO: use async module to run asynchronously?
     suite.tests.forEach(function(test) {
       try {
         // run the test!
