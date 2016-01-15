@@ -21,3 +21,33 @@ button.reload {
   padding-right: 10px;
 }
 
+/*
+  Test specific CSS
+*/
+
+.test-results {
+  padding: 5px;
+}
+.test-results .test {
+  margin: 5px;
+  margin-top: 10px;
+}
+
+.test-results .test .passfail {
+  width: 20px;
+  float:left;
+}
+
+.test-results .test .test-header {
+  font-size: 14px;
+  font-weight: bold;
+}
+.test-results .test .test-column {
+  margin-left: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
+}
+.test-results .test .test-value {
+  font-family; Courier;
+}
