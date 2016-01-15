@@ -1,0 +1,14 @@
+Station,Warnings,Fines,Warnings per station 0.00X,# Stations in US,Source,Letter Sent?,Recieved Reply?,Ratios
+SHELL,237,42,30,"14,000",http://www.shell.us/aboutshell/shell-businesses/retail.html,Yes (Site Form),Complete,0.18
+EXXONMOBIL,174,25,23,"11,100",http://www.cnn.com/2008/US/06/12/exxon.mobil/index.html?eref=yahoo,Called,Complete,0.14
+BP,170,50,67,"7,500",http://www.bp.com/en/global/corporate/about-bp/bp-worldwide/bp-in-america/our-us-operations/retail.html,Yes,Complete,0.29
+7-ELEVEN,163,25,31,"7,974",https://nrf.com/2014/top100-table,Yes (x2),INCOMPLETE,0.15
+WALGREENS,145,8,10,"7,998",https://nrf.com/2014/top100-table,Yes (x2),Complete,0.06
+MARATHON,140,12,23,"5,300",http://www.marathonpetroleum.com/brand/Stations_and_Stores/,Yes,Complete,0.09
+SUNOCO,118,22,46,"4,800",https://www.svmcards.com/sunoco-gift-cards/ShowDetails.cfm?ProdID=30,Yes,Complete,0.19
+CITGO,99,21,15,"14,000",http://www.nytimes.com/2005/03/05/business/05citgo.html?pagewanted=print&position=,Yes (x2),INCOMPLETE,0.21
+CVS/PHARMACY,64,5,1,"7,621",https://nrf.com/2014/top100-table,Yes,Complete,0.08
+VALERO,63,12,16,"7,300",http://www.valero.com/ourbusiness/pages/companyhistory.aspx,Yes,Complete,0.19
+CASEY'S GENERAL STORES,48,7,38,"1,865",https://www.caseys.com/about,Yes (x2),Complete,0.15
+FOOD LION,38,6,55,"1,100",http://foodlion.mediaroom.com/index.php?s=20301,Yes (x2),Complete,0.16
+GULF,33,10,50,"2,000",https://www.gulfoil.com/AboutGulf/CompanyHistory.aspx,Yes,Complete,0.30
