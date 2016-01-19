@@ -35,7 +35,9 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.message").html(function(d) {
-    return d.result.template || d.result.message
+    var html = '<span class="test-header">' + (d.result.title || "") + '</span><br/>'
+    html += d.result.template || d.result.message || ""
+    return html
   })
 
   tests.select("div.fingerprint").each(function(d) {
