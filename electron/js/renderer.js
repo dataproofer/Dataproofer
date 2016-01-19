@@ -31,7 +31,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.passfail").html(function(d) { 
-    return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-canceled-circle'></span>" 
+    return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>" 
   })
 
   tests.select("div.message").html(function(d) {
