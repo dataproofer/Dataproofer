@@ -1,5 +1,7 @@
 var _ = require('lodash')
 var d3 = require('d3')
+var jQuery = $ = require('jquery')
+var SlickGrid = require('slickgrid/grid')
 
 var Renderer = require('../src/rendering.js');
 function HTMLRenderer(config) {
@@ -7,6 +9,21 @@ function HTMLRenderer(config) {
   window.rows = config.rows;
   this.resultList = [];
   console.log("constructed")
+
+  var columns = [];
+  Object.keys(rows[0]).forEach(function(col) {
+    columns.push({id: col, name: col, field: col})
+  })
+
+  var options = {
+    editable: false,
+    enableAddRow: false,
+    enableCellNavigation: true,
+    //cellHighlightCssClass: "changed",
+    //cellFlashingCssClass: "current-server" 
+  }
+  var grid = new SlickGrid("#grid", rows, columns, options);
+  this.grid = grid;
 }
 
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
@@ -17,7 +34,9 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   this.results[suite][test] = result;
   this.resultList.push({ suite: suite, test: test, result: result })
 
-  // TODO: update rendering
+  // A reference to our SlickGrid table so we can manipulate it via the fingerprint
+  var grid = this.grid;
+
   var tests = d3.select(".test-results").selectAll(".test")
     .data(this.resultList)
 
@@ -65,5 +84,19 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         context.fillRect(j*cellWidth, i*cellHeight, cellWidth, cellHeight)
       })
     })
+    var drag = d3.behavior.drag()
+      .on("drag", function(d,i){ 
+        var mouse = d3.mouse(this);
+        var x = mouse[0];
+        var y = mouse[1];
+        if(y < 0) y = 0;
+        var row = y; // for now our cells are 1 pixel high so this works
+        var col = Math.floor(x / width * cols.length);
+        console.log("row, col", row, col)
+        //grid.scrollCellIntoView(row, col)
+        grid.scrollRowIntoView(row)
+        //grid.scrollRowToTop(row)
+      })
+    d3.select(this).select("canvas").call(drag)
   })
 }

@@ -23,10 +23,12 @@
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
     "d3": "^3.5.12",
-    "electron-prebuilt": "^0.36.3",
-    "inquirer": "^0.11.2",
     "dataproofer-core-suite": "git@github.com:dataproofer/core-suite.git",
     "dataproofer-geo-suite": "git@github.com:dataproofer/geo-suite.git",
-    "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git"
+    "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",
+    "electron-prebuilt": "^0.36.3",
+    "inquirer": "^0.11.2",
+    "jquery": "^2.2.0",
+    "slickgrid": "^2.1.0"
   }
 }

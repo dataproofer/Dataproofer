@@ -125,8 +125,10 @@ th {
   cursor: default;
   -webkit-user-drag: text;
   -webkit-user-select: none;
+  /*
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  */
 }
 
 html {
