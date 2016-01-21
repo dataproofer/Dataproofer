@@ -84,6 +84,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         context.fillRect(j*cellWidth, i*cellHeight, cellWidth, cellHeight)
       })
     })
+
     var drag = d3.behavior.drag()
       .on("drag", function(d,i){ 
         var mouse = d3.mouse(this);
@@ -93,8 +94,14 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         var row = y; // for now our cells are 1 pixel high so this works
         var col = Math.floor(x / width * cols.length);
         console.log("row, col", row, col)
-        //grid.scrollCellIntoView(row, col)
+        grid.scrollCellIntoView(row, col)
         grid.scrollRowIntoView(row)
+        grid.removeCellCssStyles("highlighted")
+        var column = cols[col];
+        var changes = {}
+        changes[row] = {}
+        changes[row][column] = "changed"
+        grid.addCellCssStyles("highlighted", changes)
         //grid.scrollRowToTop(row)
       })
     d3.select(this).select("canvas").call(drag)

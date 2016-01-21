@@ -35,6 +35,10 @@ button.reload {
   bottom: 0;
 }
 
+.changed {
+  background: pink;
+}
+
 /*
   Test specific CSS
 */
