@@ -1,4 +1,3 @@
-var fs = require('fs');
 var d3 = require('d3');
 
 /**
@@ -12,6 +11,10 @@ exports.run = function(config) {
   var suites = config.suites;
   var Renderer = config.renderer;
 
+  // user can optionally pass in rows and columns already parsed (i.e. from Tabletop)
+  var rows = config.rows;
+  var columns = config.columns;
+
   console.log("processing!", filename, suites)
   // we always test against the core suite
   var testSuites = [require('dataproofer-core-suite')]
@@ -20,15 +23,21 @@ exports.run = function(config) {
     testSuites.push(require(suite))
   })
 
-  // Parse the csv with d3
-  var rows = d3.csv.parse(fileString);
-  //console.log("ROWS", rows)
+  if(!rows && fileString) {
+    // Parse the csv with d3
+    rows = d3.csv.parse(fileString);
+  }
+  if(!columns || !columns.length) {
+    // TODO: we may want to turn this into an array
+    columns = Object.keys(rows[0])
+  }
 
   // Initialize the renderer
   var renderer = new Renderer({
     filename: filename, 
     suites: testSuites,
     fileString: fileString,
+    columns: columns,
     rows: rows
   });
 
@@ -38,7 +47,7 @@ exports.run = function(config) {
     suite.tests.forEach(function(test) {
       try {
         // run the test!
-        var result = test(rows, fileString)
+        var result = test(rows, columns)
         // incrementally report as tests run
         renderer.addResult(suite.name, test.name, result);
       } catch(e) {

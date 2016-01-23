@@ -9,6 +9,10 @@
   color: #D43833;
 }
 
+.nav-group-row {
+  margin: 5px 10px;
+  display: block;
+}
 #file-loader {
   font-size: 12px;
 }
@@ -21,6 +25,21 @@ button.reload {
   padding-top: 4px;
   padding-bottom: 0px;
   padding-right: 10px;
+}
+
+#spreadsheet-input {
+  width: 155px;
+  height: 20px;
+  font-size: 10px;
+}
+button.tabletop-loader {
+  width: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 6px;
+  padding-right: 0px;
+  margin-top: -3px;
+  margin-left: 2px;
 }
 
 /*

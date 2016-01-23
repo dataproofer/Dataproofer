@@ -24,6 +24,8 @@ function HTMLRenderer(config) {
   }
   var grid = new SlickGrid("#grid", rows, columns, options);
   this.grid = grid;
+
+  d3.select(".test-results").selectAll(".test").remove();
 }
 
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
@@ -36,6 +38,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
   // A reference to our SlickGrid table so we can manipulate it via the fingerprint
   var grid = this.grid;
+
 
   var tests = d3.select(".test-results").selectAll(".test")
     .data(this.resultList)
@@ -93,7 +96,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         if(y < 0) y = 0;
         var row = y; // for now our cells are 1 pixel high so this works
         var col = Math.floor(x / width * cols.length);
-        console.log("row, col", row, col)
+        //console.log("row, col", row, col)
         grid.scrollCellIntoView(row, col)
         grid.scrollRowIntoView(row)
         grid.removeCellCssStyles("highlighted")
