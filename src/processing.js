@@ -10,6 +10,7 @@ exports.run = function(config) {
   var fileString = config.fileString;
   var suites = config.suites;
   var Renderer = config.renderer;
+  var input = config.input;
 
   // user can optionally pass in rows and columns already parsed (i.e. from Tabletop)
   var rows = config.rows;
@@ -47,7 +48,7 @@ exports.run = function(config) {
     suite.tests.forEach(function(test) {
       try {
         // run the test!
-        var result = test(rows, columns)
+        var result = test(rows, columns, input)
         // incrementally report as tests run
         renderer.addResult(suite.name, test.name, result);
       } catch(e) {

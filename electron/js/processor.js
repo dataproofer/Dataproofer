@@ -20,7 +20,8 @@ function handleFileSelect(evt) {
         fileString: contents,
         filename: file.name,
         suites: [], 
-        renderer: HTMLRenderer
+        renderer: HTMLRenderer,
+        input: {}
       }
       Processor.run(config)
     })
@@ -75,7 +76,8 @@ function handleSpreadsheet() {
       columns: sheet.column_names,
       rows: sheet.elements,
       suites: [], 
-      renderer: HTMLRenderer
+      renderer: HTMLRenderer, 
+      input: {}
     }
     Processor.run(config)
   }
