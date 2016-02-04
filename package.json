@@ -1,6 +1,6 @@
 {
   "name": "dataproofer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "It's like spell-check for datasets",
   "main": "index.js",
   "scripts": {
