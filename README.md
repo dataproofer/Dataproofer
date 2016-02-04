@@ -39,8 +39,13 @@ or
 node index
 ```
 
-## Directory structure
+# Packaging an executable
 
+```
+cd Dataproofer
+npm run package
+```
+This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command currently only generates the Mac app but could easily be extended to include Windows & Linux.
 
 
 ## Sources

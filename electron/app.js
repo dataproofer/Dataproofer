@@ -1,6 +1,6 @@
 const electron = require('electron');
-var app = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var app = electron.app  // Module to control application life.
+var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 
 // Report crashes to our server.
 //electron.crashReporter.start();

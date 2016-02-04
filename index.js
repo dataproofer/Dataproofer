@@ -3,8 +3,15 @@
  * CLI Interface to Dataproofer
  */
 
-var processing = require('./src/processing')
-var Renderer = require('./rendering')
+var Processing = require('./src/processing');
+var Rendering = require('./src/rendering');
+
+var pkg = require('./package.json')
+module.exports = {
+  Processing: Processing,
+  Rendering: Rendering,
+  version: pkg.version
+}
 
 // this module is being run from the command line
 if(require.main === module) {
@@ -34,7 +41,7 @@ if(require.main === module) {
     // TODO: check for file existing
     var config = {
       suites: answers.suites,
-      renderer: Renderer
+      renderer: Rendering
     }
     var filename = filename || answers.file;
     //READ FILE
@@ -44,6 +51,7 @@ if(require.main === module) {
         return console.error(err);
       }
       config.fileString = data.toString(); 
-      processing.run(config)
+      Processing.run(config)
+    });
   });
 }

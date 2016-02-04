@@ -1,10 +1,11 @@
 {
   "name": "dataproofer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "It's like spell-check for datasets",
-  "main": "electron/app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "package": "./electron/node_modules/.bin/electron-packager electron Dataproofer --platform=darwin --arch=x64 --version=0.36.4 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
   },
   "repository": {
     "type": "git",
@@ -26,10 +27,6 @@
     "dataproofer-core-suite": "git@github.com:dataproofer/core-suite.git",
     "dataproofer-geo-suite": "git@github.com:dataproofer/geo-suite.git",
     "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",
-    "electron-prebuilt": "^0.36.3",
-    "inquirer": "^0.11.2",
-    "jquery": "^2.2.0",
-    "slickgrid": "^2.1.0",
-    "tabletop": "^1.4.2"
+    "inquirer": "^0.11.2"
   }
 }

@@ -2,8 +2,8 @@ var _ = require('lodash')
 var d3 = require('d3')
 var jQuery = $ = require('jquery')
 var SlickGrid = require('slickgrid/grid')
+var Renderer = require('dataproofer').Rendering;
 
-var Renderer = require('../src/rendering.js');
 function HTMLRenderer(config) {
   Renderer.call(this, config)
   window.rows = config.rows;

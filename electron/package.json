@@ -9,6 +9,14 @@
   },
   "dependencies": {
     "d3": "^3.5.12",
-    "lodash": "^4.0.0"
+    "lodash": "^4.0.0",
+    "electron-prebuilt": "^0.36.3",
+    "jquery": "^2.2.0",
+    "slickgrid": "^2.1.0",
+    "tabletop": "^1.4.2",
+    "dataproofer":"file:../"
+  },
+  "devDependencies": {
+    "electron-packager": "^5.2.1"
   }
 }
