@@ -50,14 +50,12 @@ This will create a new folder inside `Dataproofer/executables` that contains a M
 
 
 # Release
-We can push releases to GitHub manually for now
+We can push releases to GitHub manually for now:
 ```
 git tag -a 'v0.1.1' -m "first release"
 git push && git push --tags
 ```
-The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases), and should be zipped up first (Right click and choose "Compress Dataproofer")
-
-The tag should match the version of 
+The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases) for the tag you just pushed, and should be zipped up first (Right click and choose "Compress Dataproofer")
 
 
 
