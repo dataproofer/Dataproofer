@@ -29,6 +29,7 @@ You can run the electron app from the `Dataproofer/electron` folder
 cd Dataproofer/electron
 npm run electron
 ```
+If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are currently relying on the "file:" dependency which copies the source instead of downloading it.
 
 You can run the CLI version with a file name or it will prompt you for one
 ```
@@ -46,6 +47,18 @@ cd Dataproofer
 npm run package
 ```
 This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command currently only generates the Mac app but could easily be extended to include Windows & Linux.
+
+
+# Release
+We can push releases to GitHub manually for now
+```
+git tag -a 'v0.1.1' -m "first release"
+git push && git push --tags
+```
+The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases), and should be zipped up first (Right click and choose "Compress Dataproofer")
+
+The tag should match the version of 
+
 
 
 ## Sources

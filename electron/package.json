@@ -1,6 +1,6 @@
 {
   "name": "dataproofer-electron",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "DataProofer",
   "main": "app.js",
   "author": "DataProofer",

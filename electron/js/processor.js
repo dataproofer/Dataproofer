@@ -1,7 +1,8 @@
 var d3 = require('d3');
 var Processor = require('dataproofer').Processing
 var Tabletop = require('tabletop')
-console.log("dataproofer version", require('dataproofer').version)
+console.log("dataproofer app version", require('./package.json').version)
+console.log("dataproofer lib version", require('dataproofer').version)
 
 // TODO: handle reload button
 
