@@ -2,3 +2,4 @@
 node_modules/
 electron/node_modules/
 executables/
+npm-debug.log

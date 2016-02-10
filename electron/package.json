@@ -7,6 +7,10 @@
   "scripts": {
     "electron": "../node_modules/.bin/electron ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dataproofer/dataproofer.git"
+  },
   "dependencies": {
     "d3": "^3.5.12",
     "lodash": "^4.0.0",
