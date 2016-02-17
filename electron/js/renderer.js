@@ -20,7 +20,7 @@ function HTMLRenderer(config) {
     enableAddRow: false,
     enableCellNavigation: true,
     //cellHighlightCssClass: "changed",
-    //cellFlashingCssClass: "current-server" 
+    //cellFlashingCssClass: "current-server"
   }
   var grid = new SlickGrid("#grid", rows, columns, options);
   this.grid = grid;
@@ -33,6 +33,7 @@ HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
   console.log("add result", suite, test, result)
+  console.log("this results", this.results);
   this.results[suite][test] = result;
   this.resultList.push({ suite: suite, test: test, result: result })
 
@@ -52,8 +53,8 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     }
   })
 
-  tests.select("div.passfail").html(function(d) { 
-    return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>" 
+  tests.select("div.passfail").html(function(d) {
+    return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>"
   })
 
   tests.select("div.message").html(function(d) {
@@ -80,7 +81,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var context = canvas.getContext("2d")
     canvas.width = width;
     canvas.height = height;
-    
+
     rows.forEach(function(row, i) {
       cols.forEach(function(col, j) {
         context.fillStyle = row[col] ? "#d88282" : "#ddd";
@@ -89,7 +90,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     })
 
     var drag = d3.behavior.drag()
-      .on("drag", function(d,i){ 
+      .on("drag", function(d,i){
         var mouse = d3.mouse(this);
         var x = mouse[0];
         var y = mouse[1];

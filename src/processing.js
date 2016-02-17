@@ -1,7 +1,7 @@
 var d3 = require('d3');
 
 /**
- * The 
+ * The
  * @param  {Object} configuration including filename and suites
  * @return {undefined}
  */
@@ -12,9 +12,10 @@ exports.run = function(config) {
   var Renderer = config.renderer;
   var input = config.input;
 
-  // user can optionally pass in rows and columns already parsed (i.e. from Tabletop)
+  // user can optionally pass in rows and columnHeads already parsed
+  // (i.e. from Tabletop)
   var rows = config.rows;
-  var columns = config.columns;
+  var columnHeads = config.columnHeads;
 
   console.log("processing!", filename, suites)
   // we always test against the core suite
@@ -28,21 +29,21 @@ exports.run = function(config) {
     // Parse the csv with d3
     rows = d3.csv.parse(fileString);
   }
-  if(!columns || !columns.length) {
+  if(!columnHeads || !columnHeads.length) {
     // TODO: we may want to turn this into an array
-    columns = Object.keys(rows[0])
+    columnHeads = Object.keys(rows[0])
   }
 
   // Initialize the renderer
   var renderer = new Renderer({
-    filename: filename, 
+    filename: filename,
     suites: testSuites,
     fileString: fileString,
-    columns: columns,
+    columnHeads: columnHeads,
     rows: rows
   });
 
-  var badColumnHeads = (function(rows, columnsHeads) {
+  var badColumnHeads = (function(rows, columnHeads) {
     console.log("checking column headers", columnHeads.length);
     var badHeaderCount = 0;
     var badColumnHeads = [];
@@ -50,7 +51,7 @@ exports.run = function(config) {
     var consoleMessage;
     var passed;
 
-    var columnHeadCounts = _.reduce(columnsHeads, function(counts, columnHead) {
+    var columnHeadCounts = _.reduce(columnHeads, function(counts, columnHead) {
       if (counts[columnHead]) {
         badColumnHeads.push(columnHead);
         badHeaderCount += 1;
@@ -62,13 +63,13 @@ exports.run = function(config) {
 
     if (badHeaderCount > 0) {
       passed = false
-      columnOrColumns = badHeaderCount > 1 ? "columns" : "column";
-      consoleMessage = "We found " + badHeaderCount + " " + columnOrColumns + " without a header"
+      columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
+      consoleMessage = "We found " + badHeaderCount + " " + columnOrcolumnHeads + " without a header"
       htmlTemplate = _.template(`
-        We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrColumns %> a missing header, which means you'd need to take guesses about the present data or you should provide it with a unique, descriptive name.
+        We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header, which means you'd need to take guesses about the present data or you should provide it with a unique, descriptive name.
       `)({
         'badHeaderCount': badHeaderCount,
-        'columnOrColumns': columnOrColumns
+        'columnOrcolumnHeads': columnOrcolumnHeads
       });
     } else if (badHeaderCount === 0) {
       passed = true
@@ -85,12 +86,12 @@ exports.run = function(config) {
       htmlTemplate: htmlTemplate
     }
 
-    renderer.addResult('processing', 'Missing or Duplicate Column Headers', result)
+    renderer.addResult('dataproofer-core-suite', 'Missing or Duplicate Column Headers', result)
     return badColumnHeads;
-  })(rows, columns);
+  })(rows, columnHeads);
 
 
-  var cleanedColumns = _.without(columns, badColumnHeads.join(', '));
+  var cleanedcolumnHeads = _.without(columnHeads, badColumnHeads.join(', '));
   console.log('\trows', rows);
   var cleanedRows = rows
 
@@ -100,7 +101,7 @@ exports.run = function(config) {
     suite.tests.forEach(function(test) {
       try {
         // run the test!
-        var result = test(cleanedRows, cleanedColumns, input)
+        var result = test(cleanedRows, cleanedcolumnHeads, input)
         // incrementally report as tests run
         renderer.addResult(suite.name, test.name, result);
       } catch(e) {

@@ -57,11 +57,12 @@ function handleSpreadsheet() {
       console.log(err);
     }
     else if (sheet) {
+      console.log("sheet", sheet);
       var column_names = Object.keys(sheet.data[0]);
       var config = {
         //fileString: contents,
         filename: sheet.title,
-        columns: column_names,
+        columnsHeads: column_names,
         rows: sheet.data,
         suites: [],
         renderer: HTMLRenderer,
