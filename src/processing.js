@@ -92,11 +92,11 @@ exports.run = function(config) {
 
 
   var cleanedcolumnHeads = _.without(columnHeads, badColumnHeads.join(', '));
-  console.log('\trows', rows);
   var cleanedRows = rows
 
   // TODO: use async series? can run suites in series for better UX?
   testSuites.forEach(function(suite) {
+    console.log("running suite", suite)
     // TODO: use async module to run asynchronously?
     suite.tests.forEach(function(test) {
       try {

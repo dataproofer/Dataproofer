@@ -32,8 +32,8 @@ HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
-  console.log("add result", suite, test, result)
-  console.log("this results", this.results);
+  //console.log("add result", suite, test, result)
+  //console.log("this results", this.results);
   this.results[suite][test] = result;
   this.resultList.push({ suite: suite, test: test, result: result })
 

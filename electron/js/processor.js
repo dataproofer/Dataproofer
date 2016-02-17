@@ -21,7 +21,7 @@ function handleFileSelect(evt) {
       var config = {
         fileString: contents,
         filename: file.name,
-        suites: [],
+        suites: ['dataproofer-stats-suite'],
         renderer: HTMLRenderer,
         input: {}
       }
@@ -34,7 +34,6 @@ function handleFileSelect(evt) {
 
 d3.select('.tabletop-loader').on('click', handleSpreadsheet);
 d3.select("#spreadsheet-input").on("keyup", function() {
-  console.log(d3.event)
   if(d3.event.keyIdentifier == 'Enter') {
     handleSpreadsheet();
   }
