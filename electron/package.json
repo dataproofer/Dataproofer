@@ -15,10 +15,10 @@
     "d3": "^3.5.12",
     "dataproofer": "file:../",
     "electron-prebuilt": "^0.36.3",
+    "gsheets": "^1.2.3",
     "jquery": "^2.2.0",
     "lodash": "^4.0.0",
-    "slickgrid": "^2.1.0",
-    "tabletop": "^1.4.3"
+    "slickgrid": "^2.1.0"
   },
   "devDependencies": {
     "electron-packager": "^5.2.1"

@@ -1,6 +1,6 @@
 var d3 = require('d3');
 var Processor = require('dataproofer').Processing
-var Tabletop = require('tabletop')
+var gsheets = require('gsheets')
 console.log("dataproofer app version", require('./package.json').version)
 console.log("dataproofer lib version", require('dataproofer').version)
 
@@ -48,31 +48,29 @@ function handleSpreadsheet() {
   var keyRegex = /\/d\/([\w-_]+)/
   var spreadsheetInputStr = d3.select("#spreadsheet-input").node().value
   var match = spreadsheetInputStr.match(keyRegex)
-  Tabletop.init({
-    key: match[1],
-    callback: process,
-    simpleSheet: false,
-    simple_url: true,
-    debug: true
-  });
+  gsheets.getWorksheetById(match[1], 'od6', process)
 
-  function process(data, tabletop) {
-    // console.log("tabletop", tabletop)
-    // console.log("data", data);
-    // console.log("sheets", Object.keys(data));
-    // Assuming the last spreadsheet will work
-    var sheets = Object.keys(data);
-    var sheet = data[sheets[sheets.length - 1]]
-    console.log("sheet", data[sheets[0]]);
-    var config = {
-      //fileString: contents,
-      filename: sheet.name,
-      columns: sheet.column_names,
-      rows: sheet.elements,
-      suites: [],
-      renderer: HTMLRenderer,
-      input: {}
+  function process(err, sheet) {
+    // console.log(err);
+    // console.log(sheet);
+    if (err) {
+      console.log(err);
     }
-    Processor.run(config)
+    else if (sheet) {
+      console.log("sheet", sheet);
+      var column_names = Object.keys(sheet.data[0]);
+      var config = {
+        //fileString: contents,
+        filename: sheet.title,
+        columnsHeads: column_names,
+        rows: sheet.data,
+        suites: [],
+        renderer: HTMLRenderer,
+        input: {}
+      };
+      Processor.run(config);
+    } else {
+      console.log("Warning: must use non-empty worksheet")
+    }
   }
 };
