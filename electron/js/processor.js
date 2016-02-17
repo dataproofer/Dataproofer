@@ -21,7 +21,7 @@ function handleFileSelect(evt) {
       var config = {
         fileString: contents,
         filename: file.name,
-        suites: [], 
+        suites: [],
         renderer: HTMLRenderer,
         input: {}
       }
@@ -42,43 +42,35 @@ d3.select("#spreadsheet-input").on("keyup", function() {
 })
 window.onerror = function(message) {
   console.log(arguments)
-  // this is a hack to get around tabletop's apparent lack of error handling
-  // unless I'm missing something they assume the url given to the library will always be valid...
-  // and emit uncaught errors if so.
-  if(message && message.indexOf('Uncaught TypeError') == 0) {
-    console.log("TABLETOP ERROR, invalid URL")
-  }
+  console.log(message)
 }
 function handleSpreadsheet() {
+  var keyRegex = /\/d\/([\w-_]+)/
+  var spreadsheetInputStr = d3.select("#spreadsheet-input").node().value
+  var match = spreadsheetInputStr.match(keyRegex)
+  Tabletop.init({
+    key: match[1],
+    callback: process,
+    simpleSheet: false,
+    simple_url: true,
+    debug: true
+  });
 
-  var url = d3.select("#spreadsheet-input").node().value
-  console.log("url", url)
-  try {
-    Tabletop.init({
-      key: url,
-      callback: process,
-      simpleSheet: false
-    });
-  } catch(e) {
-    // TODO error modal support
-    console.log("error", e)
-  }
-    
   function process(data, tabletop) {
-    //console.log("tabletop", tabletop)
-    //console.log("data", data);
-
-    // For now we just assume the first sheet in the spreadsheet will work
+    // console.log("tabletop", tabletop)
+    // console.log("data", data);
+    // console.log("sheets", Object.keys(data));
+    // Assuming the last spreadsheet will work
     var sheets = Object.keys(data);
-    var sheet = data[sheets[0]]
-
+    var sheet = data[sheets[sheets.length - 1]]
+    console.log("sheet", data[sheets[0]]);
     var config = {
       //fileString: contents,
       filename: sheet.name,
       columns: sheet.column_names,
       rows: sheet.elements,
-      suites: [], 
-      renderer: HTMLRenderer, 
+      suites: [],
+      renderer: HTMLRenderer,
       input: {}
     }
     Processor.run(config)
