@@ -6,10 +6,7 @@ Spellcheck for data
 
 ```
 git clone git clone git@github.com:dataproofer/dataproofer.git
-git clone git@github.com:dataproofer/core-suite.git
-cd core-suite/
-npm install
-cd ../Dataproofer
+cd ../Dataproofer/src
 npm install
 cd electron
 npm install
@@ -19,10 +16,19 @@ npm install
 
 While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master)
 ```
+git clone git@github.com:dataproofer/core-suite.git
+git clone git@github.com:dataproofer/stats-suite.git
+git clone git@github.com:dataproofer/geo-suite.git
 cd core-suite
 npm link
-cd ../Dataproofer
+cd stats-suite
+npm link
+cd geo-suite
+npm link
+cd ../Dataproofer/src
 npm link dataproofer-core-suite
+npm link dataproofer-stats-suite
+npm link dataproofer-geo-suite
 ```
 You can run the electron app from the `Dataproofer/electron` folder
 ```
@@ -43,7 +49,7 @@ node index
 # Packaging an executable
 
 ```
-cd Dataproofer
+cd Dataproofer/electron
 npm run package
 ```
 This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command currently only generates the Mac app but could easily be extended to include Windows & Linux.
