@@ -8,7 +8,6 @@ function HTMLRenderer(config) {
   Renderer.call(this, config)
   window.rows = config.rows;
   this.resultList = [];
-  console.log("constructed")
 
   var columns = [];
   Object.keys(rows[0]).forEach(function(col) {
@@ -68,7 +67,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
   tests.select("div.fingerprint").each(function(d) {
     if(!d.result.highlightCells) return;
-    console.log('fingerprint')
     // TODO: put this in a component/reusable chart thingy
     var width = 200;
     var height = 100;

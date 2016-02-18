@@ -46,13 +46,12 @@ exports.run = function(config) {
 
   var badColumnHeadsTest = new DataprooferTest()
     .name("Missing or Duplicate Column Headers")
-    .description('Check for errors in the headers of the spreadsheet')
+    .description('Check for errors in the header of the spreadsheet')
     .methodology(function(rows, columnHeads) {
       console.log("checking column headers", columnHeads.length);
       var badHeaderCount = 0;
       var badColumnHeads = [];
-      var htmlTemplate;
-      var consoleMessage;
+      var summary;
       var passed;
 
       _.reduce(columnHeads, function(counts, columnHead) {
@@ -68,24 +67,24 @@ exports.run = function(config) {
       if (badHeaderCount > 0) {
         passed = false
         columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
-        //consoleMessage = "We found " + badHeaderCount + " " + columnOrcolumnHeads + " without a header"
-        htmlTemplate = _.template(`
-          We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header, which means you'd need to take guesses about the present data or you should provide it with a unique, descriptive name.
+        summary = _.template(`
+          We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header. You should make sure all columns have a unique, descriptive name.
         `)({
           'badHeaderCount': badHeaderCount,
           'columnOrcolumnHeads': columnOrcolumnHeads
         });
       } else if (badHeaderCount === 0) {
         passed = true
+        summary = 'No errors found in the header of the spreadsheet'
         //consoleMessage = "No anomolies detected";
       } else {
         passed = false
-        //consoleMessage = "We had problems reading your column headers"
+        summary = "We had problems reading your column headers"
       }
 
       var result = {
         passed: passed,
-        summary: htmlTemplate,
+        summary: summary,
         badColumnHeads: badColumnHeads
       }
       return result;
