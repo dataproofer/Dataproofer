@@ -4,8 +4,7 @@
   "description": "It's like spell-check for datasets",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "package": "./electron/node_modules/.bin/electron-packager electron Dataproofer --platform=darwin --arch=x64 --version=0.36.4 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

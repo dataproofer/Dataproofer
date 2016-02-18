@@ -5,7 +5,8 @@
   "main": "app.js",
   "author": "DataProofer",
   "scripts": {
-    "electron": "../node_modules/.bin/electron ."
+    "electron": "./node_modules/.bin/electron .",
+    "package": "./node_modules/.bin/electron-packager . Dataproofer --platform=darwin --arch=x64 --version=0.36.4 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
   },
   "repository": {
     "type": "git",
@@ -13,7 +14,7 @@
   },
   "dependencies": {
     "d3": "^3.5.12",
-    "dataproofer": "file:../",
+    "dataproofer": "file:../src/",
     "electron-prebuilt": "^0.36.3",
     "gsheets": "^1.2.3",
     "jquery": "^2.2.0",
