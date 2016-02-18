@@ -40,7 +40,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   // A reference to our SlickGrid table so we can manipulate it via the fingerprint
   var grid = this.grid;
 
-
   var tests = d3.select(".test-results").selectAll(".test")
     .data(this.resultList)
 
@@ -52,14 +51,18 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.select(this).append("canvas")
     }
   })
+  tests.on("click", function(d) {
+    console.log(d)
+  })
+
 
   tests.select("div.passfail").html(function(d) {
     return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>"
   })
 
   tests.select("div.message").html(function(d) {
-    var html = '<span class="test-header">' + (d.result.name || "") + '</span><br/>'
-    html += d.result.summary || d.result.description || ""
+    var html = '<span class="test-header">' + (d.test.name() || "") + '</span><br/>'
+    html += d.result.summary || d.test.description() || ""
     return html
   })
 

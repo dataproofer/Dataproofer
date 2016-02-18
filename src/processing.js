@@ -1,4 +1,5 @@
 var d3 = require('d3');
+var DataprooferTest = require('dataproofertest-js');
 
 /**
  * The
@@ -43,55 +44,57 @@ exports.run = function(config) {
     rows: rows
   });
 
-  var badColumnHeads = (function(rows, columnHeads) {
-    console.log("checking column headers", columnHeads.length);
-    var badHeaderCount = 0;
-    var badColumnHeads = [];
-    var htmlTemplate;
-    var consoleMessage;
-    var passed;
+  var badColumnHeadsTest = new DataprooferTest()
+    .name("Missing or Duplicate Column Headers")
+    .description('Check for errors in the headers of the spreadsheet')
+    .methodology(function(rows, columnHeads) {
+      console.log("checking column headers", columnHeads.length);
+      var badHeaderCount = 0;
+      var badColumnHeads = [];
+      var htmlTemplate;
+      var consoleMessage;
+      var passed;
 
-    _.reduce(columnHeads, function(counts, columnHead) {
-      if (counts[columnHead] || columnHead.length < 1 || columnHead === null) {
-        badColumnHeads.push(columnHead);
-        badHeaderCount += 1;
+      _.reduce(columnHeads, function(counts, columnHead) {
+        if (counts[columnHead] || columnHead.length < 1 || columnHead === null) {
+          badColumnHeads.push(columnHead);
+          badHeaderCount += 1;
+        } else {
+          counts[columnHead] = 0;
+        }
+        return counts;
+      }, {});
+
+      if (badHeaderCount > 0) {
+        passed = false
+        columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
+        //consoleMessage = "We found " + badHeaderCount + " " + columnOrcolumnHeads + " without a header"
+        htmlTemplate = _.template(`
+          We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header, which means you'd need to take guesses about the present data or you should provide it with a unique, descriptive name.
+        `)({
+          'badHeaderCount': badHeaderCount,
+          'columnOrcolumnHeads': columnOrcolumnHeads
+        });
+      } else if (badHeaderCount === 0) {
+        passed = true
+        //consoleMessage = "No anomolies detected";
       } else {
-        counts[columnHead] = 0;
+        passed = false
+        //consoleMessage = "We had problems reading your column headers"
       }
-      return counts;
-    }, {});
 
-    if (badHeaderCount > 0) {
-      passed = false
-      columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
-      consoleMessage = "We found " + badHeaderCount + " " + columnOrcolumnHeads + " without a header"
-      htmlTemplate = _.template(`
-        We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header, which means you'd need to take guesses about the present data or you should provide it with a unique, descriptive name.
-      `)({
-        'badHeaderCount': badHeaderCount,
-        'columnOrcolumnHeads': columnOrcolumnHeads
-      });
-    } else if (badHeaderCount === 0) {
-      passed = true
-      consoleMessage = "No anomolies detected";
-    } else {
-      passed = false
-      consoleMessage = "We had problems reading your column headers"
-    }
+      var result = {
+        passed: passed,
+        summary: htmlTemplate,
+        badColumnHeads: badColumnHeads
+      }
+      return result;
+    })
 
-    var result = {
-      passed: passed,
-      name: "Missing or Duplicate Column Headers",
-      description: consoleMessage,
-      summary: htmlTemplate
-    }
+  var result = badColumnHeadsTest.proof(rows, columnHeads)
+  renderer.addResult('dataproofer-core-suite', badColumnHeadsTest, result)
 
-    renderer.addResult('dataproofer-core-suite', 'Missing or Duplicate Column Headers', result)
-    return badColumnHeads;
-  })(rows, columnHeads);
-
-
-  var cleanedcolumnHeads = _.without(columnHeads, badColumnHeads.join(', '));
+  var cleanedcolumnHeads = _.without(columnHeads, result.badColumnHeads.join(', '));
   var cleanedRows = rows
 
   // TODO: use async series? can run suites in series for better UX?
@@ -103,10 +106,10 @@ exports.run = function(config) {
         // run the test!
         var result = test.proof(cleanedRows, cleanedcolumnHeads, input)
         // incrementally report as tests run
-        renderer.addResult(suite.name, test.name(), result);
+        renderer.addResult(suite.name, test, result);
       } catch(e) {
         // uh oh! report an error (different from failing a test)
-        renderer.addError(suite.name, test.name(), e);
+        renderer.addError(suite.name, test, e);
       }
     })
   })
