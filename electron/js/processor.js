@@ -21,7 +21,7 @@ function handleFileSelect(evt) {
       var config = {
         fileString: contents,
         filename: file.name,
-        suites: ['dataproofer-stats-suite'],
+        suites: [],
         renderer: HTMLRenderer,
         input: {}
       }

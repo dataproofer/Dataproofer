@@ -58,8 +58,8 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.message").html(function(d) {
-    var html = '<span class="test-header">' + (d.result.title || "") + '</span><br/>'
-    html += d.result.htmlTemplate || d.result.consoleMessage || ""
+    var html = '<span class="test-header">' + (d.result.name || "") + '</span><br/>'
+    html += d.result.summary || d.result.description || ""
     return html
   })
 
