@@ -51,8 +51,8 @@ exports.run = function(config) {
     var consoleMessage;
     var passed;
 
-    var columnHeadCounts = _.reduce(columnHeads, function(counts, columnHead) {
-      if (counts[columnHead]) {
+    _.reduce(columnHeads, function(counts, columnHead) {
+      if (counts[columnHead] || columnHead.length < 1 || columnHead === null) {
         badColumnHeads.push(columnHead);
         badHeaderCount += 1;
       } else {
@@ -81,9 +81,9 @@ exports.run = function(config) {
 
     var result = {
       passed: passed,
-      title: "Missing or Duplicate Column Headers",
-      consoleMessage: consoleMessage,
-      htmlTemplate: htmlTemplate
+      name: "Missing or Duplicate Column Headers",
+      description: consoleMessage,
+      summary: htmlTemplate
     }
 
     renderer.addResult('dataproofer-core-suite', 'Missing or Duplicate Column Headers', result)
@@ -101,12 +101,12 @@ exports.run = function(config) {
     suite.tests.forEach(function(test) {
       try {
         // run the test!
-        var result = test(cleanedRows, cleanedcolumnHeads, input)
+        var result = test.proof(cleanedRows, cleanedcolumnHeads, input)
         // incrementally report as tests run
-        renderer.addResult(suite.name, test.name, result);
+        renderer.addResult(suite.name, test.name(), result);
       } catch(e) {
         // uh oh! report an error (different from failing a test)
-        renderer.addError(suite.name, test.name, e);
+        renderer.addError(suite.name, test.name(), e);
       }
     })
   })
