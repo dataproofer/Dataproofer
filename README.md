@@ -8,7 +8,7 @@ Spellcheck for data
 git clone git clone git@github.com:dataproofer/dataproofer.git
 cd ../Dataproofer/src
 npm install
-cd electron
+cd ../electron
 npm install
 ```
 

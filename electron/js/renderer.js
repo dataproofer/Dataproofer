@@ -8,7 +8,6 @@ function HTMLRenderer(config) {
   Renderer.call(this, config)
   window.rows = config.rows;
   this.resultList = [];
-  console.log("constructed")
 
   var columns = [];
   Object.keys(rows[0]).forEach(function(col) {
@@ -32,14 +31,13 @@ HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
-  console.log("add result", suite, test, result)
-  console.log("this results", this.results);
+  //console.log("add result", suite, test, result)
+  //console.log("this results", this.results);
   this.results[suite][test] = result;
   this.resultList.push({ suite: suite, test: test, result: result })
 
   // A reference to our SlickGrid table so we can manipulate it via the fingerprint
   var grid = this.grid;
-
 
   var tests = d3.select(".test-results").selectAll(".test")
     .data(this.resultList)
@@ -52,20 +50,23 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.select(this).append("canvas")
     }
   })
+  tests.on("click", function(d) {
+    console.log(d)
+  })
+
 
   tests.select("div.passfail").html(function(d) {
     return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>"
   })
 
   tests.select("div.message").html(function(d) {
-    var html = '<span class="test-header">' + (d.result.title || "") + '</span><br/>'
-    html += d.result.htmlTemplate || d.result.consoleMessage || ""
+    var html = '<span class="test-header">' + (d.test.name() || "") + '</span><br/>'
+    html += d.result.summary || d.test.description() || ""
     return html
   })
 
   tests.select("div.fingerprint").each(function(d) {
     if(!d.result.highlightCells) return;
-
     // TODO: put this in a component/reusable chart thingy
     var width = 200;
     var height = 100;

@@ -23,6 +23,7 @@
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
     "d3": "^3.5.12",
+    "dataproofertest-js": "git@github.com:dataproofer/dataproofertest.js.git",
     "dataproofer-core-suite": "git@github.com:dataproofer/core-suite.git",
     "dataproofer-geo-suite": "git@github.com:dataproofer/geo-suite.git",
     "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",

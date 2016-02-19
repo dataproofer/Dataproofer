@@ -3,8 +3,8 @@
  * CLI Interface to Dataproofer
  */
 
-var Processing = require('./src/processing');
-var Rendering = require('./src/rendering');
+var Processing = require('./processing');
+var Rendering = require('./rendering');
 
 var pkg = require('./package.json')
 module.exports = {
@@ -30,7 +30,7 @@ if(require.main === module) {
     type: "checkbox", name: "suites", message: "Select optional test suites to run against your dataset.",
     // TODO: make these real suites. perhaps pull them from a config?
     choices: [
-      {name: "Mapping & Geographic", value: "dataproofer-geo-suite"}, 
+      {name: "Mapping & Geographic", value: "dataproofer-geo-suite"},
       {name: "Statistics", value:"dataproofer-stats-suite"},
       {name: "A+", value:"dataproofer-foo-suite"}
     ]
@@ -50,7 +50,7 @@ if(require.main === module) {
         // no file no cry
         return console.error(err);
       }
-      config.fileString = data.toString(); 
+      config.fileString = data.toString();
       Processing.run(config)
     });
   });
