@@ -7,7 +7,11 @@ var Renderer = require('dataproofer').Rendering;
 function HTMLRenderer(config) {
   Renderer.call(this, config)
   window.rows = config.rows;
-  this.resultList = [];
+  var resultList = {}
+  config.suites.forEach(function(suite) {
+    resultList[suite.name] = []
+  })
+  this.resultList = resultList;
 
   var columns = [];
   Object.keys(rows[0]).forEach(function(col) {
@@ -24,23 +28,33 @@ function HTMLRenderer(config) {
   var grid = new SlickGrid("#grid", rows, columns, options);
   this.grid = grid;
 
-  d3.select(".test-results").selectAll(".test").remove();
+  d3.select(".suites").selectAll(".suite").remove();
+  d3.select(".suites").selectAll(".suite")
+    .data(config.suites)
+    .enter().append("div")
+    .attr({
+      class: function(d) { return "suite " + d.name }
+    })
+    .append("h2").text(function(d) { return d.name })
+  //d3.select(".test-results").selectAll(".test").remove();
 }
 
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
-  //console.log("add result", suite, test, result)
+  console.log(suite, test.name());
   //console.log("this results", this.results);
   this.results[suite][test] = result;
-  this.resultList.push({ suite: suite, test: test, result: result })
+  this.resultList[suite].push({ suite: suite, test: test, result: result })
 
   // A reference to our SlickGrid table so we can manipulate it via the fingerprint
   var grid = this.grid;
 
-  var tests = d3.select(".test-results").selectAll(".test")
-    .data(this.resultList)
+  var container = d3.select("." + suite)
+  console.log("container", container)
+  var tests = container.selectAll(".test")
+    .data(this.resultList[suite])
 
   var testsEnter = tests.enter().append("div").classed("test", true)
   testsEnter.append("div").classed("passfail", true)

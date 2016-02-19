@@ -62,7 +62,7 @@ button.tabletop-loader {
   Test specific CSS
 */
 
-.test-results {
+.suites {
   padding: 5px;
   position: absolute;
   top: 0;
@@ -70,7 +70,10 @@ button.tabletop-loader {
   height: calc(100% - 200px);
   overflow-y: scroll;
 }
-.test-results .test {
+.suite {
+  float: left;
+}
+.suite .test {
   margin: 3px;
   padding: 10px;
   margin-top: 10px;
@@ -80,35 +83,35 @@ button.tabletop-loader {
   background-color: white;
   border-radius: 3px;
 }
-.test-results .test:nth-child(odd) {
+.suite .test:nth-child(odd) {
   background-color: #efefef;
 }
 
-.test-results .test .passfail {
+.suite .test .passfail {
   width: 20px;
   float:left;
 }
 
-.test-results .test .message {
+.suite .test .message {
   float:left;
   width: calc(100% - 245px);
 }
 
-.test-results .test .test-header {
+.suite .test .test-header {
   font-size: 14px;
   font-weight: bold;
 }
-.test-results .test .test-column {
+.suite .test .test-column {
   font-size: 12px;
   font-weight: bold;
   font-style: italic;
 }
-.test-results .test .test-value {
+.suite .test .test-value {
   font-weight: bold;
   font-family; Courier;
 }
 
-.test-results .test .fingerprint {
+.suite .test .fingerprint {
   width: 200px;
   float: right;
   margin-right: 25px;
