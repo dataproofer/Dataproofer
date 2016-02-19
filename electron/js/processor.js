@@ -6,6 +6,11 @@ console.log("dataproofer lib version", require('dataproofer').version)
 
 // TODO: handle reload button
 
+var SUITES = [
+  //"dataproofer-stats-suite",
+  "dataproofer-geo-suite"
+]
+
 document.getElementById('file-loader').addEventListener('change', handleFileSelect, false);
 function handleFileSelect(evt) {
   var files = evt.target.files
@@ -21,7 +26,7 @@ function handleFileSelect(evt) {
       var config = {
         fileString: contents,
         filename: file.name,
-        suites: [],
+        suites: SUITES,
         renderer: HTMLRenderer,
         input: {}
       }
@@ -63,7 +68,7 @@ function handleSpreadsheet() {
         filename: sheet.title,
         columnsHeads: column_names,
         rows: sheet.data,
-        suites: [],
+        suites: SUITES,
         renderer: HTMLRenderer,
         input: {}
       };
