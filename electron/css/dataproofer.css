@@ -1,6 +1,16 @@
 /*
   General UI
  */
+ body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #333;
+  background-color: transparent;
+ }
 .icon-check {
   color: #29A03B;
 }
@@ -58,17 +68,35 @@ button.tabletop-loader {
   background: pink;
 }
 
+.steps {
+  /* temp styling */
+  position: absolute;
+  top: 0;
+  height: calc(100% - 200px);
+  overflow-y: scroll;
+}
+.step {
+  float:left;
+  clear:left;
+  width: 100%;
+
+}
+
+.step-1-data {
+
+}
+
+.step-2-suites {
+
+}
+
 /*
   Test specific CSS
 */
 
-.suites {
+.step-3-results {
   padding: 5px;
-  position: absolute;
-  top: 0;
   width: 100%;
-  height: calc(100% - 200px);
-  overflow-y: scroll;
 }
 .suite {
   float: left;
@@ -115,4 +143,34 @@ button.tabletop-loader {
   width: 200px;
   float: right;
   margin-right: 25px;
+}
+
+/* Header styles stolen from photon.css  */
+.toolbar-header {
+  border-bottom: 1px solid #c2c0c2;
+  background-color: #222;
+  color: #fff;
+  margin: 0;
+  padding: 2px;
+}
+.toolbar-header .title {
+  margin-top: 1px;
+}
+
+.toolbar-footer {
+  border-top: 1px solid #c2c0c2;
+  -webkit-app-region: drag;
+}
+
+.toolbar-header .title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  cursor: default;
+}
+
+.toolbar-borderless {
+  border-top: 0;
+  border-bottom: 0;
 }

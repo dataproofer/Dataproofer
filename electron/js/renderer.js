@@ -28,8 +28,8 @@ function HTMLRenderer(config) {
   var grid = new SlickGrid("#grid", rows, columns, options);
   this.grid = grid;
 
-  d3.select(".suites").selectAll(".suite").remove();
-  d3.select(".suites").selectAll(".suite")
+  d3.select(".step-3-results").selectAll(".suite").remove();
+  d3.select(".step-3-results").selectAll(".suite")
     .data(config.suites)
     .enter().append("div")
     .attr({
