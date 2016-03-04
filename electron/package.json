@@ -15,6 +15,9 @@
   "dependencies": {
     "d3": "^3.5.12",
     "dataproofer": "file:../src/",
+    "dataproofer-core-suite": "git@github.com:dataproofer/core-suite.git",
+    "dataproofer-geo-suite": "git@github.com:dataproofer/geo-suite.git",
+    "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",
     "electron-prebuilt": "^0.36.3",
     "gsheets": "^1.2.3",
     "jquery": "^2.2.0",

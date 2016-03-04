@@ -6,6 +6,9 @@ var DataprooferTest = require('dataproofertest-js');
  * @param  {Object} configuration including filename and suites
  * @return {undefined}
  */
+
+// TODO: refactor into class more like DataprooferTest so we can chain
+// configuration and seperate initializing from running tests
 exports.run = function(config) {
   var filename = config.filename;
   var fileString = config.fileString;
@@ -19,12 +22,7 @@ exports.run = function(config) {
   var columnHeads = config.columnHeads;
 
   console.log("processing!", filename, suites)
-  // we always test against the core suite
-  var testSuites = [require('dataproofer-core-suite')]
-  // if the user selected optional suites we require those
-  suites.forEach(function(suite) {
-    testSuites.push(require(suite))
-  })
+
 
   if(!rows && fileString) {
     // Parse the csv with d3
@@ -38,7 +36,7 @@ exports.run = function(config) {
   // Initialize the renderer
   var renderer = new Renderer({
     filename: filename,
-    suites: testSuites,
+    suites: suites,
     fileString: fileString,
     columnHeads: columnHeads,
     rows: rows
@@ -97,7 +95,7 @@ exports.run = function(config) {
   var cleanedRows = rows
 
   // TODO: use async series? can run suites in series for better UX?
-  testSuites.forEach(function(suite) {
+  suites.forEach(function(suite) {
     console.log("running suite", suite)
     // TODO: use async module to run asynchronously?
     suite.tests.forEach(function(test) {

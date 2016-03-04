@@ -28,6 +28,7 @@ function HTMLRenderer(config) {
   var grid = new SlickGrid("#grid", rows, columns, options);
   this.grid = grid;
 
+    // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite")
     .data(config.suites)
@@ -51,7 +52,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   // A reference to our SlickGrid table so we can manipulate it via the fingerprint
   var grid = this.grid;
 
-  var container = d3.select("." + suite)
+  var container = d3.select(".step-3-results ." + suite)
   console.log("container", container)
   var tests = container.selectAll(".test")
     .data(this.resultList[suite])
@@ -64,10 +65,10 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.select(this).append("canvas")
     }
   })
+
   tests.on("click", function(d) {
     console.log(d)
   })
-
 
   tests.select("div.passfail").html(function(d) {
     return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>"

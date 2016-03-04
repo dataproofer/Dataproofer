@@ -7,9 +7,30 @@ console.log("dataproofer lib version", require('dataproofer').version)
 // TODO: handle reload button
 
 var SUITES = [
-  //"dataproofer-stats-suite",
-  "dataproofer-geo-suite"
+  require('dataproofer-core-suite'),
+  //require('dataproofer-stats-suite'),
+  require('dataproofer-geo-suite')
 ]
+
+// TODO: stop abusing global variables
+var processorConfig = {};
+
+function renderStep2() {
+  var container = d3.select(".step-2-select")
+
+  // we just remove everything rather than get into update pattern
+  container.selectAll(".suite").remove();
+  // create the containers for each suite
+  container.selectAll(".suite")
+    .data(processorConfig.suites)
+    .enter().append("div")
+    .attr({
+      class: function(d) { return "suite " + d.name }
+    })
+    .append("h2").text(function(d) { return d.name })
+
+}
+
 
 document.getElementById('file-loader').addEventListener('change', handleFileSelect, false);
 function handleFileSelect(evt) {
@@ -23,18 +44,23 @@ function handleFileSelect(evt) {
     // Closure to capture the file information.
     reader.onload = (function(progress) {
       var contents = progress.target.result;
-      var config = {
+      processorConfig = {
         fileString: contents,
         filename: file.name,
+        // TODO: replace this with activeSuites
         suites: SUITES,
         renderer: HTMLRenderer,
         input: {}
       }
-      Processor.run(config)
+      renderStep2();
     })
   }//)
   reader.readAsText(file);
 }
+
+d3.select(".run-tests").on("click", function() {
+  Processor.run(processorConfig)
+})
 
 
 d3.select('.tabletop-loader').on('click', handleSpreadsheet);
