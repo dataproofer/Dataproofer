@@ -43,9 +43,8 @@ function renderStep2() {
     return html
   })
 
-  container.append("button")
+  d3.select(".run-tests")
     .text("Run tests")
-    .classed(".run-tests", true)
     .on("click", function() {
       Processor.run(processorConfig)
     })
