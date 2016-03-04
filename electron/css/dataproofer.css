@@ -71,7 +71,7 @@ button.tabletop-loader {
 .steps {
   /* temp styling */
   position: absolute;
-  top: 0;
+  top: 30;
   height: calc(100% - 200px);
   overflow-y: scroll;
 }
@@ -87,7 +87,8 @@ button.tabletop-loader {
 }
 
 .step-2-select {
-
+  padding: 5px;
+  width: 100%;
 }
 
 /*
@@ -98,9 +99,11 @@ button.tabletop-loader {
   padding: 5px;
   width: 100%;
 }
+
 .suite {
   float: left;
 }
+
 .suite .test {
   margin: 3px;
   padding: 10px;
@@ -147,6 +150,7 @@ button.tabletop-loader {
 
 /* Header styles stolen from photon.css  */
 .toolbar-header {
+  z-index: 100;
   border-bottom: 1px solid #c2c0c2;
   background-color: #222;
   color: #fff;

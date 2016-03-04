@@ -21,14 +21,34 @@ function renderStep2() {
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
   // create the containers for each suite
-  container.selectAll(".suite")
+  var suites = container.selectAll(".suite")
     .data(processorConfig.suites)
-    .enter().append("div")
+  var suitesEnter = suites.enter().append("div")
     .attr({
       class: function(d) { return "suite " + d.name }
     })
     .append("h2").text(function(d) { return d.name })
 
+  // render the tests
+  var tests = suitesEnter.selectAll(".test")
+    .data(function(d) { return d.tests })
+
+  var testsEnter = tests.enter().append("div").classed("test", true)
+  testsEnter.append("div").classed("message", true)
+  testsEnter.append("div").classed("onoff", true)
+
+  tests.select("div.message").html(function(d) {
+    var html = '<span class="test-header">' + (d.name() || "") + '</span><br/>'
+    html += d.description() || ""
+    return html
+  })
+
+  container.append("button")
+    .text("Run tests")
+    .classed(".run-tests", true)
+    .on("click", function() {
+      Processor.run(processorConfig)
+    })
 }
 
 
@@ -57,10 +77,6 @@ function handleFileSelect(evt) {
   }//)
   reader.readAsText(file);
 }
-
-d3.select(".run-tests").on("click", function() {
-  Processor.run(processorConfig)
-})
 
 
 d3.select('.tabletop-loader').on('click', handleSpreadsheet);
@@ -104,3 +120,24 @@ function handleSpreadsheet() {
     }
   }
 };
+
+
+
+// Enable context menu
+// http://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
+// The remote module is required to call main process modules
+var remote = require('remote');
+var Menu = remote.require('menu');
+var MenuItem = remote.require('menu-item');
+var currentWindow = remote.getCurrentWindow();
+var rightClickPosition = null;
+var menu = new Menu();
+menu.append(new MenuItem({ label: 'Inspect Element', click: function() {
+  currentWindow.inspectElement(rightClickPosition.x, rightClickPosition.y);
+} }));
+
+window.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  rightClickPosition = {x: e.x, y: e.y};
+  menu.popup(currentWindow);
+}, false);
