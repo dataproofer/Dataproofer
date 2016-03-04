@@ -5,8 +5,8 @@ Spellcheck for data
 ## Bootstrap
 
 ```
-git clone git clone git@github.com:dataproofer/dataproofer.git
-cd ../Dataproofer/src
+git clone git@github.com:dataproofer/dataproofer.git
+cd dataproofer/src
 npm install
 cd ../electron
 npm install
@@ -14,21 +14,28 @@ npm install
 
 ## Dev
 
-While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master)
+
+While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master) into the folder that contains the dataproofer repo, not into the dataproofer repo itself.
 ```
 git clone git@github.com:dataproofer/core-suite.git
 git clone git@github.com:dataproofer/stats-suite.git
 git clone git@github.com:dataproofer/geo-suite.git
+
 cd core-suite
 npm link
 cd stats-suite
 npm link
 cd geo-suite
 npm link
+
 cd ../Dataproofer/src
 npm link dataproofer-core-suite
 npm link dataproofer-stats-suite
 npm link dataproofer-geo-suite
+
+npm link
+cd ../electron
+npm link dataproofer
 ```
 You can run the electron app from the `Dataproofer/electron` folder
 ```
@@ -45,6 +52,14 @@ or
 ```
 node index
 ```
+
+### Creating a new test
++ Make a copy of "testTemplate.js"
++ Write your test
++ Require that test in the the suite's *index.js* 
++ Add that test to the exports in index.js 
+
+### Troubleshooting a test that won't run
 
 # Packaging an executable
 
