@@ -12,6 +12,14 @@ var SUITES = [
   require('dataproofer-geo-suite')
 ]
 
+// turn on all tests by default
+SUITES.forEach(function(suite) {
+  suite.active = true;
+  suite.tests.forEach(function(test){
+    test.active = true;
+  })
+})
+
 // TODO: stop abusing global variables
 var processorConfig = {};
 
@@ -25,15 +33,22 @@ function renderStep2() {
     .data(processorConfig.suites)
   var suitesEnter = suites.enter().append("div")
     .attr({
-      class: function(d) { return "suite " + d.name }
+      class: function(d) { return d.name + " suite " + (d.active ? "active" : "") }
     })
+  suitesEnter
     .append("h2").text(function(d) { return d.name })
+    .on("click", function(d) {
+      d.active = !d.active;
+      d3.select(this.parentNode).classed("active", d.active)
+      console.log("suite", d)
+    })
 
   // render the tests
   var tests = suitesEnter.selectAll(".test")
     .data(function(d) { return d.tests })
 
-  var testsEnter = tests.enter().append("div").classed("test", true)
+  var testsEnter = tests.enter().append("div")
+  .attr("class", function(d) { return d.active ? "test active" : "test" })
   testsEnter.append("div").classed("message", true)
   testsEnter.append("div").classed("onoff", true)
 
@@ -41,6 +56,11 @@ function renderStep2() {
     var html = '<span class="test-header">' + (d.name() || "") + '</span><br/>'
     html += d.description() || ""
     return html
+  })
+  tests.on("click", function(d) {
+    console.log("test", d)
+    d.active = !d.active;
+    d3.select(this).classed("active", d.active)
   })
 
   d3.select(".run-tests")

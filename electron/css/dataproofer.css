@@ -72,7 +72,7 @@ button.tabletop-loader {
   /* temp styling */
   position: absolute;
   top: 30;
-  height: calc(100% - 200px);
+  height: calc(100% - 230px);
   overflow-y: scroll;
 }
 .step {
@@ -81,27 +81,22 @@ button.tabletop-loader {
   width: 100%;
 
 }
-
+/* =============================================================================
+STEP  1
+============================================================================= */
 .step-1-data {
 
 }
 
-.step-2-select {
-  padding: 5px;
-  width: 100%;
-}
 
-/*
-  Test specific CSS
-*/
 
-.step-3-results {
-  padding: 5px;
-  width: 100%;
-}
 
+/* =============================================================================
+General Suites and test
+============================================================================= */
 .suite {
   float: left;
+  margin: 10px;
 }
 
 .suite .test {
@@ -113,6 +108,9 @@ button.tabletop-loader {
   clear: left;
   background-color: white;
   border-radius: 3px;
+}
+.suite .test.active {
+  border: 1px solid orange;
 }
 .suite .test:nth-child(odd) {
   background-color: #efefef;
@@ -148,7 +146,32 @@ button.tabletop-loader {
   margin-right: 25px;
 }
 
-/* Header styles stolen from photon.css  */
+/* =============================================================================
+STEP  2
+============================================================================= */
+.step-2-select {
+  padding: 5px;
+  width: 100%;
+}
+.step-2-select .suite {
+  opacity: 0.2;
+}
+.step-2-select .suite.active {
+  opacity: 1;
+}
+
+/* =============================================================================
+STEP  3
+============================================================================= */
+.step-3-results {
+  padding: 5px;
+  width: 100%;
+}
+
+/* =============================================================================
+HEADER
+Header styles stolen from photon.css 
+============================================================================= */
 .toolbar-header {
   z-index: 100;
   border-bottom: 1px solid #c2c0c2;
