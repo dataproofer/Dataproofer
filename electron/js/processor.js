@@ -8,7 +8,7 @@ console.log("dataproofer lib version", require('dataproofer').version)
 
 var SUITES = [
   require('dataproofer-core-suite'),
-  //require('dataproofer-stats-suite'),
+  // require('dataproofer-stats-suite'),
   require('dataproofer-geo-suite')
 ]
 
