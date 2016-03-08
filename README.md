@@ -2,6 +2,8 @@
 
 Spellcheck for data
 
+—
+
 ## Bootstrap
 
 ```
@@ -59,7 +61,38 @@ node index
 + Require that test in the the suite's *index.js* 
 + Add that test to the exports in index.js 
 
+Tests are made up a few parts
+
+#### .name()
+This is the name of your test, and how it appears in the test-selection screen as well as on the results page 
+
+#### .description()
+This is a text-only description of what the test does, and what it is meant to check. Imagine you are explaining it to a remarkably intelligent 5-year-old. 
+
+#### .methodology()
+This is where the code your test executes lives. Pass it a function that takes in **rows** and **columnHeads**
+
+**rows** is an array of objects from the data. The object uses column headers as the key, and the row’s value as the value. 
+
+So if your data looks like this: 
+```
+President | Year
+George Washington | 1789
+John Adams | 1797
+Thomas Jefferson | 1801
+```
+
+Then the first object in your array of rows will look like this:
+
+```
+{ president: ‘George Washington’, year: ‘1789’ } and so on
+```
+
+Generally, to perform your test, you are going to want to loop over each row and perform some operations on it.
+
+
 ### Troubleshooting a test that won't run
+? 
 
 # Packaging an executable
 
