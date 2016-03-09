@@ -1,6 +1,8 @@
 var d3 = require('d3');
 var Processor = require('dataproofer').Processing
 var gsheets = require('gsheets')
+var ipc = require("electron").ipcRenderer
+
 console.log("dataproofer app version", require('./package.json').version)
 console.log("dataproofer lib version", require('dataproofer').version)
 
@@ -23,9 +25,17 @@ SUITES.forEach(function(suite) {
 // TODO: stop abusing global variables
 var processorConfig = {};
 
+// This function updates the step 1 UI once a file has been loaded
+function renderStep1() {
+  var step1 = d3.select(".step-1-data")
+  step1.selectAll("h3.filename").remove();
+  step1.append("h3").classed("filename", true).text(processorConfig.filename)
+  clear();
+}
+
+// This function renders step 2, the UI for selecting which tests to activate
 function renderStep2() {
   var container = d3.select(".step-2-select")
-
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
   // create the containers for each suite
@@ -70,19 +80,30 @@ function renderStep2() {
     })
 }
 
+function clear() {
+  d3.select(".step-2-select").selectAll(".suite").remove();
+  d3.select(".step-3-results").selectAll(".suite").remove();
+  d3.select("#grid").selectAll("*").remove();
+}
 
+// This handles file selection via the button
 document.getElementById('file-loader').addEventListener('change', handleFileSelect, false);
 function handleFileSelect(evt) {
   var files = evt.target.files
   if(!files || !files.length) return;
   for(var i = 0, f; i < files.length; i++) {
-  //files.forEach(function(file) {
     var file = files[i];
     console.log("loading file", file.name, file);
+
+
     var reader = new FileReader();
     // Closure to capture the file information.
     reader.onload = (function(progress) {
       var contents = progress.target.result;
+
+      // we send our "server" the file so we can load it by defualt
+      ipc.send("file-selected", JSON.stringify({name: file.name, path: file.path, contents: contents}));
+
       processorConfig = {
         fileString: contents,
         filename: file.name,
@@ -91,11 +112,27 @@ function handleFileSelect(evt) {
         renderer: HTMLRenderer,
         input: {}
       }
+      renderStep1();
       renderStep2();
     })
-  }//)
+  }
   reader.readAsText(file);
 }
+
+// if we receive a saved file we load it
+ipc.on("last-file-selected", function(event, file) {
+  console.log("last file selected was", file)
+  processorConfig = {
+    fileString: file.contents,
+    filename: file.name,
+    suites: SUITES,
+    renderer: HTMLRenderer,
+    input: {}
+  }
+  renderStep1();
+  renderStep2();
+  Processor.run(processorConfig)
+})
 
 
 d3.select('.tabletop-loader').on('click', handleSpreadsheet);
@@ -133,7 +170,8 @@ function handleSpreadsheet() {
         renderer: HTMLRenderer,
         input: {}
       };
-      Processor.run(config);
+      renderStep1();
+      renderStep2()
     } else {
       console.log("Warning: must use non-empty worksheet")
     }

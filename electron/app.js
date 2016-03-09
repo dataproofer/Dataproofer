@@ -1,6 +1,9 @@
 const electron = require('electron');
 var app = electron.app  // Module to control application life.
 var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
+// We can listen to messages from the renderer here:
+const ipcMain = electron.ipcMain;
+fs = require('fs')
 
 // Report crashes to our server.
 //electron.crashReporter.start();
@@ -46,23 +49,36 @@ app.on('ready', function() {
   var webContents = mainWindow.webContents;
   webContents.openDevTools();
 
+  const datadir = app.getPath('userData')
+  const lastFileStorage = datadir + '/lastFileSelected.json'
+
   webContents.on('did-finish-load', function() {
-    // We know the webpage is loaded, so we can start interacting with it now
-    webContents.send("render-test", "woot")
+
+    // we load the last file selected and send it to the client
+    fs.readFile(lastFileStorage, function(err, data) {
+      var str;
+      if(data && (str = data.toString())) {
+        try {
+          webContents.send("last-file-selected", JSON.parse(str))
+        } catch(e) {
+          console.log("error", e)
+        }
+      }
+    })
+
+    // whenever the client loads a new file we save it as the last file selected
+    ipcMain.on('file-selected', function(event, file) {
+      //console.log("file selected", file);
+      fs.writeFile(lastFileStorage, file, function(err) {
+        if(err) console.log(err);
+        console.log("written", file, lastFileStorage)
+      })
+    });
   })
 
-  // We can listen to messages from the renderer here:
-  const ipcMain = electron.ipcMain;
 
-  ipcMain.on('asynchronous-message', function(event, arg) {
-    //console.log(arg);  // prints "ping"
-    event.sender.send('asynchronous-reply', 'pong');
-  });
 
-  ipcMain.on('synchronous-message', function(event, arg) {
-    //console.log(arg);  // prints "ping"
-    event.returnValue = 'pong';
-  });
+
 
 
 });
