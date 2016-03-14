@@ -24,7 +24,10 @@ SUITES.forEach(function(suite) {
 var processorConfig = {};
 
 function renderStep2() {
-  var container = d3.select(".step-2-select")
+  var container = d3.select(".step-2-select-content")
+
+  d3.select(".step-2-select").style("display", "block")
+  d3.select(".step-1-data").style("display", "none")
 
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
@@ -53,7 +56,7 @@ function renderStep2() {
   testsEnter.append("div").classed("onoff", true)
 
   tests.select("div.message").html(function(d) {
-    var html = '<span class="test-header">' + (d.name() || "") + '</span><br/>'
+    var html = '<h3 class="test-header">' + (d.name() || "") + '</h3>'
     html += d.description() || ""
     return html
   })
@@ -63,11 +66,15 @@ function renderStep2() {
     d3.select(this).classed("active", d.active)
   })
 
+  d3.select("#current-file-name").text(processorConfig.filename)
+
   d3.select(".run-tests")
     .text("Run tests")
     .on("click", function() {
       Processor.run(processorConfig)
     })
+
+
 }
 
 

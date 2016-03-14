@@ -11,39 +11,50 @@
   </head>
   <body>
     <div class="window">
-      <!-- .toolbar-header sits at the top of your app -->
+      <!-- .toolbar-header sits at the top of your app
       <header class="toolbar toolbar-header">
         <h1 class="title">Dataproofer</h1>
       </header>
+      -->
 
       <!-- All our content goes inside .window-content -->
       <div class="window-content">
+        <div id="info-top-bar">
+          <span id="current-file-name">CurrentFileName.csv</span> <!-- | <span id="number-selected-tests">0</span> Tests Selected -->
+        </div>
+
         <div class="steps">
           <div class="step step-1-data">
             <h2 class="title">Step 1: Load data</h5>
-            <span class="nav-group-row">
-              <input id="file-loader" type="file" />
-            </span>
-            <span class="nav-group-row">
+            
+            <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader">Choose a dataset</label>
+
+            <h3 id="or-separator">Or...</h3>
+            
               <!--
               <button class="reload btn btn-default">
                 <span class="reload icon icon-arrows-ccw"></span>
                 Reload
               </button>
               -->
-              <br>
-              <input id='spreadsheet-input' placeholder="Google Spreadsheet URL or ID">
-              <button class="tabletop-loader btn btn-default">
-                <span class="icon icon-download"></span>
-              </button>
-            </span>
+              
+            <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
+            <button class="tabletop-loader btn btn-default">
+              <span class="icon icon-download"></span>
+            </button>
+            
           </div>
           <div class="step step-2-select">
             <h2 class="title">Step 2: Select tests</h5>
             <!-- we will insert our test suites here -->
+            <div class="step-2-select-content">
+              
+            </div>
+
+            <button class="btn btn-large run-tests">Run tests</button>
           </div>
           
-          <button class="run-tests">Run tests</button>
+          
 
           <div class="step step-3-results">
             <h2 class="title">Step 3: Review test results</h5>
