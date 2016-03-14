@@ -26,35 +26,33 @@
         <div class="steps">
           <div class="step step-1-data">
             <h2 class="title">Step 1: Load data</h5>
-            
+
             <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader">Choose a dataset</label>
 
             <h3 id="or-separator">Or...</h3>
-            
+
               <!--
               <button class="reload btn btn-default">
                 <span class="reload icon icon-arrows-ccw"></span>
                 Reload
               </button>
               -->
-              
+
             <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
             <button class="tabletop-loader btn btn-default">
               <span class="icon icon-download"></span>
             </button>
-            
+
           </div>
           <div class="step step-2-select">
             <h2 class="title">Step 2: Select tests</h5>
             <!-- we will insert our test suites here -->
             <div class="step-2-select-content">
-              
+
             </div>
 
             <button class="btn btn-large run-tests">Run tests</button>
           </div>
-          
-          
 
           <div class="step step-3-results">
             <h2 class="title">Step 3: Review test results</h5>
@@ -67,7 +65,7 @@
 
     <!-- Javascript -->
     <script src="js/renderer.js"></script>
-    <script src="js/processor.js"></script>
+    <script src="js/controller.js"></script>
 
   </body>
 </html>
