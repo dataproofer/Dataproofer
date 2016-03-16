@@ -83,6 +83,8 @@ function renderStep2() {
     .text("Run tests")
     .on("click", function() {
       Processor.run(processorConfig)
+      d3.select(".step-3-results").style("display", "block")
+      d3.select(".step-2-select").style("display", "none")
     })
 
 
