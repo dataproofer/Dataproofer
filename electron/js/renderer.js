@@ -44,16 +44,14 @@ HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
-  console.log(suite, test.name());
-  //console.log("this results", this.results);
-  this.results[suite][test] = result;
+  //console.log(suite, test.name());
+  console.log("add result", suite, test.name(), result)
   this.resultList[suite].push({ suite: suite, test: test, result: result })
 
   // A reference to our SlickGrid table so we can manipulate it via the fingerprint
   var grid = this.grid;
 
   var container = d3.select(".step-3-results ." + suite)
-  console.log("container", container)
   var tests = container.selectAll(".test")
     .data(this.resultList[suite])
 
@@ -61,7 +59,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   testsEnter.append("div").classed("passfail", true)
   testsEnter.append("div").classed("message", true)
   testsEnter.append("div").classed("fingerprint", true).each(function(d) {
-    if(d.result.highlightCells) {
+    if(d.result.highlightCells && d.result.highlightCells.length) {
       d3.select(this).append("canvas")
     }
   })
@@ -81,7 +79,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.fingerprint").each(function(d) {
-    if(!d.result.highlightCells) return;
+    if(!d.result.highlightCells || !d.result.highlightCells.length) return;
     // TODO: put this in a component/reusable chart thingy
     var width = 200;
     var height = 100;
