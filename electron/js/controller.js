@@ -47,13 +47,24 @@ function renderStep2() {
     .data(processorConfig.suites)
   var suitesEnter = suites.enter().append("div")
     .attr({
-      class: function(d) { return d.name + " suite " + (d.active ? "active" : "") }
+      id: function(d) { return d.name },
+      class: function(d) { return "suite " + (d.active ? "active" : "") }
     })
-  suitesEnter
-    .append("h2").text(function(d) { return d.name })
+  suitesHeds = suitesEnter.append("div")
+    .attr("class", "suite-hed")
+  suitesHeds.append("h2")
+    .text(function(d) { return d.name })
+  suitesHeds.append("input")
+    .attr({
+      "class": "toggle",
+      "type": "checkbox",
+      "id": function(d,i){return 'suite-' + i;}
+    })
+  suitesHeds.append('label')
+    .attr('for', function(d,i){return 'suite-' + i;})
     .on("click", function(d) {
       d.active = !d.active;
-      d3.select(this.parentNode).classed("active", d.active)
+      d3.select(this.parentNode.parentNode).classed("active", d.active)
       console.log("suite", d)
     })
 
@@ -65,26 +76,26 @@ function renderStep2() {
   .attr("class", function(d) { return d.active ? "test active" : "test" })
   testsEnter.append("div").classed("message", true)
   onOff = testsEnter.append("div").classed("onoff", true)
-
   onOff.append("input")
     .attr({
       "class": "toggle",
       "type": "checkbox",
-      "id": function(d,i){return 'test-' + i;}
+      "id": function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;}
     })
   onOff.append('label')
-    .attr('for', function(d,i){return 'test-' + i;})
+    .attr('for', function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;})
 
   tests.select("div.message").html(function(d) {
     var html = '<h3 class="test-header">' + (d.name() || "") + '</h3>'
     html += d.description() || ""
     return html
   })
-  tests.on("click", function(d) {
-    console.log("test", d)
-    d.active = !d.active;
-    d3.select(this).classed("active", d.active)
-  })
+  tests.select('label')
+    .on("click", function(d) {
+      console.log("test", d)
+      d.active = !d.active;
+      d3.select(this.parentNode.parentNode).classed("active", d.active)
+    })
 
   d3.select("#current-file-name").text(processorConfig.filename)
 

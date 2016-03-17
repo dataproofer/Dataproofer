@@ -144,6 +144,91 @@ General Suites and test
   margin: 10px;
 }
 
+.suite-hed * {
+  display: inline-block;
+}
+
+.suite input.toggle {
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden
+}
+
+.suite input.toggle+label {
+    padding: 2px;
+    width: 60px;
+    height: 30px;
+    left: 1em;
+    background-color: #bebebe;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    outline: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.suite input.toggle+label:after,
+.suite input.toggle+label:before {
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    bottom: 1px;
+    content: ""
+}
+
+.suite input.toggle+label:before {
+    right: 1px;
+    background-color: #d7d7d7;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    transition: all .2s cubic-bezier(.4, 0, .2, 1)
+}
+
+.suite input.toggle+label:after {
+    width: 32px;
+    background-color: #fff;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    transition: all .2s cubic-bezier(.4, 0, .2, 1)
+}
+
+.suite input.toggle:checked+label:before {
+    background-color: #08ab88
+}
+
+.suite input.toggle:checked+label {
+    background-color: #067a61
+}
+
+.suite input.toggle:checked+label:after {
+    margin-left: 30px
+}
+
+.suite input.toggle.disabled+label {
+    cursor: not-allowed;
+    opacity: .25;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    filter: alpha(opacity=25);
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
 .suite .test {
   /*
   min-width: 100px;
@@ -181,87 +266,6 @@ General Suites and test
   font-size: 14px;
   float:left;
   /*width: calc(100% - 245px);*/
-}
-
-.suite .test input.toggle {
-    position: absolute;
-    margin-left: -9999px;
-    visibility: hidden
-}
-
-.suite .test input.toggle+label {
-    padding: 2px;
-    width: 60px;
-    height: 30px;
-    left: 1em;
-    background-color: #bebebe;
-    -webkit-border-radius: 30px;
-    border-radius: 30px;
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    outline: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none
-}
-
-.suite .test input.toggle+label:after,
-.suite .test input.toggle+label:before {
-    display: block;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    bottom: 1px;
-    content: ""
-}
-
-.suite .test input.toggle+label:before {
-    right: 1px;
-    background-color: #d7d7d7;
-    -webkit-border-radius: 30px;
-    border-radius: 30px;
-    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    transition: all .2s cubic-bezier(.4, 0, .2, 1)
-}
-
-.suite .test input.toggle+label:after {
-    width: 32px;
-    background-color: #fff;
-    -webkit-border-radius: 100%;
-    border-radius: 100%;
-    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
-    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    transition: all .2s cubic-bezier(.4, 0, .2, 1)
-}
-
-.suite .test input.toggle:checked+label:before {
-    background-color: #08ab88
-}
-
-.suite .test input.toggle:checked+label {
-    background-color: #067a61
-}
-
-.suite .test input.toggle:checked+label:after {
-    margin-left: 30px
-}
-
-.suite .test input.toggle.disabled+label {
-    cursor: not-allowed;
-    opacity: .25;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
-    filter: alpha(opacity=25);
-    -webkit-box-shadow: none;
-    box-shadow: none
 }
 
 .suite .test .test-header {
