@@ -230,7 +230,7 @@ General Suites and test
 }
 
 .suite .test input.toggle+label:after {
-    width: 28px;
+    width: 32px;
     background-color: #fff;
     -webkit-border-radius: 100%;
     border-radius: 100%;
