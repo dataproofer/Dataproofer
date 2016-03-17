@@ -64,7 +64,16 @@ function renderStep2() {
   var testsEnter = tests.enter().append("div")
   .attr("class", function(d) { return d.active ? "test active" : "test" })
   testsEnter.append("div").classed("message", true)
-  testsEnter.append("div").classed("onoff", true)
+  onOff = testsEnter.append("div").classed("onoff", true)
+
+  onOff.append("input")
+    .attr({
+      "class": "toggle",
+      "type": "checkbox",
+      "id": function(d,i){return 'test-' + i;}
+    })
+  onOff.append('label')
+    .attr('for', function(d,i){return 'test-' + i;})
 
   tests.select("div.message").html(function(d) {
     var html = '<h3 class="test-header">' + (d.name() || "") + '</h3>'
