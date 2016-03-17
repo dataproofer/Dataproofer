@@ -1,10 +1,44 @@
 # Dataproofer
 
-Spellcheck for data
+## A proofreader for your data. 
 
+Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights. 
+
+But before you can make use of any data, you need to know if it’s reliable. Is it weird? Is it clean? Can I use it to write or make a viz? 
+
+This used to be a long manual process, using valuable time and introducing the possibility for human error. People can’t always spot every mistake every time, no matter how hard they try. 
+
+Data proofer is built to automate this process of checking a dataset for errors or potential mistakes.
+
+## Tests
+### Core Suite
++ Check for duplicate rows
++ Check for excel error dates
++ Check for empty columns (no values)
++ Check for numeric values
++ Check for whether there are exactly 65k rows (potential export error)
++ Check for strings that are exactly 255 characters (potential export error)
+
+## Geo Suite
++ Check for valid latitude and longitude values
+
+## Stats Suite
++ Check for outliers within a column
 —
 
-## Bootstrap
+# Getting started using Dataproofer
+Download a .zip of the latest release [from the Dataproofer releases page](https://github.com/dataproofer/Dataproofer/releases).
+
+Drag the app into your applications folder.
+
+Select your dataset, which can be either a CSV on your computer, or a Google Sheet that you’ve published to the web. 
+
+Once you select your dataset, you can choose which suites and tests run by turning them on or off. 
+
+Proof your data, get your results, and feel confident about your dataset!
+
+# Getting started making tests for Dataproofer
+## Bootstrapping 
 
 ```
 git clone git@github.com:dataproofer/Dataproofer.git
@@ -14,10 +48,10 @@ cd ../electron
 npm install
 ```
 
-## Dev
+## Development
 
 
-While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master) into the folder that contains the dataproofer repo, not into the dataproofer repo itself.
+While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master) into the folder that contains the dataproofer repo (not into the dataproofer repo itself.)
 
 ```
 cd Dataproofer
@@ -41,7 +75,7 @@ node index
 + Require that test in the the suite's *index.js* 
 + Add that test to the exports in index.js 
 
-Tests are made up a few parts
+Tests are made up of a few parts
 
 #### .name()
 This is the name of your test, and how it appears in the test-selection screen as well as on the results page 
@@ -80,6 +114,7 @@ Generally, to perform your test, you are going to want to loop over each row and
 cd Dataproofer/electron
 npm run package
 ```
+
 This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command currently only generates the Mac app but could easily be extended to include Windows & Linux.
 
 
