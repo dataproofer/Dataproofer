@@ -1,5 +1,7 @@
 # Dataproofer
 
+![](http://i.imgur.com/ZhUKb0G.png)
+
 ## A proofreader for your data. 
 
 Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights. 
