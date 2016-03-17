@@ -1,0 +1,52 @@
+// vim: syntax=json
+
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true,
+        "mocha": true
+    },
+
+    // Start with rules from eslint recommended setting, and override below.
+    "extends": "eslint:recommended",
+
+    // Linting rules are enforced based on the following levels:
+    // (Reference: http://eslint.org/docs/user-guide/configuring)
+    // 0: turn the rule off
+    // 1: turn the rule on as a warning (doesn't affect exit code)
+    // 2: turn the rule on as an error (exit code is 1 when triggered)
+    "rules": {
+        // Use 4 spaces for indentation,
+        "indent": [2, 2, { "SwitchCase": 1 }],
+
+        // Require single quotes for strings.
+        "quotes": [2, "double", "avoid-escape"],
+
+        // Allow 'while (true), do something, break' pattern.
+        "no-constant-condition": 0,
+
+        // Require semicolons where they should be.
+        "semi": [0, "never"],
+
+        "no-console": [0],
+
+        // Disallow littering with unused variables (except function args).
+        "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+
+        // Don't enforce newline at the end of file.
+        "eol-last": [0],
+
+        // Don't enforce disallowing mixing regular variable and require declarations
+        "no-mixed-requires": [0],
+
+        // Don't enforce disallowing dangling underscores in identifiers
+        "no-underscore-dangle": [0]
+    },
+    "ecmaFeatures": {
+        "jsx": true
+    },
+    "plugins": [
+        "react"
+    ]
+}
