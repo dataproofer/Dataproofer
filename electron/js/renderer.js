@@ -34,7 +34,7 @@ function HTMLRenderer(config) {
     .data(config.suites)
     .enter().append("div")
     .attr({
-      class: function(d) { return "suite " + d.name }
+      class: function(d) { return "suite " + d.name + (d.active ? " active" : "" )}
     })
     .append("h2").text(function(d) { return d.name })
   //d3.select(".test-results").selectAll(".test").remove();
@@ -55,7 +55,10 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   var tests = container.selectAll(".test")
     .data(this.resultList[suite])
 
-  var testsEnter = tests.enter().append("div").classed("test", true)
+  var testsEnter = tests.enter().append("div")
+  .attr("class", function(d) {
+     return 'test' + (d.test.active ? " active" : "" )
+  })
   testsEnter.append("div").classed("passfail", true)
   testsEnter.append("div").classed("message", true)
   testsEnter.append("div").classed("fingerprint", true).each(function(d) {

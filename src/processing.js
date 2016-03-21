@@ -87,6 +87,7 @@ exports.run = function(config) {
       }
       return result;
     })
+  badColumnHeadsTest.active = true;
 
   var result = badColumnHeadsTest.proof(rows, columnHeads)
   renderer.addResult('dataproofer-core-suite', badColumnHeadsTest, result)
