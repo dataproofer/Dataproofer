@@ -22,19 +22,18 @@ SUITES.forEach(function(suite) {
   })
 })
 
-// TODO: stop abusing global variables
-var processorConfig = {};
 
 // This function updates the step 1 UI once a file has been loaded
-function renderStep1() {
+function renderStep1(processorConfig) {
   var step1 = d3.select(".step-1-data")
+
   step1.selectAll("h3.filename").remove();
   step1.append("h3").classed("filename", true).text(processorConfig.filename)
   clear();
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
-function renderStep2() {
+function renderStep2(processorConfig) {
   var container = d3.select(".step-2-select-content")
 
   d3.select(".step-2-select").style("display", "block")
@@ -102,13 +101,20 @@ function renderStep2() {
   d3.select(".run-tests")
     .text("Run tests")
     .on("click", function() {
-      Processor.run(processorConfig)
+      renderStep3(processorConfig)
     })
+}
 
-
+function renderStep3(processorConfig) {
+  Processor.run(processorConfig)
+  d3.select(".step-3-results").style("display", "block")
+  d3.select(".step-2-select").style("display", "none")
 }
 
 function clear() {
+  d3.select(".step-2-select").style("display", "block")
+  d3.select(".step-3-results").style("display", "none")
+
   d3.select(".step-2-select").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite").remove();
   d3.select("#grid").selectAll("*").remove();
@@ -140,30 +146,35 @@ function handleFileSelect(evt) {
         renderer: HTMLRenderer,
         input: {}
       }
-      renderStep1();
-      renderStep2();
+      renderStep1(processorConfig);
+      renderStep2(processorConfig);
     })
   }
   reader.readAsText(file);
 }
 
 // if we receive a saved file we load it
+var lastFileConfig = {}
 ipc.on("last-file-selected", function(event, file) {
   console.log("last file selected was", file)
-  processorConfig = {
+  lastFileConfig = {
     fileString: file.contents,
     filename: file.name,
     suites: SUITES,
     renderer: HTMLRenderer,
     input: {}
   }
-  renderStep1();
-  renderStep2();
-  Processor.run(processorConfig)
+
 })
+function loadLastFile() {
+  renderStep1(lastFileConfig);
+  renderStep2(lastFileConfig);
+  renderStep3(lastFileConfig);
+  Processor.run(lastFileConfig)
+}
 
 
-d3.select('.tabletop-loader').on('click', handleSpreadsheet);
+d3.select('#spreadsheet-button').on('click', handleSpreadsheet);
 d3.select("#spreadsheet-input").on("keyup", function() {
   if(d3.event.keyIdentifier == 'Enter') {
     handleSpreadsheet();
@@ -178,12 +189,31 @@ function handleSpreadsheet() {
   var keyRegex = /\/d\/([\w-_]+)/
   var spreadsheetInputStr = d3.select("#spreadsheet-input").node().value
   var match = spreadsheetInputStr.match(keyRegex)
-  gsheets.getWorksheetById(match[1], 'od6', process)
+  var gid = spreadsheetInputStr;
+  if(match) {
+    gid = match[1]
+  }
+
+  /*
+  // TODO: get worksheet info and present the user with a choice
+  gsheets.getSpreadsheet(gid, function(err, response) {
+    if(err) {
+      console.log(err)
+    }
+    console.log("response", response)
+  })
+  */
+  gsheets.getWorksheetById(gid, 'od6', process)
+
+  function handleGsheetsError(err) {
+    d3.select("#gsheets-response").text(err.toString() )
+  }
 
   function process(err, sheet) {
     // console.log(err);
     // console.log(sheet);
     if (err) {
+      handleGsheetsError(err);
       console.log(err);
     }
     else if (sheet) {
@@ -198,8 +228,8 @@ function handleSpreadsheet() {
         renderer: HTMLRenderer,
         input: {}
       };
-      renderStep1();
-      renderStep2()
+      renderStep1(config);
+      renderStep2(config);
     } else {
       console.log("Warning: must use non-empty worksheet")
     }
