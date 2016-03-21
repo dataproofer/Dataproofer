@@ -51,6 +51,7 @@ app.on('ready', function() {
 
   const datadir = app.getPath('userData')
   const lastFileStorage = datadir + '/lastFileSelected.json'
+  const lastTestConfigStorage = datadir + '/lastTestConfig.json'
 
   webContents.on('did-finish-load', function() {
 
@@ -71,9 +72,31 @@ app.on('ready', function() {
       //console.log("file selected", file);
       fs.writeFile(lastFileStorage, file, function(err) {
         if(err) console.log(err);
-        console.log("written", file, lastFileStorage)
+        //console.log("written", file, lastFileStorage)
       })
     });
+
+    // we load the last test configuration used and send it to the client
+    fs.readFile(lastTestConfigStorage, function(err, data) {
+      var str;
+      if(data && (str = data.toString())) {
+        try {
+          webContents.send("last-test-config", JSON.parse(str))
+        } catch(e) {
+          console.log("error", e)
+        }
+      }
+    })
+
+    // whenever the client loads a new file we save it as the last file selected
+    ipcMain.on('test-config', function(event, config) {
+      console.log("test config", config.name, config.config);
+      fs.writeFile(lastTestConfigStorage, JSON.stringify(config.config, null, 2), function(err) {
+        if(err) console.log(err);
+        //console.log("written", config, lastTestConfigStorage)
+      })
+    });
+
   })
 
 

@@ -22,6 +22,45 @@ SUITES.forEach(function(suite) {
   })
 })
 
+ipc.on("last-test-config", function(event, testConfig) {
+  loadTestConfig(testConfig)
+});
+
+function loadTestConfig(config) {
+  console.log("loading test config", config)
+  if(!config) return;
+  // update the active status of each suite and test found in the config.
+  // if nothing is found for a given test in the config, then nothing is done to it.
+  // by default we activate everything so any new tests will be active by default.
+  SUITES.forEach(function(suite) {
+    var configSuite = config[suite.name];
+    if(configSuite) {
+      suite.active = configSuite.active;
+      suite.tests.forEach(function(test) {
+        var configTest = configSuite.tests[test.name()];
+        if(configTest) test.active = configTest.active;
+      })
+    }
+  })
+  // TODO: if this happens any time other than initialization, we'd
+  // need to rerender step2 (and subsequently re-run the tests)
+}
+
+function saveTestConfig() {
+  // We save the test config (whether each test/suite is active) whenever
+  // the active state of any test changes
+  var testConfig = {}
+  SUITES.forEach(function(suite) {
+    testConfig[suite.name] = { active: suite.active, tests: {} }
+    suite.tests.forEach(function(test){
+      testConfig[suite.name].tests[test.name()] = { active: test.active }
+    });
+  })
+  // TODO: people may want to save various configurations under different names
+  // like workspaces in illustrator/IDE
+  ipc.send("test-config", {name: "latest", config: testConfig });
+}
+
 
 // This function updates the step 1 UI once a file has been loaded
 function renderStep1(processorConfig) {
@@ -57,8 +96,13 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
-      "checked": function(d) { return d.active },
       "id": function(d,i){return 'suite-' + i;}
+    }).each(function(d) {
+      if(d.active) {
+        d3.select(this).attr("checked", true)
+      } else {
+        d3.select(this).attr("checked", null)
+      }
     })
   suitesHeds.append('label')
     .attr('for', function(d,i){return 'suite-' + i;})
@@ -66,6 +110,7 @@ function renderStep2(processorConfig) {
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
       console.log("suite", d)
+      saveTestConfig();
     })
 
   // render the tests
@@ -80,8 +125,13 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
-      "checked": function(d) { return d.active },
       "id": function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;}
+    }).each(function(d) {
+      if(d.active) {
+        d3.select(this).attr("checked", true)
+      } else {
+        d3.select(this).attr("checked", null)
+      }
     })
   onOff.append('label')
     .attr('for', function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;})
@@ -96,6 +146,7 @@ function renderStep2(processorConfig) {
       console.log("test", d)
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
+      saveTestConfig();
     })
 
   d3.select("#current-file-name").text(processorConfig.filename)
