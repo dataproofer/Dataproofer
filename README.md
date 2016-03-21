@@ -2,13 +2,13 @@
 
 ![](http://i.imgur.com/ZhUKb0G.png)
 
-## A proofreader for your data. 
+## A proofreader for your data.
 
-Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights. 
+Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights.
 
-But before you can make use of any data, you need to know if it’s reliable. Is it weird? Is it clean? Can I use it to write or make a viz? 
+But before you can make use of any data, you need to know if it’s reliable. Is it weird? Is it clean? Can I use it to write or make a viz?
 
-This used to be a long manual process, using valuable time and introducing the possibility for human error. People can’t always spot every mistake every time, no matter how hard they try. 
+This used to be a long manual process, using valuable time and introducing the possibility for human error. People can’t always spot every mistake every time, no matter how hard they try.
 
 Data proofer is built to automate this process of checking a dataset for errors or potential mistakes.
 
@@ -33,14 +33,14 @@ Download a .zip of the latest release [from the Dataproofer releases page](https
 
 Drag the app into your applications folder.
 
-Select your dataset, which can be either a CSV on your computer, or a Google Sheet that you’ve published to the web. 
+Select your dataset, which can be either a CSV on your computer, or a Google Sheet that you’ve published to the web.
 
-Once you select your dataset, you can choose which suites and tests run by turning them on or off. 
+Once you select your dataset, you can choose which suites and tests run by turning them on or off.
 
 Proof your data, get your results, and feel confident about your dataset!
 
 # Getting started making tests for Dataproofer
-## Bootstrapping 
+## Bootstrapping
 
 ```
 git clone git@github.com:dataproofer/Dataproofer.git
@@ -74,23 +74,23 @@ node index
 ### Creating a new test
 + Make a copy of "testTemplate.js"
 + Write your test
-+ Require that test in the the suite's *index.js* 
-+ Add that test to the exports in index.js 
++ Require that test in the the suite's *index.js*
++ Add that test to the exports in index.js
 
 Tests are made up of a few parts
 
 #### .name()
-This is the name of your test, and how it appears in the test-selection screen as well as on the results page 
+This is the name of your test, and how it appears in the test-selection screen as well as on the results page
 
 #### .description()
-This is a text-only description of what the test does, and what it is meant to check. Imagine you are explaining it to a remarkably intelligent 5-year-old. 
+This is a text-only description of what the test does, and what it is meant to check. Imagine you are explaining it to a remarkably intelligent 5-year-old.
 
 #### .methodology()
 This is where the code your test executes lives. Pass it a function that takes in **rows** and **columnHeads**
 
-**rows** is an array of objects from the data. The object uses column headers as the key, and the row’s value as the value. 
+**rows** is an array of objects from the data. The object uses column headers as the key, and the row’s value as the value.
 
-So if your data looks like this: 
+So if your data looks like this:
 ```
 President | Year
 George Washington | 1789
@@ -108,7 +108,14 @@ Generally, to perform your test, you are going to want to loop over each row and
 
 
 ### Troubleshooting a test that won't run
-? 
+Tests are run inside a try catch loop in `src/processing.js`. You may wish to temporarily remove the try/catch while iterating on a test.
+Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger. 
+
+### Iterating on tests
+Dataproofer saves a copy of the most recently loaded file in the Application Data directory provided to it by the OS.   
+You can quickly load the file and run the tests by typing `loadLastFile()` in the console. This saves you several clicks
+for loading the file and clicking the run button while you are iterating on a test.
+If you want to temporarily avoid any clicks you can add the function call to the `ipc.on("last-file-selected",` event handler in `electron/js/controller.js`
 
 # Packaging an executable
 
