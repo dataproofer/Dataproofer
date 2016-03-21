@@ -40,31 +40,8 @@ button.reload {
   padding-right: 10px;
 }
 
-#spreadsheet-input {
-  width: 80%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  font-size: 24px;
-  padding: 1em;
-}
-
-#spreadsheet-input::-webkit-input-placeholder {
-  text-align: center;
-}
-button.tabletop-loader {
-  width: 30px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-left: 6px;
-  padding-right: 0px;
-  margin-top: -3px;
-  margin-left: 2px;
-}
-
 #info-top-bar {
-  padding: 1em;  
+  padding: 1em;
   padding-top: 32px;
   width: 100%;
   display: block;
@@ -93,7 +70,7 @@ button.tabletop-loader {
 }
 
 .steps {
-  /* temp styling 
+  /* temp styling
   position: absolute;
   top: 30;
   height: calc(100% - 230px); */
@@ -135,6 +112,39 @@ STEP  1
   padding: 1em;
 }
 
+#spreadsheet-input {
+  width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  font-size: 24px;
+  padding: 1em;
+}
+
+#spreadsheet-input::-webkit-input-placeholder {
+  text-align: center;
+}
+#spreadsheet-button {
+  width: 85%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  font-size: 24px;
+  margin-top: 5px;
+  padding: 1em;
+
+}
+
+#gsheets-response {
+  width: 80%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  color: #a23
+}
 
 /* =============================================================================
 General Suites and test
@@ -252,7 +262,7 @@ STEP  3
 
 /* =============================================================================
 HEADER
-Header styles stolen from photon.css 
+Header styles stolen from photon.css
 ============================================================================= */
 .toolbar-header {
   z-index: 100;

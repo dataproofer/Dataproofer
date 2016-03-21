@@ -20,7 +20,7 @@
       <!-- All our content goes inside .window-content -->
       <div class="window-content">
         <div id="info-top-bar">
-          <span id="current-file-name">CurrentFileName.csv</span> <!-- | <span id="number-selected-tests">0</span> Tests Selected -->
+          <span id="current-file-name"></span> <!-- | <span id="number-selected-tests">0</span> Tests Selected -->
         </div>
 
         <div class="steps">
@@ -39,9 +39,10 @@
               -->
 
             <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
-            <button class="tabletop-loader btn btn-default">
-              <span class="icon icon-download"></span>
-            </button>
+            <button id="spreadsheet-button">Load</button>
+
+            <div id="gsheets-response">
+            </div>
 
           </div>
           <div class="step step-2-select">

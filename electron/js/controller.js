@@ -154,7 +154,7 @@ function loadLastFile() {
 }
 
 
-d3.select('.tabletop-loader').on('click', handleSpreadsheet);
+d3.select('#spreadsheet-button').on('click', handleSpreadsheet);
 d3.select("#spreadsheet-input").on("keyup", function() {
   if(d3.event.keyIdentifier == 'Enter') {
     handleSpreadsheet();
@@ -169,12 +169,31 @@ function handleSpreadsheet() {
   var keyRegex = /\/d\/([\w-_]+)/
   var spreadsheetInputStr = d3.select("#spreadsheet-input").node().value
   var match = spreadsheetInputStr.match(keyRegex)
-  gsheets.getWorksheetById(match[1], 'od6', process)
+  var gid = spreadsheetInputStr;
+  if(match) {
+    gid = match[1]
+  }
+
+  /*
+  // TODO: get worksheet info and present the user with a choice
+  gsheets.getSpreadsheet(gid, function(err, response) {
+    if(err) {
+      console.log(err)
+    }
+    console.log("response", response)
+  })
+  */
+  gsheets.getWorksheetById(gid, 'od6', process)
+
+  function handleGsheetsError(err) {
+    d3.select("#gsheets-response").text(err.toString() )
+  }
 
   function process(err, sheet) {
     // console.log(err);
     // console.log(sheet);
     if (err) {
+      handleGsheetsError(err);
       console.log(err);
     }
     else if (sheet) {
