@@ -150,7 +150,7 @@ STEP  1
 General Suites and test
 ============================================================================= */
 .suite {
-  float: left;
+  /*float: left;*/
   margin: 10px;
 }
 
