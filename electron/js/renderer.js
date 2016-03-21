@@ -72,12 +72,13 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.passfail").html(function(d) {
-    return d.result.passed ? "<span class='icon icon-check'></span>" : "<span class='icon icon-cancel-circled'></span>"
+    return d.result.passed ? "<div class='icon icon-check'></div>" : "<div class='icon icon-cancel-circled'></div>"
   })
 
   tests.select("div.message").html(function(d) {
-    var html = '<span class="test-header">' + (d.test.name() || "") + '</span><br/>'
+    var html = '<div class="test-header">' + (d.test.name() || "") + '</div><p>'
     html += d.result.summary || d.test.description() || ""
+    html += "</p>"
     return html
   })
 
