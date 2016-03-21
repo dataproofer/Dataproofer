@@ -57,6 +57,7 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
+      "checked": function(d) { return d.active },
       "id": function(d,i){return 'suite-' + i;}
     })
   suitesHeds.append('label')
@@ -79,6 +80,7 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
+      "checked": function(d) { return d.active },
       "id": function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;}
     })
   onOff.append('label')
