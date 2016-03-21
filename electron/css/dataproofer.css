@@ -276,7 +276,7 @@ General Suites and test
   height: 20px;
   border-radius: 50%;
   float:left;
-  margin-left: 7px;
+  margin-right: 7px;
 }
 
 .suite .test .message {
