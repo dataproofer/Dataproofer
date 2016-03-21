@@ -15,11 +15,11 @@
   box-sizing: border-box;
  }
 .icon-check {
-  color: #29A03B;
+  background-color: #29A03B;
 }
 
 .icon-cancel-circled {
-  color: #D43833;
+  background-color: #D43833;
 }
 
 .nav-group-row {
@@ -158,6 +158,10 @@ General Suites and test
   display: inline-block;
 }
 
+.suite-hed input.toggle+label {
+  left: 1em;
+}
+
 .suite input.toggle {
     position: absolute;
     margin-left: -9999px;
@@ -168,7 +172,7 @@ General Suites and test
     padding: 2px;
     width: 60px;
     height: 30px;
-    left: 1em;
+    top: 0.7em;
     background-color: #bebebe;
     -webkit-border-radius: 30px;
     border-radius: 30px;
@@ -267,14 +271,17 @@ General Suites and test
 }
 */
 
-.suite .test .passfail {
+.suite .test .passfail div{
   width: 20px;
+  height: 20px;
+  border-radius: 50%;
   float:left;
+  margin-right: 7px;
 }
 
 .suite .test .message {
   font-size: 14px;
-  float:left;
+  /*float:left;*/
   /*width: calc(100% - 245px);*/
 }
 
@@ -296,6 +303,7 @@ General Suites and test
   width: 200px;
   float: right;
   margin-right: 25px;
+  cursor: pointer;
 }
 
 /* =============================================================================

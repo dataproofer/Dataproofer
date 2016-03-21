@@ -66,7 +66,8 @@ exports.run = function(config) {
         passed = false
         columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
         summary = _.template(`
-          We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header. You should make sure all columns have a unique, descriptive name.
+          <p>We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header.</p>
+          <p>We've ignored that column for now, but if you give that column a unique, descriptive name and reupload the data we'll test that column, too.</p>
         `)({
           'badHeaderCount': badHeaderCount,
           'columnOrcolumnHeads': columnOrcolumnHeads
