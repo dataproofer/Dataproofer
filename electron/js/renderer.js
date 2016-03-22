@@ -19,15 +19,16 @@ function HTMLRenderer(config) {
     data.push( _.values(row) )
   });
   var gridWrapper = document.getElementById('grid');
-  var containerWidth = window.innerWidth;
+  var containerWidth = gridWrapper.innerWidth;
+  var containerHeight = gridWrapper.innerHeight;
   var handsOnTable = new Handsontable(gridWrapper,
     {
       data: data,
       stretchH: "all",
       autoWrapRow: true,
       width: containerWidth,
-      height: 200,
-      maxRows: 22,
+      height: containerHeight,
+      //maxRows: 22,
       rowHeaders: true,
       colHeaders: headers,
       columnSorting: true,

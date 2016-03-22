@@ -34,21 +34,25 @@ renderNav();
 function renderNav() {
   var back = d3.select("#back-button")
   var forward = d3.select("#forward-button")
+  var grid = d3.select("#grid")
   switch(currentStep) {
     case 1:
       back.style("display", "none")
       forward.style("display", "none")
+      grid.style("display", "none")
       break;
     case 2:
       back.style("display", "block")
         .text("Load data")
       forward.style("display", "block")
         .text("Run Tests")
+      grid.style("display", "none")
       break;
     case 3:
       back.style("display", "block")
         .text("Select Tests")
       forward.style("display", "none")
+      grid.style("display", "block")
       break;
   }
 }

@@ -77,11 +77,14 @@ Grid
 #grid {
   font-size: 12px;
   box-sizing: content-box !important;
-  width: 100%;
-  max-height: 200px;
+  width: 50%;
   position: fixed;
+  right: 0;
+  top: 70px;
   bottom: 0;
   background-color: rgba(255,255,255,0.7);
+  overflow: hidden;
+  display: none;
 }
 
 .changed {
@@ -164,6 +167,54 @@ STEP  1
   margin-right: auto;
   font-size: 20px;
   color: #a23
+}
+
+/* =============================================================================
+STEP  2
+============================================================================= */
+.step-2-select {
+  padding: 5px;
+  width: 100%;
+  /*opacity: 0.2; */
+  display: none;
+  margin-bottom: 200px;
+}
+.step-2-select .suite {
+  opacity: 0.2;
+}
+.step-2-select .suite.active {
+  opacity: 1;
+}
+
+button.run-tests {
+  /*
+  font-size: 1.8em;
+  padding: 1em;
+  width: 100%;
+  display: block;
+  text-align: center;
+  */
+  display: block;
+  text-align: center;
+  background-color: #ED4224;
+  border: 0;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 48px;
+  color: white;
+  font-size: 24px;
+  padding: 1em;
+}
+
+/* =============================================================================
+STEP  3
+============================================================================= */
+.step-3-results {
+  padding: 5px;
+  width: 50%;
+  padding-bottom: 300px;
+  display: none;
 }
 
 /* =============================================================================
@@ -271,7 +322,8 @@ General Suites and test
   margin: 0.2em;
   padding: 1em;
   margin-top: 1em;
-  width: 28%;
+  width: 35%;
+  min-width: 225px;
   min-height: 150px;
   height: auto;
   display: inline-block;
@@ -326,53 +378,7 @@ General Suites and test
   cursor: pointer;
 }
 
-/* =============================================================================
-STEP  2
-============================================================================= */
-.step-2-select {
-  padding: 5px;
-  width: 100%;
-  /*opacity: 0.2; */
-  display: none;
-  margin-bottom: 200px;
-}
-.step-2-select .suite {
-  opacity: 0.2;
-}
-.step-2-select .suite.active {
-  opacity: 1;
-}
 
-button.run-tests {
-  /*
-  font-size: 1.8em;
-  padding: 1em;
-  width: 100%;
-  display: block;
-  text-align: center;
-  */
-  display: block;
-  text-align: center;
-  background-color: #ED4224;
-  border: 0;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 48px;
-  color: white;
-  font-size: 24px;
-  padding: 1em;
-}
-
-/* =============================================================================
-STEP  3
-============================================================================= */
-.step-3-results {
-  padding: 5px;
-  width: 100%;
-  padding-bottom: 300px;
-  display: none;
-}
 
 /* =============================================================================
 HEADER
