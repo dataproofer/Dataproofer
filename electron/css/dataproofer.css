@@ -48,6 +48,7 @@ button.reload {
   background-color: rgba(255,255,255,0.9);
   position: fixed;
   top: 0;
+  z-index: 2;
 }
 
 
@@ -55,11 +56,11 @@ button.reload {
 Navigation buttons
 ============================================================================= */
 #nav-buttons {
-  position: fixed;
-  top: 100;
-  right: 20px;
+  float: right;
+  margin-right: 2em;
 
 }
+
 #back-button {
 
 }
