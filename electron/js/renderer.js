@@ -15,20 +15,46 @@ function HTMLRenderer(config) {
 
   var columns = [];
   Object.keys(rows[0]).forEach(function(col) {
-    columns.push({id: col, name: col, field: col})
+    columns.push({
+      id: col,
+      name: col,
+      field: col
+    })
   })
 
   var options = {
     editable: false,
     enableAddRow: false,
     enableCellNavigation: true,
+    forceFitColumns: true
     //cellHighlightCssClass: "changed",
     //cellFlashingCssClass: "current-server"
   }
-  var grid = new SlickGrid("#grid", rows, columns, options);
-  this.grid = grid;
+  console.log('rows', rows);
+  console.log('cols', columns);
+  console.log('opts', options);
+  // var grid = new SlickGrid("#grid", rows, columns, options);
+  // this.grid = grid;
+  var data = []
+  var headers = _.keys(rows[0])
+  data.push( headers );
+  _.forEach( rows, function(row) {
+    data.push( _.values(row) )
+  });
+  console.log('data', data);
+  var gridWrapper = document.getElementById('grid');
+  var handsOnTable = new Handsontable(gridWrapper,
+    {
+      data: data,
+      stretchH: "all",
+      autoWrapRow: true,
+      height: 200,
+      maxRows: 22,
+      rowHeaders: true,
+      colHeaders: headers
+    });
 
-    // we just remove everything rather than get into update pattern
+  // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite")
     .data(config.suites)

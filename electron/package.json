@@ -20,6 +20,7 @@
     "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",
     "electron-prebuilt": "^0.36.3",
     "gsheets": "^1.2.3",
+    "handsontable": "^0.24.1",
     "jquery": "^2.2.0",
     "lodash": "^4.0.0",
     "slickgrid": "^2.1.0"
