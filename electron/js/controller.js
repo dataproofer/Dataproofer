@@ -111,8 +111,13 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
-      "checked": function(d) { return d.active },
       "id": function(d,i){return 'suite-' + i;}
+    }).each(function(d) {
+      if(d.active) {
+        d3.select(this).attr("checked", true)
+      } else {
+        d3.select(this).attr("checked", null)
+      }
     })
   suitesHeds.append('label')
     .attr('for', function(d,i){return 'suite-' + i;})
@@ -120,6 +125,7 @@ function renderStep2(processorConfig) {
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
       console.log("suite", d)
+      saveTestConfig();
     })
 
   // render the tests
@@ -134,8 +140,13 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
-      "checked": function(d) { return d.active },
       "id": function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;}
+    }).each(function(d) {
+      if(d.active) {
+        d3.select(this).attr("checked", true)
+      } else {
+        d3.select(this).attr("checked", null)
+      }
     })
   onOff.append('label')
     .attr('for', function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;})
@@ -150,6 +161,7 @@ function renderStep2(processorConfig) {
       console.log("test", d)
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
+      saveTestConfig();
     })
 
   d3.select("#current-file-name").text(processorConfig.filename)
