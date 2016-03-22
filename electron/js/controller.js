@@ -6,7 +6,6 @@ var ipc = require("electron").ipcRenderer
 console.log("dataproofer app version", require('./package.json').version)
 console.log("dataproofer lib version", require('dataproofer').version)
 
-// TODO: handle reload button
 
 var SUITES = [
   require('dataproofer-core-suite'),
@@ -22,14 +21,69 @@ SUITES.forEach(function(suite) {
   })
 })
 
+// We keep around a reference to the most recently used processorConfig
+// it can be set on load (the node process sends it over)
+// or when a user chooses a file or loads a google sheet
+var lastProcessorConfig = {}
+
+// the current step in the process we are on
+var currentStep = 1;
+renderNav();
+
+// update the navigation depending on what step we are on
+function renderNav() {
+  var back = d3.select("#back-button")
+  var forward = d3.select("#forward-button")
+  switch(currentStep) {
+    case 1:
+      back.style("display", "none")
+      forward.style("display", "none")
+      break;
+    case 2:
+      back.style("display", "block")
+        .text("Load data")
+      forward.style("display", "block")
+        .text("Run Tests")
+      break;
+    case 3:
+      back.style("display", "block")
+        .text("Select Tests")
+      forward.style("display", "none")
+      break;
+  }
+}
+
+// convenience function to render whatever step we are currently on
+function renderCurrentStep() {
+  switch(currentStep) {
+    case 1:
+      renderStep1(lastProcessorConfig);
+      break;
+    case 2:
+      renderStep2(lastProcessorConfig);
+      break;
+    case 3:
+      renderStep3(lastProcessorConfig);
+      break;
+  }
+}
+
+d3.select("#back-button").on("click", function() {
+  currentStep--;
+  renderNav();
+  renderCurrentStep();
+})
+d3.select("#forward-button").on("click", function() {
+  currentStep++;
+  renderNav();
+  renderCurrentStep();
+})
 
 // This function updates the step 1 UI once a file has been loaded
 function renderStep1(processorConfig) {
   var step1 = d3.select(".step-1-data")
-
-  step1.selectAll("h3.filename").remove();
-  step1.append("h3").classed("filename", true).text(processorConfig.filename)
   clear();
+  d3.select(".step-1-data").style("display", "block")
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
@@ -114,7 +168,9 @@ function renderStep3(processorConfig) {
 }
 
 function clear() {
-  d3.select(".step-2-select").style("display", "block")
+  d3.select("#current-file-name").text("");
+  d3.select(".step-1-data").style("display", "none")
+  d3.select(".step-2-select").style("display", "none")
   d3.select(".step-3-results").style("display", "none")
 
   d3.select(".step-2-select").selectAll(".suite").remove();
@@ -148,18 +204,20 @@ function handleFileSelect(evt) {
         renderer: HTMLRenderer,
         input: {}
       }
+      lastProcessorConfig = processorConfig;
       renderStep1(processorConfig);
-      renderStep2(processorConfig);
+      currentStep = 2
+      renderNav();
+      renderCurrentStep();
     })
   }
   reader.readAsText(file);
 }
 
 // if we receive a saved file we load it
-var lastFileConfig = {}
 ipc.on("last-file-selected", function(event, file) {
   console.log("last file selected was", file)
-  lastFileConfig = {
+  lastProcessorConfig = {
     fileString: file.contents,
     filename: file.name,
     suites: SUITES,
@@ -169,10 +227,12 @@ ipc.on("last-file-selected", function(event, file) {
 
 })
 function loadLastFile() {
-  renderStep1(lastFileConfig);
-  renderStep2(lastFileConfig);
-  renderStep3(lastFileConfig);
-  Processor.run(lastFileConfig)
+  renderStep1(lastProcessorConfig);
+  renderStep2(lastProcessorConfig);
+  renderStep3(lastProcessorConfig);
+  currentStep = 3;
+  renderNav();
+  Processor.run(lastProcessorConfig)
 }
 
 
@@ -230,8 +290,11 @@ function handleSpreadsheet() {
         renderer: HTMLRenderer,
         input: {}
       };
+      lastFileConfig = config;
       renderStep1(config);
-      renderStep2(config);
+      currentStep = 2;
+      renderCurrentStep();
+      renderNav();
     } else {
       console.log("Warning: must use non-empty worksheet")
     }
