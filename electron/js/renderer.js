@@ -26,6 +26,7 @@ function HTMLRenderer(config) {
       stretchH: "all",
       autoWrapRow: true,
       width: containerWidth,
+      height: 200,
       maxRows: 22,
       rowHeaders: true,
       colHeaders: headers,
@@ -37,8 +38,12 @@ function HTMLRenderer(config) {
       autoColumnSize: {
         "samplingRatio": 23
       },
+      currentRowClassName: 'currentRow',
+      currentColClassName: 'currentCol',
     });
-  
+
+  this.handsOnTable = handsOnTable
+
   var tables = d3.selectAll('.ht_master')[0];
   if (tables.length > 1) {
     d3.select(tables[ tables.length - 1 ]).remove()
@@ -62,9 +67,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log(suite, test.name());
   console.log("add result", suite, test.name(), result)
   this.resultList[suite].push({ suite: suite, test: test, result: result })
-
-  // A reference to our SlickGrid table so we can manipulate it via the fingerprint
-  var grid = this.grid;
 
   var container = d3.select(".step-3-results ." + suite)
   var tests = container.selectAll(".test")
@@ -98,6 +100,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     return html
   })
 
+  var handsOnTable = this.handsOnTable
   tests.select("div.fingerprint").each(function(d) {
     if(!d.result.highlightCells || !d.result.highlightCells.length) return;
     // TODO: put this in a component/reusable chart thingy
@@ -129,17 +132,24 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         var x = mouse[0];
         var y = mouse[1];
         if(y < 0) y = 0;
-        var row = y; // for now our cells are 1 pixel high so this works
+        var row = Math.floor(y); // for now our cells are 1 pixel high so this works
         var col = Math.floor(x / width * cols.length);
         //console.log("row, col", row, col)
+        handsOnTable.selectCell(row, col, row, col, true);
+
+        /*
         grid.scrollCellIntoView(row, col)
         grid.scrollRowIntoView(row)
         grid.removeCellCssStyles("highlighted")
+        */
+
+        /*
         var column = cols[col];
         var changes = {}
         changes[row] = {}
         changes[row][column] = "changed"
         grid.addCellCssStyles("highlighted", changes)
+        */
         //grid.scrollRowToTop(row)
       })
     d3.select(this).select("canvas").call(drag)
