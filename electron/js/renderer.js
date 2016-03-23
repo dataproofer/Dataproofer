@@ -7,6 +7,8 @@ function HTMLRenderer(config) {
   console.log('config', config);
   Renderer.call(this, config)
   window.rows = config.rows;
+  this.rows = config.rows;
+  this.columnHeads = config.columnHeads;
   var resultList = {}
   config.suites.forEach(function(suite) {
     resultList[suite.name] = []
@@ -68,6 +70,54 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log(suite, test.name());
   console.log("add result", suite, test.name(), result)
   this.resultList[suite].push({ suite: suite, test: test, result: result })
+
+  // setup/update the comments
+  var comments = [];
+  var commentCollector = [];
+  var columnHeads = this.columnHeads;
+  var rows = this.rows;
+  _.each(rows, function(row, rowIndex) {
+    commentCollector[rowIndex] = {}
+    _.each(columnHeads, function(columnHead) {
+      // keep an object with each key
+      commentCollector[rowIndex][columnHead] = [];
+    });
+  });
+
+  // loop over resultList
+  var resultList = this.resultList
+  Object.keys(resultList).forEach(function(suite) {
+    resultList[suite].forEach(function(d){
+      console.log("RESULT", suite, d)
+      if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
+        console.log("HIGHLIGHT CELLS", d.result.highlightCells)
+        //console.log("")
+        _.each(rows, function(row, rowIndex) {
+          _.each(columnHeads, function(columnHead) {
+            var value = d.result.highlightCells[rowIndex][columnHead];
+            //console.log("value", value, rowIndex, columnHead)
+            if(value) {
+              //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
+              commentCollector[rowIndex][columnHead].push(d.test.name() + " " + value)
+            }
+          })
+        });
+      }
+    })
+  })
+  console.log("COMMENT COLLECTOR", commentCollector)
+  _.each(rows, function(row, rowIndex) {
+    _.each(columnHeads, function(columnHead, columnIndex) {
+      var array = commentCollector[rowIndex][columnHead]
+      if(array && array.length && array.length > 0) {
+        var string = array.join("\n")
+        comments.push({row: rowIndex, col: columnIndex, comment: string})
+      }
+    });
+  });
+  console.log("COMMENTS", comments)
+  this.handsOnTable.updateSettings({cell: comments})
+
 
   var container = d3.select(".step-3-results ." + suite)
   var tests = container.selectAll(".test")
