@@ -18,17 +18,17 @@ function HTMLRenderer(config) {
   _.forEach( rows, function(row) {
     data.push( _.values(row) )
   });
-  var gridWrapper = document.getElementById('grid');
-  var containerWidth = gridWrapper.innerWidth;
-  var containerHeight = gridWrapper.innerHeight;
-  var handsOnTable = new Handsontable(gridWrapper,
+  var topBarHeight = document.getElementById('info-top-bar').getBoundingClientRect().height;
+  var containerWidth = window.innerWidth / 2;
+  var containerHeight = window.innerHeight - topBarHeight;
+  var handsOnTable = new Handsontable(document.getElementById('grid'),
     {
       data: data,
-      stretchH: "all",
       autoWrapRow: true,
+      autoWrapCol: true,
+      wordWrap: false,
       width: containerWidth,
       height: containerHeight,
-      //maxRows: 22,
       rowHeaders: true,
       colHeaders: headers,
       columnSorting: true,
@@ -45,10 +45,6 @@ function HTMLRenderer(config) {
 
   this.handsOnTable = handsOnTable
 
-  var tables = d3.selectAll('.ht_master')[0];
-  if (tables.length > 1) {
-    d3.select(tables[ tables.length - 1 ]).remove()
-  }
   // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite")
