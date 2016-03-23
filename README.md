@@ -37,7 +37,7 @@ Select your dataset, which can be either a CSV on your computer, or a Google She
 
 Once you select your dataset, you can choose which suites and tests run by turning them on or off.
 
-Proof your data, get your results, and feel confident about your dataset!
+Proof your data, get your results, and feel confident about your dataset.
 
 # Getting started making tests for Dataproofer
 ## Bootstrapping
@@ -60,7 +60,7 @@ cd Dataproofer
 ./init.sh
 ```
 
-If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are currently relying on the "file:" dependency which copies the source instead of downloading it.
+If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
 
 You can run the CLI version with a file name or it will prompt you for one
 ```
@@ -74,13 +74,13 @@ node index
 ### Creating a new test
 + Make a copy of "testTemplate.js"
 + Write your test
-+ Require that test in the the suite's *index.js*
++ Require that test in a suite's *index.js*
 + Add that test to the exports in index.js
 
 Tests are made up of a few parts
 
 #### .name()
-This is the name of your test, and how it appears in the test-selection screen as well as on the results page
+This is the name of your test. It shows up in the test-selection screen as well as on the results page
 
 #### .description()
 This is a text-only description of what the test does, and what it is meant to check. Imagine you are explaining it to a remarkably intelligent 5-year-old.
@@ -104,7 +104,7 @@ Then the first object in your array of rows will look like this:
 { president: ‘George Washington’, year: ‘1789’ } and so on
 ```
 
-Generally, to perform your test, you are going to want to loop over each row and perform some operations on it.
+Generally, to run a test, you are going to want to loop over each row and do some operations on it — counting cells and using conditionals to detect unwanted values.
 
 
 ### Troubleshooting a test that won't run
@@ -112,9 +112,8 @@ Tests are run inside a try catch loop in `src/processing.js`. You may wish to te
 Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger. 
 
 ### Iterating on tests
-Dataproofer saves a copy of the most recently loaded file in the Application Data directory provided to it by the OS.   
-You can quickly load the file and run the tests by typing `loadLastFile()` in the console. This saves you several clicks
-for loading the file and clicking the run button while you are iterating on a test.
+Dataproofer saves a copy of the most recently loaded file in the Application Data directory provided to it by the OS.
+You can quickly load the file and run the tests by typing `loadLastFile()` in the console. This saves you several clicks for loading the file and clicking the run button while you are iterating on a test.
 If you want to temporarily avoid any clicks you can add the function call to the `ipc.on("last-file-selected",` event handler in `electron/js/controller.js`
 
 # Packaging an executable
@@ -124,7 +123,7 @@ cd Dataproofer/electron
 npm run package
 ```
 
-This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command currently only generates the Mac app but could easily be extended to include Windows & Linux.
+This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command only generates the Mac app but could be extended to include Windows & Linux.
 
 
 # Release
@@ -133,7 +132,7 @@ We can push releases to GitHub manually for now:
 git tag -a 'v0.1.1' -m "first release"
 git push && git push --tags
 ```
-The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases) for the tag you just pushed, and should be zipped up first (Right click and choose "Compress Dataproofer")
+The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases) for the tag you pushed, and should be zipped up first (Right click and choose "Compress Dataproofer")
 
 
 
