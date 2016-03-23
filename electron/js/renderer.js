@@ -36,6 +36,7 @@ function HTMLRenderer(config) {
       columnSorting: true,
       sortIndicator: true,
       readOnly: true,
+      renderAllRows: true, // testing for comments styling
       manualRowResize: true,
       manualColumnResize: true,
       comments: true,
@@ -118,7 +119,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   console.log("COMMENTS", comments)
   this.handsOnTable.updateSettings({cell: comments})
 
-
   var container = d3.select(".step-3-results ." + suite)
   var tests = container.selectAll(".test")
     .data(this.resultList[suite])
@@ -187,6 +187,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         var col = Math.floor(x / width * cols.length);
         //console.log("row, col", row, col)
         handsOnTable.selectCell(row, col, row, col, true);
+        //handsOnTable.render();
 
         /*
         grid.scrollCellIntoView(row, col)
@@ -205,4 +206,52 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       })
     d3.select(this).select("canvas").call(drag)
   })
+}
+HTMLRenderer.prototype.done = function() {
+  // setup/update the comments
+  var comments = [];
+  var commentCollector = [];
+  var columnHeads = this.columnHeads;
+  var rows = this.rows;
+  _.each(rows, function(row, rowIndex) {
+    commentCollector[rowIndex] = {}
+    _.each(columnHeads, function(columnHead) {
+      // keep an object with each key
+      commentCollector[rowIndex][columnHead] = [];
+    });
+  });
+
+  // loop over resultList
+  var resultList = this.resultList
+  Object.keys(resultList).forEach(function(suite) {
+    resultList[suite].forEach(function(d){
+      console.log("RESULT", suite, d)
+      if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
+        console.log("HIGHLIGHT CELLS", d.result.highlightCells)
+        //console.log("")
+        _.each(rows, function(row, rowIndex) {
+          _.each(columnHeads, function(columnHead) {
+            var value = d.result.highlightCells[rowIndex][columnHead];
+            //console.log("value", value, rowIndex, columnHead)
+            if(value) {
+              //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
+              commentCollector[rowIndex][columnHead].push(d.test.name())
+            }
+          })
+        });
+      }
+    })
+  })
+  console.log("COMMENT COLLECTOR", commentCollector)
+  _.each(rows, function(row, rowIndex) {
+    _.each(columnHeads, function(columnHead, columnIndex) {
+      var array = commentCollector[rowIndex][columnHead]
+      if(array && array.length && array.length > 0) {
+        var string = array.join("\n")
+        comments.push({row: rowIndex, col: columnIndex, comment: string})
+      }
+    });
+  });
+  console.log("COMMENTS", comments)
+  this.handsOnTable.updateSettings({cell: comments})
 }
