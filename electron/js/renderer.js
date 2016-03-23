@@ -38,6 +38,7 @@ function HTMLRenderer(config) {
       readOnly: true,
       manualRowResize: true,
       manualColumnResize: true,
+      comments: true,
       autoColumnSize: {
         "samplingRatio": 23
       },
