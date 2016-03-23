@@ -26,6 +26,7 @@ function HTMLRenderer(config) {
   var handsOnTable = new Handsontable(document.getElementById('grid'),
     {
       data: data,
+      strechH: "all",
       autoWrapRow: true,
       autoWrapCol: true,
       wordWrap: false,
