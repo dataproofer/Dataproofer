@@ -4,7 +4,6 @@
  body {
   height: 100%;
   padding: 0;
-  padding-top: 48px;
   margin: 0;
   font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
   font-size: 16px;
@@ -74,6 +73,12 @@ Grid
   NOTE: I had to remove box-sizing:border-box from photon.css in order to not mess up slickgrid
 ============================================================================= */
 
+#grid-wrapper {
+  float: right;
+  position: relative;
+  width: 50%;
+}
+
 #grid {
   font-size: 12px;
   box-sizing: content-box !important;
@@ -96,13 +101,14 @@ Grid
   position: absolute;
   top: 30;
   height: calc(100% - 230px); */
-  overflow-y: scroll;
   padding: 1.5em;
+  padding-top: 50px;
 }
 .step {
   float:left;
   clear:left;
   width: 100%;
+  overflow-y: scroll;
   /*margin-bottom: 200px;*/
 
 }
@@ -211,9 +217,7 @@ button.run-tests {
 STEP  3
 ============================================================================= */
 .step-3-results {
-  padding: 5px;
   width: 50%;
-  padding-bottom: 300px;
   display: none;
 }
 

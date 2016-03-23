@@ -48,9 +48,12 @@ function HTMLRenderer(config) {
 
   this.handsOnTable = handsOnTable
 
+  resultsHeight = containerHeight + 'px'
   // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll(".suite").remove();
-  d3.select(".step-3-results").selectAll(".suite")
+  d3.select(".step-3-results")
+    .style('height', resultsHeight)
+    .selectAll(".suite")
     .data(config.suites)
     .enter().append("div")
     .attr({
@@ -95,7 +98,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
             //console.log("value", value, rowIndex, columnHead)
             if(value) {
               //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
-              commentCollector[rowIndex][columnHead].push(d.test.name() + " " + value)
+              commentCollector[rowIndex][columnHead].push(d.test.name())
             }
           })
         });
