@@ -12,7 +12,25 @@ This used to be a long manual process, using valuable time and introducing the p
 
 Data proofer is built to automate this process of checking a dataset for errors or potential mistakes.
 
-## Tests
+## Table of Contents
+
+* Test suites
+  * Info
+  * Core
+  * Geo
+  * Stats
+* Getting Started
+* Development
+  * Create a new test
+    * name
+    * description
+    * methodology
+  * Troubleshooting
+  * Packaging the Desktop App
+  * Releasing new versions
+* Sources
+
+## Test Suites
 ### Core Suite
 + Check for duplicate rows
 + Check for excel error dates
@@ -21,14 +39,14 @@ Data proofer is built to automate this process of checking a dataset for errors 
 + Check for whether there are exactly 65k rows (potential export error)
 + Check for strings that are exactly 255 characters (potential export error)
 
-## Geo Suite
+### Geo Suite
 + Check for valid latitude and longitude values
 
-## Stats Suite
+### Stats Suite
 + Check for outliers within a column
 —
 
-# Getting started using Dataproofer
+## Getting started
 Download a .zip of the latest release [from the Dataproofer releases page](https://github.com/dataproofer/Dataproofer/releases).
 
 Drag the app into your applications folder.
@@ -39,23 +57,12 @@ Once you select your dataset, you can choose which suites and tests run by turni
 
 Proof your data, get your results, and feel confident about your dataset.
 
-# Getting started making tests for Dataproofer
-## Bootstrapping
-
-```
-git clone git@github.com:dataproofer/Dataproofer.git
-cd Dataproofer/src
-npm install
-cd ../electron
-npm install
-```
-
 ## Development
-
 
 While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master) into the folder that contains the dataproofer repo (not into the dataproofer repo itself.)
 
 ```
+git clone git@github.com:dataproofer/Dataproofer.git
 cd Dataproofer
 ./init.sh
 ```
@@ -72,12 +79,13 @@ node index
 ```
 
 ### Creating a new test
-+ Make a copy of "testTemplate.js"
-+ Write your test
-+ Require that test in a suite's *index.js*
++ Make a copy of [myTest.js](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
++ Read the comments and follow along with links
++ Let us know if you're running into trouble dataproofer [at] dataproofer.org
++ Require that test in a suite's [index.js]((https://github.com/dataproofer/suite-template/blob/master/index.js)
 + Add that test to the exports in index.js
 
-Tests are made up of a few parts
+Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md).
 
 #### .name()
 This is the name of your test. It shows up in the test-selection screen as well as on the results page
@@ -106,7 +114,6 @@ Then the first object in your array of rows will look like this:
 
 Generally, to run a test, you are going to want to loop over each row and do some operations on it — counting cells and using conditionals to detect unwanted values.
 
-
 ### Troubleshooting a test that won't run
 Tests are run inside a try catch loop in `src/processing.js`. You may wish to temporarily remove the try/catch while iterating on a test.
 Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger. 
@@ -116,7 +123,7 @@ Dataproofer saves a copy of the most recently loaded file in the Application Dat
 You can quickly load the file and run the tests by typing `loadLastFile()` in the console. This saves you several clicks for loading the file and clicking the run button while you are iterating on a test.
 If you want to temporarily avoid any clicks you can add the function call to the `ipc.on("last-file-selected",` event handler in `electron/js/controller.js`
 
-# Packaging an executable
+### Packaging an executable
 
 ```
 cd Dataproofer/electron
@@ -125,15 +132,13 @@ npm run package
 
 This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command only generates the Mac app but could be extended to include Windows & Linux.
 
-
-# Release
+### Release
 We can push releases to GitHub manually for now:
 ```
 git tag -a 'v0.1.1' -m "first release"
 git push && git push --tags
 ```
 The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases) for the tag you pushed, and should be zipped up first (Right click and choose "Compress Dataproofer")
-
 
 
 ## Sources
