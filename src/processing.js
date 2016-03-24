@@ -43,7 +43,7 @@ exports.run = function(config) {
   });
 
   var badColumnHeadsTest = new DataprooferTest()
-    .name("Missing or Duplicate Column Headers")
+    .name("Missing or duplicate column headers")
     .description('Check for errors in the header of the spreadsheet')
     .methodology(function(rows, columnHeads) {
       console.log("checking column headers", columnHeads.length);

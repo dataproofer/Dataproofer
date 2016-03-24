@@ -61,7 +61,7 @@ function HTMLRenderer(config) {
     .attr({
       class: function(d) { return "suite " + d.name + (d.active ? " active" : "" )}
     })
-    .append("h2").text(function(d) { return d.name })
+    .append("h2").text(function(d) { return d.fullName })
   //d3.select(".test-results").selectAll(".test").remove();
 }
 
