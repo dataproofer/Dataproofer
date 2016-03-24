@@ -14,21 +14,22 @@ Data proofer is built to automate this process of checking a dataset for errors 
 
 ## Table of Contents
 
-* Test suites
+* [Test suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * Info
-  * Core
-  * Geo
-  * Stats
-* Getting Started
-* Development
-  * Create a new test
-    * name
-    * description
-    * methodology
-  * Troubleshooting
-  * Packaging the Desktop App
-  * Releasing new versions
-* Sources
+  * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
+  * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
+  * [Stats](https://github.com/dataproofer/Dataproofer#stats-suite)
+* [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
+* [Development](https://github.com/dataproofer/Dataproofer#development)
+  * [Create a new test](https://github.com/dataproofer/Dataproofer#creating-a-new-test)
+    * [name](https://github.com/dataproofer/Dataproofer#name)
+    * [description](https://github.com/dataproofer/Dataproofer#description)
+    * [methodology](https://github.com/dataproofer/Dataproofer#methodology)
+  * [Troubleshooting](https://github.com/dataproofer/Dataproofer#troubleshooting-a-test-that-wont-run)
+  * [Test iteration](https://github.com/dataproofer/Dataproofer#iterating-on-tests)
+  * [Packaging the Desktop App](https://github.com/dataproofer/Dataproofer#packaging-an-executable)
+  * [Releasing new versions](https://github.com/dataproofer/Dataproofer#release)
+* [Sources](https://github.com/dataproofer/Dataproofer#sources)
 
 ## Test Suites
 ### Core Suite
@@ -100,10 +101,11 @@ This is where the code your test executes lives. Pass it a function that takes i
 
 So if your data looks like this:
 ```
-President | Year
+President         | Year
+------------------------
 George Washington | 1789
-John Adams | 1797
-Thomas Jefferson | 1801
+John Adams        | 1797
+Thomas Jefferson  | 1801
 ```
 
 Then the first object in your array of rows will look like this:
@@ -132,7 +134,7 @@ npm run package
 
 This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command only generates the Mac app but could be extended to include Windows & Linux.
 
-### Release
+### Release a new version
 We can push releases to GitHub manually for now:
 ```
 git tag -a 'v0.1.1' -m "first release"
@@ -144,5 +146,5 @@ The binary (Dataproofer.app) can be uploaded to the [releases page](https://gith
 ## Sources
 
 - [A Guide to Bulletproofing Your Data](https://github.com/propublica/guides/blob/master/data-bulletproofing.md), by [ProPublica](https://www.propublica.org/)
-- [Checklist to bulletproof your data work](http://www.tommeagher.com/blog/2012/06/checklist.html), by [Tom Meagher](http://www.tommeagher.com/blog/2012/06/checklist.html) (Data Editor, The Marshall Project)
-- [The Quartz guide to bad data](https://github.com/Quartz/bad-data-guide), by [Quartz](http://qz.com)
+- [Checklist to bulletproof your data work](http://www.tommeagher.com/blog/2012/06/checklist.html), by [Tom Meagher](http://www.tommeagher.com/blog/2012/06/checklist.html) (Data Editor, [The Marshall Project](https://www.themarshallproject.org))
+- [The Quartz guide to bad data](https://github.com/Quartz/bad-data-guide), by [Chris Groskopf](github.com/onyxfish) (Things Reporter, [Quartz](http://qz.com))
