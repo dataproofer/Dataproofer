@@ -117,7 +117,7 @@ function renderStep2(processorConfig) {
   suitesHeds = suitesEnter.append("div")
     .attr("class", "suite-hed")
   suitesHeds.append("h2")
-    .text(function(d) { return d.name })
+    .text(function(d) { return d.fullName })
   suitesHeds.append("input")
     .attr({
       "class": "toggle",
