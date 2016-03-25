@@ -32,22 +32,22 @@ Data proofer is built to automate this process of checking a dataset for errors 
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
 
 ## Test Suites
-### Information & Diagnostics
+### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
 + Count the number of rows
 + Check for empty columns (no values)
 + Check for numeric values in columns
 
-### Core Suite
+### [Core Suite](https://github.com/dataproofer/core-suite)
 + Check for duplicate rows
 + Integers at their upper limit (an indication there may be missing data lost when the data was exported)
 + Check for whether there are exactly 65k rows (an indication there may be missing rows lost when the data was exported)
 + Check for strings that are exactly 255 characters (an indication there may be missing data lost when the data was exported)
 
-### Geo Suite
+### [Geo Suite](https://github.com/dataproofer/geo-suite)
 + Check for invalid latitude and longitude values (values outside the range of -180º to 180º)
 + Check for void latitude and longitude values (values at 0º,0º)
 
-### Stats Suite
+### [Stats Suite](https://github.com/dataproofer/stats-suite)
 + Check for outliers within a column relative to the column's median
 + Check for outliers within a column relative to the column's mean
 
