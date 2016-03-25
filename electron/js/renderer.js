@@ -1,42 +1,67 @@
 var _ = require('lodash')
 var d3 = require('d3')
 var jQuery = $ = require('jquery')
-var SlickGrid = require('slickgrid/grid')
 var Renderer = require('dataproofer').Rendering;
 
 function HTMLRenderer(config) {
+  console.log('config', config);
   Renderer.call(this, config)
   window.rows = config.rows;
+  this.rows = config.rows;
+  this.columnHeads = config.columnHeads;
   var resultList = {}
   config.suites.forEach(function(suite) {
     resultList[suite.name] = []
   })
   this.resultList = resultList;
 
-  var columns = [];
-  Object.keys(rows[0]).forEach(function(col) {
-    columns.push({id: col, name: col, field: col})
-  })
+  var data = []
+  var headers = _.keys( rows[0] )
+  _.forEach( rows, function(row) {
+    data.push( _.values(row) )
+  });
+  var topBarHeight = document.getElementById('info-top-bar').getBoundingClientRect().height;
+  var containerWidth = window.innerWidth / 2;
+  var containerHeight = window.innerHeight - topBarHeight;
+  var handsOnTable = new Handsontable(document.getElementById('grid'),
+    {
+      data: data,
+      strechH: "all",
+      autoWrapRow: true,
+      autoWrapCol: true,
+      wordWrap: false,
+      width: containerWidth,
+      height: containerHeight,
+      rowHeaders: true,
+      colHeaders: headers,
+      columnSorting: true,
+      sortIndicator: true,
+      readOnly: true,
+      renderAllRows: true, // testing for comments styling
+      manualRowResize: true,
+      manualColumnResize: true,
+      comments: true,
+      autoColumnSize: {
+        "samplingRatio": 23
+      },
+      currentRowClassName: 'currentRow',
+      currentColClassName: 'currentCol',
+    });
 
-  var options = {
-    editable: false,
-    enableAddRow: false,
-    enableCellNavigation: true,
-    //cellHighlightCssClass: "changed",
-    //cellFlashingCssClass: "current-server"
-  }
-  var grid = new SlickGrid("#grid", rows, columns, options);
-  this.grid = grid;
+  this.handsOnTable = handsOnTable
 
-    // we just remove everything rather than get into update pattern
+  resultsHeight = containerHeight + 'px'
+  // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll(".suite").remove();
-  d3.select(".step-3-results").selectAll(".suite")
+  d3.select(".step-3-results")
+    .style('height', resultsHeight)
+    .selectAll(".suite")
     .data(config.suites)
     .enter().append("div")
     .attr({
       class: function(d) { return "suite " + d.name + (d.active ? " active" : "" )}
     })
-    .append("h2").text(function(d) { return d.name })
+    .append("h2").text(function(d) { return d.fullName })
   //d3.select(".test-results").selectAll(".test").remove();
 }
 
@@ -46,10 +71,55 @@ HTMLRenderer.prototype.constructor = HTMLRenderer;
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log(suite, test.name());
   console.log("add result", suite, test.name(), result)
+  console.log("result list", this.resultList);
   this.resultList[suite].push({ suite: suite, test: test, result: result })
 
-  // A reference to our SlickGrid table so we can manipulate it via the fingerprint
-  var grid = this.grid;
+  // setup/update the comments
+  var comments = [];
+  var commentCollector = [];
+  var columnHeads = this.columnHeads;
+  var rows = this.rows;
+  _.each(rows, function(row, rowIndex) {
+    commentCollector[rowIndex] = {}
+    _.each(columnHeads, function(columnHead) {
+      // keep an object with each key
+      commentCollector[rowIndex][columnHead] = [];
+    });
+  });
+
+  // loop over resultList
+  var resultList = this.resultList
+  Object.keys(resultList).forEach(function(suite) {
+    resultList[suite].forEach(function(d){
+      console.log("RESULT", suite, d)
+      if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
+        console.log("HIGHLIGHT CELLS", d.result.highlightCells)
+        //console.log("")
+        _.each(rows, function(row, rowIndex) {
+          _.each(columnHeads, function(columnHead) {
+            var value = d.result.highlightCells[rowIndex][columnHead];
+            //console.log("value", value, rowIndex, columnHead)
+            if(value) {
+              //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
+              commentCollector[rowIndex][columnHead].push(d.test.name())
+            }
+          })
+        });
+      }
+    })
+  })
+  console.log("COMMENT COLLECTOR", commentCollector)
+  _.each(rows, function(row, rowIndex) {
+    _.each(columnHeads, function(columnHead, columnIndex) {
+      var array = commentCollector[rowIndex][columnHead]
+      if(array && array.length && array.length > 0) {
+        var string = array.join("\n")
+        comments.push({row: rowIndex, col: columnIndex, comment: string})
+      }
+    });
+  });
+  console.log("COMMENTS", comments)
+  this.handsOnTable.updateSettings({cell: comments})
 
   var container = d3.select(".step-3-results ." + suite)
   var tests = container.selectAll(".test")
@@ -72,7 +142,15 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.passfail").html(function(d) {
-    return d.result.passed ? "<div class='icon icon-check'></div>" : "<div class='icon icon-cancel-circled'></div>"
+    passFailIconHtml = ""
+    if (d.result.passed === true) {
+      passFailIconHtml += "<div class='icon icon-check'></div>"
+    } else if (d.result.passed === false) {
+      passFailIconHtml += "<div class='icon icon-cancel-circled'></div>"
+    } else {
+      passFailIconHtml += "<div class='icon'></div>" 
+    }
+    return passFailIconHtml
   })
 
   tests.select("div.message").html(function(d) {
@@ -83,6 +161,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     return html
   })
 
+  var handsOnTable = this.handsOnTable
   tests.select("div.fingerprint").each(function(d) {
     if(!d.result.highlightCells || !d.result.highlightCells.length) return;
     // TODO: put this in a component/reusable chart thingy
@@ -114,19 +193,75 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         var x = mouse[0];
         var y = mouse[1];
         if(y < 0) y = 0;
-        var row = y; // for now our cells are 1 pixel high so this works
+        var row = Math.floor(y); // for now our cells are 1 pixel high so this works
         var col = Math.floor(x / width * cols.length);
         //console.log("row, col", row, col)
+        handsOnTable.selectCell(row, col, row, col, true);
+        //handsOnTable.render();
+
+        /*
         grid.scrollCellIntoView(row, col)
         grid.scrollRowIntoView(row)
         grid.removeCellCssStyles("highlighted")
+        */
+
+        /*
         var column = cols[col];
         var changes = {}
         changes[row] = {}
         changes[row][column] = "changed"
         grid.addCellCssStyles("highlighted", changes)
+        */
         //grid.scrollRowToTop(row)
       })
     d3.select(this).select("canvas").call(drag)
   })
+}
+HTMLRenderer.prototype.done = function() {
+  // setup/update the comments
+  var comments = [];
+  var commentCollector = [];
+  var columnHeads = this.columnHeads;
+  var rows = this.rows;
+  _.each(rows, function(row, rowIndex) {
+    commentCollector[rowIndex] = {}
+    _.each(columnHeads, function(columnHead) {
+      // keep an object with each key
+      commentCollector[rowIndex][columnHead] = [];
+    });
+  });
+
+  // loop over resultList
+  var resultList = this.resultList
+  Object.keys(resultList).forEach(function(suite) {
+    resultList[suite].forEach(function(d){
+      console.log("RESULT", suite, d)
+      if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
+        console.log("HIGHLIGHT CELLS", d.result.highlightCells)
+        //console.log("")
+        _.each(rows, function(row, rowIndex) {
+          _.each(columnHeads, function(columnHead) {
+            var value = d.result.highlightCells[rowIndex][columnHead];
+            //console.log("value", value, rowIndex, columnHead)
+            if(value) {
+              //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
+              commentCollector[rowIndex][columnHead].push(d.test.name())
+            }
+          })
+        });
+      }
+    })
+  })
+  console.log("COMMENT COLLECTOR", commentCollector)
+  _.each(rows, function(row, rowIndex) {
+    _.each(columnHeads, function(columnHead, columnIndex) {
+      var array = commentCollector[rowIndex][columnHead]
+      if(array && array.length && array.length > 0) {
+        var string = array.join("\n")
+        comments.push({row: rowIndex, col: columnIndex, comment: string})
+      }
+    });
+  });
+  console.log("COMMENTS", comments)
+  this.handsOnTable.updateSettings({cell: comments})
 }
