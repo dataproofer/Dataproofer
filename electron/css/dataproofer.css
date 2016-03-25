@@ -242,75 +242,88 @@ General Suites and test
 }
 
 .suite input.toggle {
-    position: absolute;
-    margin-left: -9999px;
-    visibility: hidden
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden
 }
 
 .suite input.toggle+label {
-    padding: 2px;
-    width: 60px;
-    height: 30px;
-    top: 0.7em;
-    background-color: #bebebe;
-    -webkit-border-radius: 30px;
-    border-radius: 30px;
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    outline: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none
+  padding: 2px;
+  width: 60px;
+  height: 30px;
+  top: 0.7em;
+  background-color: #bebebe;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  outline: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+
+.test input.toggle+label {
+  width: 36px;
+  height: 18px;
 }
 
 .suite input.toggle+label:after,
 .suite input.toggle+label:before {
-    display: block;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    bottom: 1px;
-    content: ""
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: ""
 }
 
 .suite input.toggle+label:before {
-    right: 1px;
-    background-color: #d7d7d7;
-    -webkit-border-radius: 30px;
-    border-radius: 30px;
-    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    transition: all .2s cubic-bezier(.4, 0, .2, 1)
+  right: 1px;
+  background-color: #d7d7d7;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  transition: all .2s cubic-bezier(.4, 0, .2, 1)
 }
 
 .suite input.toggle+label:after {
-    width: 32px;
-    background-color: #fff;
-    -webkit-border-radius: 100%;
-    border-radius: 100%;
-    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
-    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-    transition: all .2s cubic-bezier(.4, 0, .2, 1)
+  width: 32px;
+  background-color: #fff;
+  -webkit-border-radius: 100%;
+  border-radius: 100%;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+  -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+  transition: all .2s cubic-bezier(.4, 0, .2, 1)
+}
+
+.test input.toggle+label:after {
+  width: 20px;
 }
 
 .suite input.toggle:checked+label:before {
-    background-color: #08ab88
+  background-color: #08ab88;
 }
 
 .suite input.toggle:checked+label {
-    background-color: #067a61
+  background-color: #067a61;
 }
 
 .suite input.toggle:checked+label:after {
-    margin-left: 30px
+  margin-left: 30px;
+}
+
+.test input.toggle:checked+label:after {
+  margin-left: 18px;
 }
 
 .suite input.toggle.disabled+label {

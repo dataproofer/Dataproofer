@@ -136,7 +136,7 @@ function renderStep2(processorConfig) {
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
       console.log("suite", d)
-      saveTestConfig();
+      // saveTestConfig();
     })
 
   // render the tests
@@ -172,7 +172,7 @@ function renderStep2(processorConfig) {
       console.log("test", d)
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
-      saveTestConfig();
+      // saveTestConfig();
     })
 
   d3.select("#current-file-name").text(processorConfig.filename)
