@@ -15,7 +15,7 @@
     "csv",
     "excel"
   ],
-  "author": "DataProofer",
+  "author": "DataProofer <dataproofer@dataproofer.org>",
   "license": "GNU GPL",
   "bugs": {
     "url": "https://github.com/dataproofer/dataproofer/issues"

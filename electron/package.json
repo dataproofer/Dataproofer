@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "DataProofer",
   "main": "app.js",
-  "author": "DataProofer",
+  "author": "DataProofer <dataproofer@dataproofer.org>",
   "license": "GNU GPL",
   "scripts": {
     "electron": "./node_modules/.bin/electron .",
@@ -16,6 +16,7 @@
   "dependencies": {
     "d3": "^3.5.12",
     "dataproofer": "file:../src/",
+    "dataproofer-info-suite": "git@github.com:dataproofer/info-suite.git",
     "dataproofer-core-suite": "git@github.com:dataproofer/core-suite.git",
     "dataproofer-geo-suite": "git@github.com:dataproofer/geo-suite.git",
     "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",

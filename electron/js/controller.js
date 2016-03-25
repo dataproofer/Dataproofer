@@ -8,9 +8,10 @@ console.log("dataproofer lib version", require('dataproofer').version)
 
 
 var SUITES = [
+  require('dataproofer-info-suite'),
   require('dataproofer-core-suite'),
   require('dataproofer-stats-suite'),
-  require('dataproofer-geo-suite')
+  require('dataproofer-geo-suite'),
 ]
 
 // turn on all tests by default
@@ -94,7 +95,9 @@ function renderStep1(processorConfig) {
 function renderStep2(processorConfig) {
   var container = d3.select(".step-2-select-content")
 
+
   d3.select(".step-2-select").style("display", "block")
+  d3.select(".step-3-results").style("display", "none")
   d3.select(".step-1-data").style("display", "none")
 
   // we just remove everything rather than get into update pattern
@@ -316,8 +319,6 @@ function handleSpreadsheet() {
     }
   }
 };
-
-
 
 // Enable context menu
 // http://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like

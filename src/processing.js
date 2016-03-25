@@ -91,7 +91,7 @@ exports.run = function(config) {
   badColumnHeadsTest.active = true;
 
   var result = badColumnHeadsTest.proof(rows, columnHeads)
-  renderer.addResult('dataproofer-core-suite', badColumnHeadsTest, result)
+  renderer.addResult('dataproofer-info-suite', badColumnHeadsTest, result)
 
   var cleanedcolumnHeads = _.without(columnHeads, result.badColumnHeads.join(', '));
   var cleanedRows = rows

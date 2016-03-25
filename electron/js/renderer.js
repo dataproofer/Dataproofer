@@ -71,6 +71,7 @@ HTMLRenderer.prototype.constructor = HTMLRenderer;
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log(suite, test.name());
   console.log("add result", suite, test.name(), result)
+  console.log("result list", this.resultList);
   this.resultList[suite].push({ suite: suite, test: test, result: result })
 
   // setup/update the comments
@@ -141,7 +142,15 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   })
 
   tests.select("div.passfail").html(function(d) {
-    return d.result.passed ? "<div class='icon icon-check'></div>" : "<div class='icon icon-cancel-circled'></div>"
+    passFailIconHtml = ""
+    if (d.result.passed === true) {
+      passFailIconHtml += "<div class='icon icon-check'></div>"
+    } else if (d.result.passed === false) {
+      passFailIconHtml += "<div class='icon icon-cancel-circled'></div>"
+    } else {
+      passFailIconHtml += "<div class='icon'></div>" 
+    }
+    return passFailIconHtml
   })
 
   tests.select("div.message").html(function(d) {
