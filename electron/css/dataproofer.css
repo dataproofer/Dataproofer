@@ -50,6 +50,13 @@ button.reload {
   z-index: 2;
 }
 
+#info-top-bar #current-file-name{
+  display: inline-block;
+  font-size: 16px;
+  border: 0;
+  padding: 0.5em;
+}
+
 
 /* =============================================================================
 Navigation buttons
@@ -57,13 +64,23 @@ Navigation buttons
 #nav-buttons {
   float: right;
   margin-right: 2em;
+}
 
+#nav-buttons button {
+  display: inline-block;
+  font-size: 16px;
+  border: 0;
+  padding: 0.5em;
+  margin-bottom: 2px;
+  margin-right: 2px;
+  color: white;
 }
 
 #back-button {
-
+  background-color: #46CC69;
 }
 #forward-button {
+  background-color: #ED4224;
 
 }
 
@@ -155,7 +172,7 @@ STEP  1
   text-align: center;
 }
 #spreadsheet-button {
-  width: 85%;
+  width: 25%;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -163,6 +180,9 @@ STEP  1
   font-size: 24px;
   margin-top: 5px;
   padding: 1em;
+  background-color: #46CC69;
+  color: white;
+  border: 0;
 
 }
 
@@ -229,12 +249,13 @@ STEP  3
 General Suites and test
 ============================================================================= */
 .suite {
-  /*float: left;*/
-  margin: 10px;
+  border-top: 2px solid #CCC;
+  margin: 0.5em 0;
 }
 
 .suite-hed * {
   display: inline-block;
+  text-decoration: underline;
 }
 
 .suite-hed input.toggle+label {
@@ -340,19 +361,27 @@ General Suites and test
   min-width: 100px;
   max-width: 100%;
   */
-  margin: 0.2em;
+  margin: 4px;
   padding: 1em;
   margin-top: 1em;
-  width: 35%;
-  min-width: 225px;
-  min-height: 150px;
-  height: auto;
+  width: 20%;
+  /*min-width: 225px; */
+  min-height: 200px;
+  /*max-height: 400px;*/
+  /*overflow-y: auto;*/
   display: inline-block;
   vertical-align: top;
   background-color: white;
+  border: 1px solid transparent;
   border-radius: 3px;
   opacity: 0.2;
+  position: relative;
 }
+
+.suite .test .onoff {
+  
+}
+
 .suite .test.active {
   border: 1px solid black;
   opacity: 1;
