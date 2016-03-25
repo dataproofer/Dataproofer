@@ -7,7 +7,8 @@
   "license": "GPL-3.0",
   "scripts": {
     "electron": "./node_modules/.bin/electron .",
-    "package": "./node_modules/.bin/electron-packager . Dataproofer --platform=darwin --arch=x64 --version=0.36.4 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
+    "package-mac": "./node_modules/.bin/electron-packager . Dataproofer --platform=darwin --arch=x64 --version=0.36.11 --ignore='(executables|sample-datasets)' --out=executables --overwrite",
+    "package": "./node_modules/.bin/electron-packager . Dataproofer --platform=darwin --arch=x64 --icon='icons/_dp-robot.png.icns' --version=0.36.11 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
   },
   "repository": {
     "type": "git",
@@ -16,10 +17,11 @@
   "dependencies": {
     "d3": "^3.5.12",
     "dataproofer": "file:../src/",
-    "dataproofer-info-suite": "git@github.com:dataproofer/info-suite.git",
     "dataproofer-core-suite": "git@github.com:dataproofer/core-suite.git",
     "dataproofer-geo-suite": "git@github.com:dataproofer/geo-suite.git",
+    "dataproofer-info-suite": "git@github.com:dataproofer/info-suite.git",
     "dataproofer-stats-suite": "git@github.com:dataproofer/stats-suite.git",
+    "electron-default-menu": "^0.1.1",
     "electron-prebuilt": "^0.36.3",
     "gsheets": "^1.2.3",
     "handsontable": "^0.24.1",

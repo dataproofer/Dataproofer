@@ -1,6 +1,8 @@
 const electron = require('electron');
 var app = electron.app  // Module to control application life.
 var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
+var Menu = require('menu')
+var defaultMenu = require('electron-default-menu')
 // We can listen to messages from the renderer here:
 const ipcMain = electron.ipcMain;
 fs = require('fs')
@@ -31,8 +33,12 @@ app.on('ready', function() {
     'min-width': 500,
     'min-height': 200,
     'accept-first-mouse': true,
-    'title-bar-style': 'hidden'
+    'title-bar-style': 'hidden',
+    icon: __dirname + '/icons/dataproofer-logo-large.png'
   });
+
+  var menu = defaultMenu();
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
