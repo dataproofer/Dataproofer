@@ -176,7 +176,9 @@ function renderStep2(processorConfig) {
   d3.select(".run-tests")
     .text("Run tests")
     .on("click", function() {
-      renderStep3(processorConfig)
+      currentStep = 3;
+      renderNav();
+      renderCurrentStep();
     })
 }
 
