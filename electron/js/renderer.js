@@ -37,7 +37,6 @@ function HTMLRenderer(config) {
       columnSorting: true,
       sortIndicator: true,
       readOnly: true,
-      renderAllRows: true, // testing for comments styling
       manualRowResize: true,
       manualColumnResize: true,
       comments: true,
