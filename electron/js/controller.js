@@ -16,8 +16,12 @@ var SUITES = [
 
 // turn on all tests by default
 SUITES.forEach(function(suite) {
-  suite.active = true;
+  if(suite.active !== false) {
+    // only set it to active if the property doesn't exist or is already true
+    suite.active = true;
+  }
   suite.tests.forEach(function(test){
+    if(test.active === false) return; // don't overwrite a test's default setting if it's set to false
     test.active = true;
   })
 })
