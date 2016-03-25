@@ -16,7 +16,7 @@
     "excel"
   ],
   "author": "DataProofer <dataproofer@dataproofer.org>",
-  "license": "GNU GPL",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/dataproofer/dataproofer/issues"
   },
