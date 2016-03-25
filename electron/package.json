@@ -4,7 +4,7 @@
   "description": "DataProofer",
   "main": "app.js",
   "author": "DataProofer <dataproofer@dataproofer.org>",
-  "license": "GNU GPL",
+  "license": "GPL-3.0",
   "scripts": {
     "electron": "./node_modules/.bin/electron .",
     "package": "./node_modules/.bin/electron-packager . Dataproofer --platform=darwin --arch=x64 --version=0.36.4 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
