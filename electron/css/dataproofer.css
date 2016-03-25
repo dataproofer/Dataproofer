@@ -365,7 +365,7 @@ General Suites and test
   padding: 1em;
   margin-top: 1em;
   width: 20%;
-  /*min-width: 225px; */
+  min-width: 110px;
   min-height: 200px;
   /*max-height: 400px;*/
   /*overflow-y: auto;*/
@@ -376,6 +376,11 @@ General Suites and test
   border-radius: 3px;
   opacity: 0.2;
   position: relative;
+  overflow: hidden;
+}
+
+.suite .test canvas {
+  width: 100%;
 }
 
 .suite .test .onoff {
