@@ -166,7 +166,7 @@ The binary (Dataproofer.app) can be uploaded to the [releases page](https://gith
 - [The Quartz guide to bad data](https://github.com/Quartz/bad-data-guide), by [Chris Groskopf](github.com/onyxfish) (Things Reporter, [Quartz](http://qz.com))
 
 ## Thank You
-![vocativ-logo](https://cloud.githubusercontent.com/assets/1578563/14050100/e23d531e-f276-11e5-920a-b882eca5933a.png)
+![vocativ-logo](https://cloud.githubusercontent.com/assets/1578563/14050100/e23d531e-f276-11e5-920a-b882eca5933a.png)<br>
 ![knight-logo](https://cloud.githubusercontent.com/assets/1578563/14050167/4b12f330-f277-11e5-9773-1f69b9c2484f.png)
 
 A huge thank you to the [Vocativ](vocativ.com) and the [Knight Foundation](http://knightfoundation.org/). This project was funded in part by the Knight Foundation's [Prototype Fund](http://knightfoundation.org/funding-initiatives/knight-prototype-fund/).
