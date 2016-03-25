@@ -15,7 +15,7 @@ Data proofer is built to automate this process of checking a dataset for errors 
 ## Table of Contents
 
 * [Test suites](https://github.com/dataproofer/Dataproofer#test-suites)
-  * Info
+  * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
   * [Stats](https://github.com/dataproofer/Dataproofer#stats-suite)
@@ -32,20 +32,24 @@ Data proofer is built to automate this process of checking a dataset for errors 
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
 
 ## Test Suites
+### Information & Diagnostics
++ Count the number of rows
++ Check for empty columns (no values)
++ Check for numeric values in columns
+
 ### Core Suite
 + Check for duplicate rows
-+ Check for excel error dates
-+ Check for empty columns (no values)
-+ Check for numeric values
-+ Check for whether there are exactly 65k rows (potential export error)
-+ Check for strings that are exactly 255 characters (potential export error)
++ Integers at their upper limit (an indication there may be missing data lost when the data was exported)
++ Check for whether there are exactly 65k rows (an indication there may be missing rows lost when the data was exported)
++ Check for strings that are exactly 255 characters (an indication there may be missing data lost when the data was exported)
 
 ### Geo Suite
-+ Check for valid latitude and longitude values
++ Check for invalid latitude and longitude values (values outside the range of -180º to 180º)
++ Check for void latitude and longitude values (values at 0º,0º)
 
 ### Stats Suite
-+ Check for outliers within a column
-—
++ Check for outliers within a column relative to the column's median
++ Check for outliers within a column relative to the column's mean
 
 ## Getting started
 Download a .zip of the latest release [from the Dataproofer releases page](https://github.com/dataproofer/Dataproofer/releases).
