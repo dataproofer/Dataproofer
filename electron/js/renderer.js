@@ -147,7 +147,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     } else if (d.result.passed === false) {
       passFailIconHtml += "<div class='icon icon-cancel-circled'></div>"
     } else {
-      passFailIconHtml += "<div class='icon'></div>" 
+      passFailIconHtml += "<div class='icon icon-neutral'></div>" 
     }
     return passFailIconHtml
   })
