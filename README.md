@@ -89,8 +89,8 @@ node index
 + Make a copy of the [basic test template](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
 + Read the comments and follow along with links
 + Let us know if you're running into trouble dataproofer [at] dataproofer.org
-+ Require that test in a suite's [index.js]((https://github.com/dataproofer/suite-template/blob/master/index.js)
-+ Add that test to the exports in index.js
++ `require` that test in a suite's [index.js](https://github.com/dataproofer/suite-template/blob/master/index.js)
++ Add that test to the `exports` in [index.js](https://github.com/dataproofer/suite-template/blob/master/index.js)
 
 Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md#util).
 
