@@ -328,15 +328,14 @@ function handleSpreadsheet() {
 var remote = require('remote');
 var Menu = remote.require('menu');
 var MenuItem = remote.require('menu-item');
-var currentWindow = remote.getCurrentWindow();
 var rightClickPosition = null;
 var menu = new Menu();
 menu.append(new MenuItem({ label: 'Inspect Element', click: function() {
-  currentWindow.inspectElement(rightClickPosition.x, rightClickPosition.y);
+  remote.getCurrentWindow().inspectElement(rightClickPosition.x, rightClickPosition.y);
 } }));
 
 window.addEventListener('contextmenu', function(e) {
   e.preventDefault();
   rightClickPosition = {x: e.x, y: e.y};
-  menu.popup(currentWindow);
+  menu.popup(remote.getCurrentWindow());
 }, false);
