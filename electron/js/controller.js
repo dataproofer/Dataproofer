@@ -47,17 +47,17 @@ function renderNav() {
       grid.style("display", "none")
       break;
     case 2:
-      back.style("display", "block")
+      back.style("display", "inline-block")
         .text("Load data")
-      forward.style("display", "block")
+      forward.style("display", "inline-block")
         .text("Run Tests")
       grid.style("display", "none")
       break;
     case 3:
-      back.style("display", "block")
+      back.style("display", "inline-block")
         .text("Select Tests")
       forward.style("display", "none")
-      grid.style("display", "block")
+      grid.style("display", "inline-block")
       break;
   }
 }
@@ -145,7 +145,8 @@ function renderStep2(processorConfig) {
 
   var testsEnter = tests.enter().append("div")
   .attr("class", function(d) { return d.active ? "test active" : "test" })
-  testsEnter.append("div").classed("message", true)
+  
+  
   onOff = testsEnter.append("div").classed("onoff", true)
   onOff.append("input")
     .attr({
@@ -161,6 +162,8 @@ function renderStep2(processorConfig) {
     })
   onOff.append('label')
     .attr('for', function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr('id') + '-test-' + i;})
+
+  testsEnter.append("div").classed("message", true)
 
   tests.select("div.message").html(function(d) {
     var html = '<h3 class="test-header">' + (d.name() || "") + '</h3>'
