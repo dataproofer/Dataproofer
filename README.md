@@ -144,11 +144,10 @@ If you want to temporarily avoid any clicks you can add the function call to the
 ### Packaging an executable
 
 ```
-cd Dataproofer/electron
-npm run package
+./build-executables.sh
 ```
 
-This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command only generates the Mac app but could be extended to include Windows & Linux.
+This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X, Windows, & Linux.
 
 ### Release a new version
 We can push releases to GitHub manually for now:
