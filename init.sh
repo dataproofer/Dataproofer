@@ -31,6 +31,7 @@ npm link dataproofertest-js
 npm link
 
 cd ../Dataproofer/src
+npm install
 npm link dataproofer-info-suite
 npm link dataproofer-core-suite
 npm link dataproofer-stats-suite
@@ -39,6 +40,7 @@ npm link dataproofertest-js
 npm link
 
 cd ../electron
+npm install
 npm link dataproofer
 npm link dataproofer-info-suite
 npm link dataproofer-core-suite

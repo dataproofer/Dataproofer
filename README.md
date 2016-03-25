@@ -14,7 +14,7 @@ Data proofer is built to automate this process of checking a dataset for errors 
 
 ## Table of Contents
 
-* [Test suites](https://github.com/dataproofer/Dataproofer#test-suites)
+* [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
@@ -25,6 +25,7 @@ Data proofer is built to automate this process of checking a dataset for errors 
     * [name](https://github.com/dataproofer/Dataproofer#name)
     * [description](https://github.com/dataproofer/Dataproofer#description)
     * [methodology](https://github.com/dataproofer/Dataproofer#methodology)
+    * [helper scripts](https://github.com/dataproofer/Dataproofer#helper-scripts)
   * [Troubleshooting](https://github.com/dataproofer/Dataproofer#troubleshooting-a-test-that-wont-run)
   * [Test iteration](https://github.com/dataproofer/Dataproofer#iterating-on-tests)
   * [Packaging the Desktop App](https://github.com/dataproofer/Dataproofer#packaging-an-executable)
@@ -84,13 +85,13 @@ node index
 ```
 
 ### Creating a new test
-+ Make a copy of [myTest.js](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
++ Make a copy of the [basic test template](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
 + Read the comments and follow along with links
 + Let us know if you're running into trouble dataproofer [at] dataproofer.org
 + Require that test in a suite's [index.js]((https://github.com/dataproofer/suite-template/blob/master/index.js)
 + Add that test to the exports in index.js
 
-Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md).
+Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md#util).
 
 #### .name()
 This is the name of your test. It shows up in the test-selection screen as well as on the results page
@@ -119,6 +120,16 @@ Then the first object in your array of rows will look like this:
 ```
 
 Generally, to run a test, you are going to want to loop over each row and do some operations on it — counting cells and using conditionals to detect unwanted values.
+
+#### Helper Scripts
+Helper scripts help you test and display the results of Dataproofer tests. These are a small set of functions we've found ourselves reusing.
+
++ isEmpty: detect if a cell is empty
++ isNumeric: detect if a cell contains a number
++ stripNumeric: remove number formatting like "$" or "%"
++ percent: return a number with a "%" sign
+
+For more information, please see the full `util` [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md#util)
 
 ### Troubleshooting a test that won't run
 Tests are run inside a try catch loop in `src/processing.js`. You may wish to temporarily remove the try/catch while iterating on a test.
