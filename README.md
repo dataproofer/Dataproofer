@@ -182,6 +182,6 @@ A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation
 * Joe Presser (video producer), Dataproofer
 * Kelli Vanover (design consulting), Product Manager @ Vocativ
 * Markham Nolan (interviewee), Visuals Editor @ Vocativ
-* Rob Di Leso (design consulting), Art Director @ Vocativ
+* Rob Di Ieso (design consulting), Art Director @ Vocativ
 
 ...And the countless journalists who've encouraged us along the way. Thank you!
