@@ -15,7 +15,8 @@ git clone https://github.com/dataproofer/geo-suite.git
 
 
 cd dataproofertest-js
-npm install && npm link
+npm install
+npm link
 
 cd ../info-suite
 npm install

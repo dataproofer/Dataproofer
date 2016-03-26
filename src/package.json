@@ -23,7 +23,7 @@
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
     "d3": "^3.5.12",
-    "dataproofertest-js": "git@github.com:dataproofer/dataproofertest.js.git",
+    "dataproofertest-js": "git://github.com/dataproofer/dataproofertest.js.git",
     "inquirer": "^0.11.2"
   }
 }
