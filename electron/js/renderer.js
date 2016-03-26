@@ -37,7 +37,6 @@ function HTMLRenderer(config) {
       columnSorting: true,
       sortIndicator: true,
       readOnly: true,
-      renderAllRows: true, // testing for comments styling
       manualRowResize: true,
       manualColumnResize: true,
       comments: true,
@@ -148,7 +147,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     } else if (d.result.passed === false) {
       passFailIconHtml += "<div class='icon icon-cancel-circled'></div>"
     } else {
-      passFailIconHtml += "<div class='icon'></div>" 
+      passFailIconHtml += "<div class='icon icon-neutral'></div>" 
     }
     return passFailIconHtml
   })

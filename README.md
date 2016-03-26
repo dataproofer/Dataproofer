@@ -31,6 +31,7 @@ Data proofer is built to automate this process of checking a dataset for errors 
   * [Packaging the Desktop App](https://github.com/dataproofer/Dataproofer#packaging-an-executable)
   * [Releasing new versions](https://github.com/dataproofer/Dataproofer#release)
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
+* [Thank You]()
 
 ## Test Suites
 ### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
@@ -88,8 +89,8 @@ node index
 + Make a copy of the [basic test template](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
 + Read the comments and follow along with links
 + Let us know if you're running into trouble dataproofer [at] dataproofer.org
-+ Require that test in a suite's [index.js]((https://github.com/dataproofer/suite-template/blob/master/index.js)
-+ Add that test to the exports in index.js
++ `require` that test in a suite's [index.js](https://github.com/dataproofer/suite-template/blob/master/index.js)
++ Add that test to the `exports` in [index.js](https://github.com/dataproofer/suite-template/blob/master/index.js)
 
 Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md#util).
 
@@ -143,11 +144,10 @@ If you want to temporarily avoid any clicks you can add the function call to the
 ### Packaging an executable
 
 ```
-cd Dataproofer/electron
-npm run package
+./build-executables.sh
 ```
 
-This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X app. The package command only generates the Mac app but could be extended to include Windows & Linux.
+This will create a new folder inside `Dataproofer/executables` that contains a Mac OS X, Windows, & Linux.
 
 ### Release a new version
 We can push releases to GitHub manually for now:
@@ -163,3 +163,25 @@ The binary (Dataproofer.app) can be uploaded to the [releases page](https://gith
 - [A Guide to Bulletproofing Your Data](https://github.com/propublica/guides/blob/master/data-bulletproofing.md), by [ProPublica](https://www.propublica.org/)
 - [Checklist to bulletproof your data work](http://www.tommeagher.com/blog/2012/06/checklist.html), by [Tom Meagher](http://www.tommeagher.com/blog/2012/06/checklist.html) (Data Editor, [The Marshall Project](https://www.themarshallproject.org))
 - [The Quartz guide to bad data](https://github.com/Quartz/bad-data-guide), by [Chris Groskopf](github.com/onyxfish) (Things Reporter, [Quartz](http://qz.com))
+
+## Thank You
+![vocativ-logo](https://cloud.githubusercontent.com/assets/1578563/14050100/e23d531e-f276-11e5-920a-b882eca5933a.png)<br>
+![knight-logo](https://cloud.githubusercontent.com/assets/1578563/14050167/4b12f330-f277-11e5-9773-1f69b9c2484f.png)
+
+A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation](http://knightfoundation.org/). This project was funded in part by the Knight Foundation's [Prototype Fund](http://knightfoundation.org/funding-initiatives/knight-prototype-fund/).
+
+### Special Thanks
+* Alex Koppelman (interviewee), Editorial Director @ Vocativ
+* Allee Manning (interviewee), Data Reporter @ Vocativ
+* Allegra Denton (design consulting), Designer @ Vocativ
+* Brian Byrne (interviewee), Data Reporter @ Vocativ
+* Daniel Littlewood (video producer), Special Projects Producer @ Vocativ
+* EJ Fox (project lead), Dataviz Editor @ Vocativ
+* Gerald Rich (lead developer), Interactive Producer @ Vocativ
+* Ian Johnson (lead developer), Dataproofer
+* Joe Presser (video producer), Dataproofer
+* Kelli Vanover (design consulting), Product Manager @ Vocativ
+* Markham Nolan (interviewee), Visuals Editor @ Vocativ
+* Rob Di Ieso (design consulting), Art Director @ Vocativ
+
+...And the countless journalists who've encouraged us along the way. Thank you!
