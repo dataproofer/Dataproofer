@@ -66,24 +66,22 @@ Proof your data, get your results, and feel confident about your dataset.
 
 ## Development
 
-While we are developing you will need to clone [core-suite](https://github.com/dataproofer/core-suite/tree/master) into the folder that contains the dataproofer repo (not into the dataproofer repo itself.)
-
+Dataproofer depends on several modules which contain all the tests. We have included a convenience script for cloning and linking them so you can quickly get started with modifying or creating your own tests.
 ```
 git clone git@github.com:dataproofer/Dataproofer.git
 cd Dataproofer
 ./init.sh
 ```
 
+You can run the development version of the app from the `electron` folder:
+```
+cd Dataproofer/electron
+npm run electron
+```
+
 If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
 
-You can run the CLI version with a file name or it will prompt you for one
-```
-node index sample-datasets/isis-attack-sites.csv
-```
-or
-```
-node index
-```
+
 
 ### Creating a new test
 + Make a copy of the [basic test template](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
