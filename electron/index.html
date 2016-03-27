@@ -5,10 +5,11 @@
     <title>Data Proofer</title>
 
     <!-- Stylesheets -->
-    <!-- <link rel="stylesheet" href="node_modules/slickgrid/grid.css"> -->
     <link rel="stylesheet" href="node_modules/handsontable/dist/handsontable.full.css">
-    <!-- <link rel="stylesheet" href="node_modules/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/> -->
+    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="node_modules/codemirror/theme/mdn-like.css">
     <link rel="stylesheet" href="css/dataproofer.css">
+
   </head>
   <body>
     <div class="window">
@@ -54,7 +55,6 @@
             <h2 class="title">Step 2: Select tests</h5>
             <!-- we will insert our test suites here -->
             <div class="step-2-select-content">
-
             </div>
 
             <button class="btn btn-large run-tests">Run tests</button>
@@ -67,12 +67,26 @@
           <div id="grid-wrapper">
             <div id="grid" class="spreadsheet"></div>
           </div>
+          <div class="test-editor" style="display:none">
+            <h3>Editing test:</h3>
+            <input id="test-editor-name" placeholder="Name of test">
+            <br>
+            <input id="test-editor-description" placeholder="Short description of test">
+            <br>
+            <div id="test-editor-js"></div>
+
+            <button id="cancel-test" class="btn btn-large">Cancel</button>
+            <button id="save-test" style="display: none;" class="btn btn-large">Save</button>
+          </div>
+
         </div>
       </div>
     </div>
 
     <!-- Javascript -->
     <script src="node_modules/handsontable/dist/handsontable.full.js"></script>
+    <script src="node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
     <script src="js/renderer.js"></script>
     <script src="js/controller.js"></script>
 

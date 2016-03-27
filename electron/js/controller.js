@@ -170,6 +170,15 @@ function renderStep2(processorConfig) {
     html += d.description() || ""
     return html
   })
+  .on("click", function(d) {
+    console.log("TEST", d)
+    renderTestEditor({
+      name: d.name(),
+      description: d.description(),
+      code: d._methodology.toString()
+    })
+  })
+
   tests.select('label')
     .on("click", function(d) {
       console.log("test", d)
@@ -242,7 +251,6 @@ function handleFileSelect(evt) {
   reader.readAsText(file);
 }
 
-// if we receive a saved file we load it
 ipc.on("last-file-selected", function(event, file) {
   //console.log("last file selected was", file)
   lastProcessorConfig = {
@@ -252,12 +260,13 @@ ipc.on("last-file-selected", function(event, file) {
     renderer: HTMLRenderer,
     input: {}
   }
-
+  loadLastFile();
 })
 function loadLastFile() {
   renderStep1(lastProcessorConfig);
-  renderStep2(lastProcessorConfig);
-  currentStep = 3;
+  currentStep = 2;
+  //renderStep2(lastProcessorConfig);
+  //currentStep = 3;
   renderNav();
   renderCurrentStep();
 }
@@ -327,6 +336,62 @@ function handleSpreadsheet() {
     }
   }
 };
+
+var testEditor = d3.select(".test-editor")
+testEditor.style("display", "none")
+
+d3.select("#cancel-test").on("click", function() {
+  testEditor.style("display", "none")
+})
+// setup CodeMirror editor
+function renderTestEditor(test) {
+  testEditor.select("#test-editor-js").selectAll("*").remove();
+
+  testEditor.style("display", "block")
+  var nameInput = d3.select("#test-editor-name")
+  nameInput.node().value = test.name;
+
+  var descriptionInput = d3.select("#test-editor-description")
+  descriptionInput.node().value = test.description;
+
+  codeMirror = window.CodeMirror(d3.select("#test-editor-js").node(), {
+    tabSize: 2,
+    value: test.code,
+    mode: 'javascript',
+    htmlMode: true,
+    lineNumbers: true,
+    theme: 'mdn-like',
+    lineWrapping: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    extraKeys: {
+      'Cmd-/' : 'toggleComment',
+      'Ctrl-/' : 'toggleComment'
+    },
+    viewportMargin: Infinity
+  });
+
+  function save() {
+    var test = {
+      name: nameInput.node().value,
+      description: descriptionInput.node().value,
+      code: codeMirror.getValue()
+    }
+    console.log("save!", test)
+  }
+  var saveTest = d3.select("#save-test")
+  saveTest.on("click", save)
+  if(test.local) {
+    saveTest.style("display", "block")
+  }
+
+  /*
+  nameInput.on("change", save)
+  descriptionInput.on("change", save)
+  codeMirror.on("change", save)
+  */
+}
+
 
 // Enable context menu
 // http://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
