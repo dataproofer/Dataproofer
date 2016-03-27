@@ -21,7 +21,7 @@ exports.run = function(config) {
   var rows = config.rows;
   var columnHeads = config.columnHeads;
 
-  console.log("processing!", filename, suites)
+  //console.log("processing!", filename, suites)
 
 
   if(!rows && fileString) {
@@ -46,7 +46,7 @@ exports.run = function(config) {
     .name("Missing or duplicate column headers")
     .description('Check for errors in the header of the spreadsheet')
     .methodology(function(rows, columnHeads) {
-      console.log("checking column headers", columnHeads.length);
+      //console.log("checking column headers", columnHeads.length);
       var badHeaderCount = 0;
       var badColumnHeads = [];
       var summary;
@@ -98,7 +98,7 @@ exports.run = function(config) {
 
   // TODO: use async series? can run suites in series for better UX?
   suites.forEach(function(suite) {
-    console.log("running suite", suite)
+    //console.log("running suite", suite)
     // TODO: use async module to run asynchronously?
     if(!suite.active) return;
     suite.tests.forEach(function(test) {

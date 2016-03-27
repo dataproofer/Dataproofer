@@ -4,7 +4,7 @@ var jQuery = $ = require('jquery')
 var Renderer = require('dataproofer').Rendering;
 
 function HTMLRenderer(config) {
-  console.log('config', config);
+  //console.log('config', config);
   Renderer.call(this, config)
   window.rows = config.rows;
   this.rows = config.rows;
@@ -68,57 +68,15 @@ HTMLRenderer.prototype = Object.create(Renderer.prototype, {})
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
-  //console.log(suite, test.name());
-  console.log("add result", suite, test.name(), result)
-  console.log("result list", this.resultList);
+  //console.log("add result", suite, test.name(), result)
   this.resultList[suite].push({ suite: suite, test: test, result: result })
 
   // setup/update the comments
-  var comments = [];
-  var commentCollector = [];
   var columnHeads = this.columnHeads;
   var rows = this.rows;
-  _.each(rows, function(row, rowIndex) {
-    commentCollector[rowIndex] = {}
-    _.each(columnHeads, function(columnHead) {
-      // keep an object with each key
-      commentCollector[rowIndex][columnHead] = [];
-    });
-  });
-
-  // loop over resultList
-  var resultList = this.resultList
-  Object.keys(resultList).forEach(function(suite) {
-    resultList[suite].forEach(function(d){
-      console.log("RESULT", suite, d)
-      if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
-        console.log("HIGHLIGHT CELLS", d.result.highlightCells)
-        //console.log("")
-        _.each(rows, function(row, rowIndex) {
-          _.each(columnHeads, function(columnHead) {
-            var value = d.result.highlightCells[rowIndex][columnHead];
-            //console.log("value", value, rowIndex, columnHead)
-            if(value) {
-              //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
-              commentCollector[rowIndex][columnHead].push(d.test.name())
-            }
-          })
-        });
-      }
-    })
-  })
-  console.log("COMMENT COLLECTOR", commentCollector)
-  _.each(rows, function(row, rowIndex) {
-    _.each(columnHeads, function(columnHead, columnIndex) {
-      var array = commentCollector[rowIndex][columnHead]
-      if(array && array.length && array.length > 0) {
-        var string = array.join("\n")
-        comments.push({row: rowIndex, col: columnIndex, comment: string})
-      }
-    });
-  });
-  console.log("COMMENTS", comments)
-  this.handsOnTable.updateSettings({cell: comments})
+  var resultList = this.resultList;
+  var handsOnTable = this.handsOnTable;
+  renderCellComments(rows, columnHeads, resultList, handsOnTable);
 
   var container = d3.select(".step-3-results ." + suite)
   var tests = container.selectAll(".test")
@@ -147,7 +105,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     } else if (d.result.passed === false) {
       passFailIconHtml += "<div class='icon icon-cancel-circled'></div>"
     } else {
-      passFailIconHtml += "<div class='icon icon-neutral'></div>" 
+      passFailIconHtml += "<div class='icon icon-neutral'></div>"
     }
     return passFailIconHtml
   })
@@ -196,32 +154,23 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         var col = Math.floor(x / width * cols.length);
         //console.log("row, col", row, col)
         handsOnTable.selectCell(row, col, row, col, true);
-        //handsOnTable.render();
-
-        /*
-        grid.scrollCellIntoView(row, col)
-        grid.scrollRowIntoView(row)
-        grid.removeCellCssStyles("highlighted")
-        */
-
-        /*
-        var column = cols[col];
-        var changes = {}
-        changes[row] = {}
-        changes[row][column] = "changed"
-        grid.addCellCssStyles("highlighted", changes)
-        */
-        //grid.scrollRowToTop(row)
       })
     d3.select(this).select("canvas").call(drag)
   })
 }
+
 HTMLRenderer.prototype.done = function() {
+  var columnHeads = this.columnHeads;
+  var rows = this.rows;
+  var resultList = this.resultList;
+  var handsOnTable = this.handsOnTable;
+  renderCellComments(rows, columnHeads, resultList, handsOnTable)
+}
+
+function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
   // setup/update the comments
   var comments = [];
   var commentCollector = [];
-  var columnHeads = this.columnHeads;
-  var rows = this.rows;
   _.each(rows, function(row, rowIndex) {
     commentCollector[rowIndex] = {}
     _.each(columnHeads, function(columnHead) {
@@ -231,13 +180,9 @@ HTMLRenderer.prototype.done = function() {
   });
 
   // loop over resultList
-  var resultList = this.resultList
   Object.keys(resultList).forEach(function(suite) {
     resultList[suite].forEach(function(d){
-      console.log("RESULT", suite, d)
       if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
-        console.log("HIGHLIGHT CELLS", d.result.highlightCells)
-        //console.log("")
         _.each(rows, function(row, rowIndex) {
           _.each(columnHeads, function(columnHead) {
             var value = d.result.highlightCells[rowIndex][columnHead];
@@ -251,7 +196,6 @@ HTMLRenderer.prototype.done = function() {
       }
     })
   })
-  console.log("COMMENT COLLECTOR", commentCollector)
   _.each(rows, function(row, rowIndex) {
     _.each(columnHeads, function(columnHead, columnIndex) {
       var array = commentCollector[rowIndex][columnHead]
@@ -261,6 +205,5 @@ HTMLRenderer.prototype.done = function() {
       }
     });
   });
-  console.log("COMMENTS", comments)
-  this.handsOnTable.updateSettings({cell: comments})
+  handsOnTable.updateSettings({cell: comments})
 }

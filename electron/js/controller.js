@@ -145,8 +145,8 @@ function renderStep2(processorConfig) {
 
   var testsEnter = tests.enter().append("div")
   .attr("class", function(d) { return d.active ? "test active" : "test" })
-  
-  
+
+
   onOff = testsEnter.append("div").classed("onoff", true)
   onOff.append("input")
     .attr({
@@ -213,7 +213,7 @@ function handleFileSelect(evt) {
   if(!files || !files.length) return;
   for(var i = 0, f; i < files.length; i++) {
     var file = files[i];
-    console.log("loading file", file.name, file);
+    //console.log("loading file", file.name, file);
 
 
     var reader = new FileReader();
@@ -244,7 +244,7 @@ function handleFileSelect(evt) {
 
 // if we receive a saved file we load it
 ipc.on("last-file-selected", function(event, file) {
-  console.log("last file selected was", file)
+  //console.log("last file selected was", file)
   lastProcessorConfig = {
     fileString: file.contents,
     filename: file.name,
@@ -257,10 +257,9 @@ ipc.on("last-file-selected", function(event, file) {
 function loadLastFile() {
   renderStep1(lastProcessorConfig);
   renderStep2(lastProcessorConfig);
-  renderStep3(lastProcessorConfig);
   currentStep = 3;
   renderNav();
-  Processor.run(lastProcessorConfig)
+  renderCurrentStep();
 }
 
 
@@ -307,7 +306,7 @@ function handleSpreadsheet() {
       console.log(err);
     }
     else if (sheet) {
-      console.log("sheet", sheet);
+      //console.log("sheet", sheet);
       var column_names = Object.keys(sheet.data[0]);
       var config = {
         //fileString: contents,
