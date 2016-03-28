@@ -88,7 +88,7 @@ function deleteTest(test) {
 
 function duplicateTest(test) {
   var newTest = {
-    name: test.name(),
+    name: test.name() + " copy",
     description: test.description(),
     filename: uuid.v1(),
     local: true,
