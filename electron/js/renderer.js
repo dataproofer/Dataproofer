@@ -69,7 +69,7 @@ HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log("add result", suite, test.name(), result)
-  this.resultList[suite].push({ suite: suite, test: test, result: result })
+  this.resultList[suite].push({ suite: suite, test: test, result: result || {} })
 
   // setup/update the comments
   var columnHeads = this.columnHeads;

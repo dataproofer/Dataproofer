@@ -3,6 +3,17 @@ var Processor = require('dataproofer').Processing
 var gsheets = require('gsheets')
 var ipc = require("electron").ipcRenderer
 
+
+// libraries required to run test inline
+var requireFromString = require('require-from-string')
+var DataprooferTest = require("dataproofertest-js");
+var util = require("dataproofertest-js/util");
+var ss = require("simple-statistics");
+var _ = require("lodash");
+var d3 = require("d3");
+var uuid = require('uuid');
+
+
 console.log("dataproofer app version", require('./package.json').version)
 console.log("dataproofer lib version", require('dataproofer').version)
 
@@ -25,6 +36,71 @@ SUITES.forEach(function(suite) {
     test.active = true;
   })
 })
+// We receive this event on startup. It should happen before the suites are rendered;
+// There is a possible edge case when loading from last file where this could
+// happen after step 2 & 3, thereby missing the saved ones until next rerendering.
+ipc.on("load-saved-tests", function(evt, loaded) {
+  console.log("loading saved tests", loaded)
+
+  var suite = {
+    name: "local-tests",
+    fullName: "Locally saved tests",
+    active: true,
+    tests: []
+  }
+  loaded.forEach(function(testFile){
+    var test = loadTest(testFile);
+    if(test) {
+      suite.tests.push(test);
+    }
+  })
+  SUITES.splice(0, 0, suite);
+})
+
+function loadTest(testFile) {
+  var test = new DataprooferTest();
+  var methodology;
+  try {
+    eval("methodology = (function(){ return " + testFile.methodology + "})();");
+  } catch (e) {
+    methodology = function(rows, columnHeads) {
+      console.log("error loading test", testFile)
+      console.error(e.stack)
+    }
+    test.code = testFile.methodology
+  }
+  test.name(testFile.name)
+    .description(testFile.description)
+    .methodology(methodology)
+  test.local = true;
+  test.active = true;
+  test.filename = testFile.filename;
+  return test
+}
+
+function deleteTest(test) {
+  ipc.send("delete-test", test.filename)
+  var localSuite = SUITES[0];
+  var index = localSuite.tests.indexOf(test)
+  localSuite.tests.splice(index, 1)
+  renderCurrentStep();
+}
+
+function duplicateTest(test) {
+  var newTest = {
+    name: test.name() + " copy",
+    description: test.description(),
+    filename: uuid.v1(),
+    local: true,
+    active: true,
+    methodology: test._methodology.toString()
+  }
+  ipc.send("save-test", newTest)
+  var loadedTest = loadTest(newTest)
+  SUITES[0].tests.push(loadedTest); // assuming the first suite is always local
+  renderCurrentStep(); // we should only be here on step 2
+  return loadedTest
+}
 
 ipc.on("last-test-config", function(event, testConfig) {
   loadTestConfig(testConfig)
@@ -139,7 +215,6 @@ function renderStep1(processorConfig) {
 function renderStep2(processorConfig) {
   var container = d3.select(".step-2-select-content")
 
-
   d3.select(".step-2-select").style("display", "block")
   d3.select(".step-3-results").style("display", "none")
   d3.select(".step-1-data").style("display", "none")
@@ -205,17 +280,46 @@ function renderStep2(processorConfig) {
 
   testsEnter.append("div").classed("message", true)
 
+
   tests.select("div.message").html(function(d) {
     var html = '<h3 class="test-header">' + (d.name() || "") + '</h3>'
     html += d.description() || ""
     return html
   })
+
   tests.select('label')
     .on("click", function(d) {
       console.log("test", d)
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
       saveTestConfig();
+    })
+
+
+  testsEnter.append("button").classed("edit-test", true)
+    .text(function(d) {
+      if(d.local) return "Edit source"
+      return "View source"
+    })
+    .on("click", function(d) {
+      renderTestEditor(d);
+    })
+  testsEnter.append("button").classed("delete-test", true)
+    .text("Delete test")
+    .style("display", function(d) {
+      if(d.filename) return "block";
+      return "none"
+    })
+    .on("click", function(d) {
+      deleteTest(d);
+    })
+  testsEnter.append("button").classed("duplicate-test", true)
+    .text(function(d) {
+      if(d.local) return "Duplicate test"
+      return "Duplicate to local suite"
+    })
+    .on("click", function(d) {
+      duplicateTest(d);
     })
 
   d3.select("#current-file-name").text(processorConfig.filename)
@@ -282,7 +386,6 @@ function handleFileSelect(evt) {
   reader.readAsText(file);
 }
 
-// if we receive a saved file we load it
 ipc.on("last-file-selected", function(event, file) {
   //console.log("last file selected was", file)
   lastProcessorConfig = {
@@ -292,16 +395,16 @@ ipc.on("last-file-selected", function(event, file) {
     renderer: HTMLRenderer,
     input: {}
   }
-
+  loadLastFile();
 })
 function loadLastFile() {
   renderStep1(lastProcessorConfig);
-  renderStep2(lastProcessorConfig);
-  currentStep = 3;
+  currentStep = 2;
+  //renderStep2(lastProcessorConfig);
+  //currentStep = 3;
   renderNav();
   renderCurrentStep();
 }
-
 
 d3.select('#spreadsheet-button').on('click', handleSpreadsheet);
 d3.select("#spreadsheet-input").on("keyup", function() {
@@ -367,6 +470,117 @@ function handleSpreadsheet() {
     }
   }
 };
+
+var testEditor = d3.select(".test-editor")
+testEditor.style("display", "none")
+
+function hideEditor() {
+  testEditor.style("display", "none")
+  d3.select("#info-top-bar").style("display", "block")
+}
+
+// setup CodeMirror editor
+function renderTestEditor(test) {
+
+  d3.select("#info-top-bar").style("display", "none")
+  testEditor.select("#test-editor-js").selectAll("*").remove();
+  testEditor.selectAll("button").remove();
+
+  var cancelTest = testEditor.append("button").attr("id", "cancel-test").text("Cancel")
+  .on("click", function() {
+    hideEditor();
+  })
+
+  var copyTest = testEditor.append("button").attr("id", "copy-test").text("Copy")
+  .on("click", function() {
+    // saving without passing in the filename will inform the server
+    // to generate a new filename
+    /*
+    var newTestFile = save(uuid.v1());
+    var newTest = loadTest(newTestFile);
+    SUITES[0].tests.push(newTest); // assuming the first suite is always local
+    renderCurrentStep(); // we should only be here on step 2
+    */
+    duplicateTest(test)
+    hideEditor();
+  })
+
+  var saveTest = testEditor.append("button").attr("id", "save-test").text("Save")
+  .style("display", "none")
+  .on("click", function() {
+    save(test.filename);
+    renderCurrentStep();
+    hideEditor();
+  })
+  if(test.local) {
+    saveTest.style("display", "block")
+  }
+
+  testEditor.style("display", "block")
+  var nameInput = d3.select("#test-editor-name")
+  nameInput.node().value = test.name();
+
+  var descriptionInput = d3.select("#test-editor-description")
+  descriptionInput.node().value = test.description();
+
+  var methodology;
+  if(test.code) {
+    // if there was an error with the test, we want to load the last code string
+    // rather than try using the methodology. this property will only be present
+    // if loadTest failed to eval the methodology
+    methodology = test.code;
+  }
+  else {
+    methodology = test._methodology.toString();
+  }
+
+  codeMirror = window.CodeMirror(d3.select("#test-editor-js").node(), {
+    tabSize: 2,
+    value: methodology,
+    mode: 'javascript',
+    htmlMode: true,
+    lineNumbers: true,
+    theme: 'mdn-like',
+    lineWrapping: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    extraKeys: {
+      'Cmd-/' : 'toggleComment',
+      'Ctrl-/' : 'toggleComment'
+    },
+    viewportMargin: Infinity
+  });
+
+  function save(filename) {
+    var name = nameInput.node().value
+    var newTest = {
+      name: name,
+      description: descriptionInput.node().value,
+      filename: filename,
+      local: true,
+      active: true,
+      methodology: codeMirror.getValue()
+    }
+
+    // if we had code saved on here, remove it
+    delete test.code;
+
+    console.log("save!", newTest)
+    ipc.send("save-test", newTest)
+    test.name(newTest.name);
+    test.description(newTest.description)
+    var loadedTest = loadTest(newTest)
+    test.methodology(loadedTest.methodology());
+    test.code = loadedTest.code; // if there was an error loading, it will appear here
+    return newTest;
+  }
+
+  /*
+  nameInput.on("change", save)
+  descriptionInput.on("change", save)
+  codeMirror.on("change", save)
+  */
+}
 
 // Enable context menu
 // http://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
