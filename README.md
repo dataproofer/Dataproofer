@@ -44,7 +44,7 @@ Proof your data, get your results, and feel confident about your dataset.
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
 * [Thank You]()
 
-![](http://i.imgur.com/MxPc5Md.png)
+![](http://i.imgur.com/3YekdjW.png)
 
 ## Test Suites
 ### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
@@ -66,7 +66,7 @@ Proof your data, get your results, and feel confident about your dataset.
 + Check for outliers within a column relative to the column's median
 + Check for outliers within a column relative to the column's mean
 
-![](http://i.imgur.com/MxPc5Md.png)
+![](http://i.imgur.com/3YekdjW.png)
 
 ## Development
 
@@ -84,6 +84,8 @@ npm run electron
 ```
 
 If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
+
+![](http://i.imgur.com/3YekdjW.png)
 
 ### Creating a new test
 + Make a copy of the [basic test template](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
@@ -157,7 +159,7 @@ git push && git push --tags
 ```
 The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases) for the tag you pushed, and should be zipped up first (Right click and choose "Compress Dataproofer")
 
-![](http://i.imgur.com/MxPc5Md.png)
+![](http://i.imgur.com/3YekdjW.png)
 
 # Sources
 
