@@ -70,11 +70,14 @@ Proof your data, get your results, and feel confident about your dataset.
 
 ## Development
 
-Dataproofer depends on several modules which contain all the tests. We have included a convenience script for cloning and linking them so you can quickly get started with modifying or creating your own tests.
+This repo contains two pieces of code, the core library that runs tests and the electron app which houses the UI. You can get them ready like so:
 ```
 git clone git@github.com:dataproofer/Dataproofer.git
 cd Dataproofer
-./init.sh
+cd src
+npm install
+cd ../electron
+npm install
 ```
 
 You can run the development version of the app from the `electron` folder:
@@ -84,6 +87,20 @@ npm run electron
 ```
 
 If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
+
+### Modifying a test suite
+All tests belong to a suite, which is essentially just a node module that packages a group of tests together. In order to modify a test or add a new test to a suite, you will want to clone the project and link it. Let's say we want to modify the [core-suite](https://github.com/dataproofer/core-suite).
+```
+git clone https://github.com/dataproofer/core-suite.git
+cd core-suite
+npm install
+npm link
+
+cd ../Dataproofer
+cd electron
+npm link dataproofer-core-suite
+```
+Now when you change anything inside `core-suite` (like editing a test or making a new one) you can see your changes reflected when you run the app. Follow the instructions below for creating a new test in your suite!
 
 ![](http://i.imgur.com/3YekdjW.png)
 
