@@ -1,6 +1,6 @@
 # Dataproofer
 
-![](http://i.imgur.com/ZhUKb0G.png)
+![](http://i.imgur.com/n38R14S.png)
 
 ## A proofreader for your data.
 
