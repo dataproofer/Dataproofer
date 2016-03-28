@@ -12,14 +12,25 @@ This used to be a long manual process, using valuable time and introducing the p
 
 Data proofer is built to automate this process of checking a dataset for errors or potential mistakes.
 
+## Getting started
+Download a .zip of the latest release [from the Dataproofer releases page](https://github.com/dataproofer/Dataproofer/releases).
+
+Drag the app into your applications folder.
+
+Select your dataset, which can be either a CSV on your computer, or a Google Sheet that you’ve published to the web.
+
+Once you select your dataset, you can choose which suites and tests run by turning them on or off.
+
+Proof your data, get your results, and feel confident about your dataset.
+
 ## Table of Contents
 
+* [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
 * [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
   * [Stats](https://github.com/dataproofer/Dataproofer#stats-suite)
-* [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
 * [Development](https://github.com/dataproofer/Dataproofer#development)
   * [Create a new test](https://github.com/dataproofer/Dataproofer#creating-a-new-test)
     * [name](https://github.com/dataproofer/Dataproofer#name)
@@ -32,6 +43,8 @@ Data proofer is built to automate this process of checking a dataset for errors 
   * [Releasing new versions](https://github.com/dataproofer/Dataproofer#release)
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
 * [Thank You]()
+
+![](http://i.imgur.com/MxPc5Md.png)
 
 ## Test Suites
 ### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
@@ -53,16 +66,7 @@ Data proofer is built to automate this process of checking a dataset for errors 
 + Check for outliers within a column relative to the column's median
 + Check for outliers within a column relative to the column's mean
 
-## Getting started
-Download a .zip of the latest release [from the Dataproofer releases page](https://github.com/dataproofer/Dataproofer/releases).
-
-Drag the app into your applications folder.
-
-Select your dataset, which can be either a CSV on your computer, or a Google Sheet that you’ve published to the web.
-
-Once you select your dataset, you can choose which suites and tests run by turning them on or off.
-
-Proof your data, get your results, and feel confident about your dataset.
+![](http://i.imgur.com/MxPc5Md.png)
 
 ## Development
 
@@ -80,8 +84,6 @@ npm run electron
 ```
 
 If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
-
-
 
 ### Creating a new test
 + Make a copy of the [basic test template](https://github.com/dataproofer/suite-template/blob/master/src/myTest.js)
@@ -155,8 +157,9 @@ git push && git push --tags
 ```
 The binary (Dataproofer.app) can be uploaded to the [releases page](https://github.com/dataproofer/Dataproofer/releases) for the tag you pushed, and should be zipped up first (Right click and choose "Compress Dataproofer")
 
+![](http://i.imgur.com/MxPc5Md.png)
 
-## Sources
+# Sources
 
 - [A Guide to Bulletproofing Your Data](https://github.com/propublica/guides/blob/master/data-bulletproofing.md), by [ProPublica](https://www.propublica.org/)
 - [Checklist to bulletproof your data work](http://www.tommeagher.com/blog/2012/06/checklist.html), by [Tom Meagher](http://www.tommeagher.com/blog/2012/06/checklist.html) (Data Editor, [The Marshall Project](https://www.themarshallproject.org))
@@ -168,7 +171,7 @@ The binary (Dataproofer.app) can be uploaded to the [releases page](https://gith
 
 A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation](http://knightfoundation.org/). This project was funded in part by the Knight Foundation's [Prototype Fund](http://knightfoundation.org/funding-initiatives/knight-prototype-fund/).
 
-### Special Thanks
+# Special Thanks
 * Alex Koppelman (interviewee), Editorial Director @ Vocativ
 * Allee Manning (interviewee), Data Reporter @ Vocativ
 * Allegra Denton (design consulting), Designer @ Vocativ
@@ -178,8 +181,9 @@ A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation
 * Gerald Rich (lead developer), Interactive Producer @ Vocativ
 * Ian Johnson (lead developer), Dataproofer
 * Joe Presser (video producer), Dataproofer
+* Julia Kastner (concept & name consulting), Project Manager @ Vocativ
 * Kelli Vanover (design consulting), Product Manager @ Vocativ
 * Markham Nolan (interviewee), Visuals Editor @ Vocativ
 * Rob Di Ieso (design consulting), Art Director @ Vocativ
 
-...And the countless journalists who've encouraged us along the way. Thank you!
+... and the countless journalists who've encouraged us along the way. Thank you!
