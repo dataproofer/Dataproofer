@@ -431,9 +431,9 @@ General Suites and test
 }
 
 .suite .test .fingerprint {
-  width: 200px;
-  float: right;
-  margin-right: 25px;
+  /*width: 200px;*/
+  /*float: right;*/
+  /*margin-right: 25px;*/
   cursor: pointer;
 }
 

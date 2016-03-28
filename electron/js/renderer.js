@@ -118,21 +118,18 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     return html
   })
 
-  var handsOnTable = this.handsOnTable
-  tests.select("div.fingerprint").each(function(d) {
-    if(!d.result.highlightCells || !d.result.highlightCells.length) return;
-    // TODO: put this in a component/reusable chart thingy
+  function drawFingerPrint(d, handsOnTable, that) {
     var width = 200;
-    var height = 100;
+    var height = 200;
     var cellWidth = 2;
     var cellHeight = 1;
 
-    var rows = d.result.highlightCells.slice(0, 500);
+    var rows = d.result.highlightCells;
     var cols = Object.keys(rows[0]);
     cellWidth = width / cols.length;
-    height = cellHeight * rows.length;
+    cellHeight = height / rows.length;
 
-    var canvas = d3.select(this).select("canvas").node();
+    var canvas = d3.select(that).select("canvas").node();
     var context = canvas.getContext("2d")
     canvas.width = width;
     canvas.height = height;
@@ -146,7 +143,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
     var drag = d3.behavior.drag()
       .on("drag", function(d,i){
-        var mouse = d3.mouse(this);
+        var mouse = d3.mouse(that);
         var x = mouse[0];
         var y = mouse[1];
         if(y < 0) y = 0;
@@ -155,7 +152,14 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         //console.log("row, col", row, col)
         handsOnTable.selectCell(row, col, row, col, true);
       })
-    d3.select(this).select("canvas").call(drag)
+    d3.select(that).select("canvas").call(drag)
+  }
+
+  var handsOnTable = this.handsOnTable
+  tests.select("div.fingerprint").each(function(d) {
+    if(!d.result.highlightCells || !d.result.highlightCells.length) return;
+    var that = this;
+    drawFingerPrint(d, handsOnTable, that);
   })
 }
 
