@@ -238,11 +238,11 @@ button.run-tests {
 
 .test-editor {
   position: fixed;
-  top: 87px;
+  /*top: 87px;*/
+  top: 0;
   bottom: 0px;
   left: 0px;
   right: 0px;
-  border-top: 4px solid #777;
   background-color: rgba(255, 255, 255, 0.95);
 }
 .test-editor h3 {
@@ -278,6 +278,7 @@ button.run-tests {
 
 .test-editor button {
   display: inline-block;
+  float: left;
   font-size: 16px;
   border: 0;
   padding: 0.5em;
@@ -294,8 +295,13 @@ button.run-tests {
   background-color: #ccc;
 }
 #save-test {
+  margin-left: 10px;
   background-color: #ED4224;
   color: white;
+}
+#copy-test {
+  margin-left: 10px;
+  background-color: #7fc;
 }
 
 /* =============================================================================

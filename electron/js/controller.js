@@ -3,6 +3,17 @@ var Processor = require('dataproofer').Processing
 var gsheets = require('gsheets')
 var ipc = require("electron").ipcRenderer
 
+
+// libraries required to run test inline
+var requireFromString = require('require-from-string')
+var DataprooferTest = require("dataproofertest-js");
+var util = require("dataproofertest-js/util");
+var ss = require("simple-statistics");
+var _ = require("lodash");
+var d3 = require("d3");
+var uuid = require('uuid');
+
+
 console.log("dataproofer app version", require('./package.json').version)
 console.log("dataproofer lib version", require('dataproofer').version)
 
@@ -25,6 +36,59 @@ SUITES.forEach(function(suite) {
     test.active = true;
   })
 })
+// We receive this event on startup. It should happen before the suites are rendered;
+// There is a possible edge case when loading from last file where this could
+// happen after step 2 & 3, thereby missing the saved ones until next rerendering.
+ipc.on("load-saved-tests", function(evt, loaded) {
+  console.log("loading saved tests", loaded)
+
+  var suite = {
+    name: "local-tests",
+    fullName: "Locally saved tests",
+    active: true,
+    tests: []
+  }
+  loaded.forEach(function(testFile){
+    var test = loadTest(testFile);
+    if(test) {
+      suite.tests.push(test);
+    }
+  })
+  SUITES.splice(0, 0, suite);
+})
+
+function loadTest(testFile) {
+  var test = new DataprooferTest();
+  var methodology;
+  try {
+    eval("methodology = (function(){ return " + testFile.methodology + "})();");
+  } catch (e) {
+    methodology = function(rows, columnHeads) {
+      console.log("error loading test", testFile)
+      console.error(e)
+    }
+    test.code = testFile.methodology
+  }
+  console.log("hmmm", methodology)
+  test.name(testFile.name)
+    .description(testFile.description)
+    .methodology(methodology)
+  test.local = true;
+  test.active = true;
+  test.filename = testFile.filename;
+  return test
+}
+
+function deleteTest(test) {
+  ipc.send("delete-test", test.filename)
+  var localSuite = SUITES[0];
+  var index = localSuite.tests.indexOf(test)
+  console.log("index", index)
+  localSuite.tests.splice(index, 1)
+  console.log("tests", localSuite.tests)
+  renderCurrentStep();
+}
+
 
 // We keep around a reference to the most recently used processorConfig
 // it can be set on load (the node process sends it over)
@@ -99,7 +163,6 @@ function renderStep1(processorConfig) {
 function renderStep2(processorConfig) {
   var container = d3.select(".step-2-select-content")
 
-
   d3.select(".step-2-select").style("display", "block")
   d3.select(".step-3-results").style("display", "none")
   d3.select(".step-1-data").style("display", "none")
@@ -165,18 +228,11 @@ function renderStep2(processorConfig) {
 
   testsEnter.append("div").classed("message", true)
 
+
   tests.select("div.message").html(function(d) {
     var html = '<h3 class="test-header">' + (d.name() || "") + '</h3>'
     html += d.description() || ""
     return html
-  })
-  .on("click", function(d) {
-    console.log("TEST", d)
-    renderTestEditor({
-      name: d.name(),
-      description: d.description(),
-      code: d._methodology.toString()
-    })
   })
 
   tests.select('label')
@@ -185,6 +241,27 @@ function renderStep2(processorConfig) {
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active)
       // saveTestConfig();
+    })
+
+
+  testsEnter.append("button").classed("edit-test", true)
+    .text(function(d) {
+      if(d.local) return "Edit"
+      return "View"
+    })
+    .on("click", function(d) {
+      console.log("TEST", d)
+      renderTestEditor(d);
+    })
+  testsEnter.append("button").classed("delete-test", true)
+    .text("Delete")
+    .style("display", function(d) {
+      if(d.filename) return "block";
+      return "none"
+    })
+    .on("click", function(d) {
+      deleteTest(d);
+
     })
 
   d3.select("#current-file-name").text(processorConfig.filename)
@@ -271,7 +348,6 @@ function loadLastFile() {
   renderCurrentStep();
 }
 
-
 d3.select('#spreadsheet-button').on('click', handleSpreadsheet);
 d3.select("#spreadsheet-input").on("keyup", function() {
   if(d3.event.keyIdentifier == 'Enter') {
@@ -340,23 +416,67 @@ function handleSpreadsheet() {
 var testEditor = d3.select(".test-editor")
 testEditor.style("display", "none")
 
-d3.select("#cancel-test").on("click", function() {
+function hideEditor() {
   testEditor.style("display", "none")
-})
+  d3.select("#info-top-bar").style("display", "block")
+}
+
 // setup CodeMirror editor
 function renderTestEditor(test) {
+
+  d3.select("#info-top-bar").style("display", "none")
   testEditor.select("#test-editor-js").selectAll("*").remove();
+  testEditor.selectAll("button").remove();
+
+  var cancelTest = testEditor.append("button").attr("id", "cancel-test").text("Cancel")
+  .on("click", function() {
+    hideEditor();  
+  })
+
+  var copyTest = testEditor.append("button").attr("id", "copy-test").text("Copy")
+  .on("click", function() {
+    // saving without passing in the filename will inform the server
+    // to generate a new filename
+    var newTestFile = save(uuid.v1());
+    var newTest = loadTest(newTestFile);
+    SUITES[0].tests.push(newTest); // assuming the first suite is always local
+    renderCurrentStep(); // we should only be here on step 2
+    hideEditor();
+  })
+
+  var saveTest = testEditor.append("button").attr("id", "save-test").text("Save")
+  .style("display", "none")
+  .on("click", function() {
+    save(test.filename);
+    renderCurrentStep();
+    hideEditor();
+  })
+  if(test.local) {
+    saveTest.style("display", "block")
+  }
 
   testEditor.style("display", "block")
   var nameInput = d3.select("#test-editor-name")
-  nameInput.node().value = test.name;
+  nameInput.node().value = test.name();
 
   var descriptionInput = d3.select("#test-editor-description")
-  descriptionInput.node().value = test.description;
+  descriptionInput.node().value = test.description();
+
+  var methodology;
+  console.log("RENDERING TEST", test, test.code)
+  if(test.code) {
+    // if there was an error with the test, we want to load the last code string
+    // rather than try using the methodology. this property will only be present
+    // if loadTest failed to eval the methodology
+    methodology = test.code;
+  }
+  else {
+    methodology = test._methodology.toString();
+  }
 
   codeMirror = window.CodeMirror(d3.select("#test-editor-js").node(), {
     tabSize: 2,
-    value: test.code,
+    value: methodology,
     mode: 'javascript',
     htmlMode: true,
     lineNumbers: true,
@@ -371,18 +491,28 @@ function renderTestEditor(test) {
     viewportMargin: Infinity
   });
 
-  function save() {
-    var test = {
-      name: nameInput.node().value,
+  function save(filename) {
+    var name = nameInput.node().value
+    var newTest = {
+      name: name,
       description: descriptionInput.node().value,
-      code: codeMirror.getValue()
+      filename: filename,
+      local: true,
+      active: true,
+      methodology: codeMirror.getValue()
     }
-    console.log("save!", test)
-  }
-  var saveTest = d3.select("#save-test")
-  saveTest.on("click", save)
-  if(test.local) {
-    saveTest.style("display", "block")
+
+    // if we had code saved on here, remove it
+    delete test.code;
+
+    console.log("save!", newTest)
+    ipc.send("save-test", newTest)
+    test.name(newTest.name);
+    test.description(newTest.description)
+    var loadedTest = loadTest(newTest)
+    test.methodology(loadedTest.methodology());
+    test.code = loadedTest.code; // if there was an error loading, it will appear here
+    return newTest;
   }
 
   /*
