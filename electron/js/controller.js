@@ -65,11 +65,10 @@ function loadTest(testFile) {
   } catch (e) {
     methodology = function(rows, columnHeads) {
       console.log("error loading test", testFile)
-      console.error(e)
+      console.error(e.stack)
     }
     test.code = testFile.methodology
   }
-  console.log("hmmm", methodology)
   test.name(testFile.name)
     .description(testFile.description)
     .methodology(methodology)
@@ -83,12 +82,25 @@ function deleteTest(test) {
   ipc.send("delete-test", test.filename)
   var localSuite = SUITES[0];
   var index = localSuite.tests.indexOf(test)
-  console.log("index", index)
   localSuite.tests.splice(index, 1)
-  console.log("tests", localSuite.tests)
   renderCurrentStep();
 }
 
+function duplicateTest(test) {
+  var newTest = {
+    name: test.name(),
+    description: test.description(),
+    filename: uuid.v1(),
+    local: true,
+    active: true,
+    methodology: test._methodology.toString()
+  }
+  ipc.send("save-test", newTest)
+  var loadedTest = loadTest(newTest)
+  SUITES[0].tests.push(loadedTest); // assuming the first suite is always local
+  renderCurrentStep(); // we should only be here on step 2
+  return loadedTest
+}
 
 // We keep around a reference to the most recently used processorConfig
 // it can be set on load (the node process sends it over)
@@ -246,22 +258,28 @@ function renderStep2(processorConfig) {
 
   testsEnter.append("button").classed("edit-test", true)
     .text(function(d) {
-      if(d.local) return "Edit"
-      return "View"
+      if(d.local) return "Edit source"
+      return "View source"
     })
     .on("click", function(d) {
-      console.log("TEST", d)
       renderTestEditor(d);
     })
   testsEnter.append("button").classed("delete-test", true)
-    .text("Delete")
+    .text("Delete test")
     .style("display", function(d) {
       if(d.filename) return "block";
       return "none"
     })
     .on("click", function(d) {
       deleteTest(d);
-
+    })
+  testsEnter.append("button").classed("duplicate-test", true)
+    .text(function(d) {
+      if(d.local) return "Duplicate test"
+      return "Duplicate to local suite"
+    })
+    .on("click", function(d) {
+      duplicateTest(d);
     })
 
   d3.select("#current-file-name").text(processorConfig.filename)
@@ -430,17 +448,20 @@ function renderTestEditor(test) {
 
   var cancelTest = testEditor.append("button").attr("id", "cancel-test").text("Cancel")
   .on("click", function() {
-    hideEditor();  
+    hideEditor();
   })
 
   var copyTest = testEditor.append("button").attr("id", "copy-test").text("Copy")
   .on("click", function() {
     // saving without passing in the filename will inform the server
     // to generate a new filename
+    /*
     var newTestFile = save(uuid.v1());
     var newTest = loadTest(newTestFile);
     SUITES[0].tests.push(newTest); // assuming the first suite is always local
     renderCurrentStep(); // we should only be here on step 2
+    */
+    duplicateTest(test)
     hideEditor();
   })
 
@@ -463,7 +484,6 @@ function renderTestEditor(test) {
   descriptionInput.node().value = test.description();
 
   var methodology;
-  console.log("RENDERING TEST", test, test.code)
   if(test.code) {
     // if there was an error with the test, we want to load the last code string
     // rather than try using the methodology. this property will only be present
@@ -521,7 +541,6 @@ function renderTestEditor(test) {
   codeMirror.on("change", save)
   */
 }
-
 
 // Enable context menu
 // http://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
