@@ -124,7 +124,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var cellWidth = 2;
     var cellHeight = 1;
 
-    var rows = d.result.highlightCells;
+    var rows = (d.result.highlightCells > 500) ? d.result.highlightCells.splice(0, 500) : d.result.highlightCells;
     var cols = Object.keys(rows[0]);
     cellWidth = width / cols.length;
     cellHeight = height / rows.length;
