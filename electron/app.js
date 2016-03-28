@@ -8,6 +8,8 @@ var uuid = require('uuid');
 const ipcMain = electron.ipcMain;
 fs = require('fs')
 
+var DEVELOPMENT = process.argv[2] && process.argv[2] == "--dev"
+
 // Report crashes to our server.
 //electron.crashReporter.start();
 
@@ -54,7 +56,9 @@ app.on('ready', function() {
   });
 
   var webContents = mainWindow.webContents;
-  webContents.openDevTools();
+
+  if(DEVELOPMENT)
+    webContents.openDevTools();
 
   const datadir = app.getPath('userData')
   const lastFileStorage = datadir + '/lastFileSelected.json'
@@ -130,7 +134,7 @@ app.on('ready', function() {
 
     ipcMain.on('delete-test', function(evt, filename) {
       console.log("delete", filename)
-      fs.unlink(savedTestsStorage + "/" + filename, function(err) { if(err) console.log(err) })
+      fs.unlink(savedTestsStorage + "/" + filename, function(err) { /* if(err) console.log(err) */ })
     })
 
 

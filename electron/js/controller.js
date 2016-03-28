@@ -395,13 +395,13 @@ ipc.on("last-file-selected", function(event, file) {
     renderer: HTMLRenderer,
     input: {}
   }
-  loadLastFile();
+  //loadLastFile();
 })
 function loadLastFile() {
   renderStep1(lastProcessorConfig);
-  currentStep = 2;
-  //renderStep2(lastProcessorConfig);
-  //currentStep = 3;
+  //currentStep = 2;
+  renderStep2(lastProcessorConfig);
+  currentStep = 3;
   renderNav();
   renderCurrentStep();
 }

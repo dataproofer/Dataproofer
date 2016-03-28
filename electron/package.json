@@ -6,7 +6,7 @@
   "author": "DataProofer <dataproofer@dataproofer.org>",
   "license": "GPL-3.0",
   "scripts": {
-    "electron": "./node_modules/.bin/electron .",
+    "electron": "./node_modules/.bin/electron . --dev",
     "package-mac": "./node_modules/.bin/electron-packager . Dataproofer --platform=darwin --arch=x64 --icon='icons/_dp-robot.png.icns' --version=0.36.11 --ignore='(executables|sample-datasets)' --out=executables --overwrite"
   },
   "repository": {
