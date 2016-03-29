@@ -1,8 +1,8 @@
-# Dataproofer
+# Dataproofer - Launching April 19th 2016
 
 ![](http://i.imgur.com/n38R14S.png)
 
-## A proofreader for your data.
+## A proofreader for your data. Currently in beta. 
 
 Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights.
 
