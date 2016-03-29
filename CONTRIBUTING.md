@@ -25,6 +25,6 @@ And of course you can always email us: [dataproofer@dataproofer.org](mailto:data
 
 ## Code Standards
 
-- Follow our code styleguide (coming soon) and use our (linter configuration file)[https://github.com/dataproofer/Dataproofer/.eslintrc] with your preferred text editor
+- Follow our code styleguide (coming soon) and use our [linter configuration file](https://github.com/dataproofer/Dataproofer/blob/master/.eslintrc) with your preferred text editor
 - Follow our [Code of Conduct](https://github.com/dataproofer/Dataproofer/CODE_OF_CONDUCT.md).
 - Use [markdown syntax](http://daringfireball.net/projects/markdown/syntax) for all text documents.
