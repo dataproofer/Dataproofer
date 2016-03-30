@@ -26,6 +26,7 @@ Proof your data, get your results, and feel confident about your dataset.
 ## Table of Contents
 
 * [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
+* [How You Can Help]()
 * [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
@@ -42,7 +43,26 @@ Proof your data, get your results, and feel confident about your dataset.
   * [Packaging the Desktop App](https://github.com/dataproofer/Dataproofer#packaging-an-executable)
   * [Releasing new versions](https://github.com/dataproofer/Dataproofer#release)
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
-* [Thank You]()
+* [Special Thanks](https://github.com/dataproofer/Dataproofer#special-thanks)
+
+![](http://i.imgur.com/3YekdjW.png)
+
+## How You Can Help
+
+### Write a test
+See our [test to-do list](https://github.com/dataproofer/Dataproofer/issues?q=is%3Aissue+is%3Aopen+label%3Atest) and leave a comment
+
+### Add a feature
+See our [features list](https://github.com/dataproofer/Dataproofer/issues?utf8=✓&q=is%3Aissue+is%3Aopen+-label%3Atest+) and leave a comment
+
+### Short on time?
+See our [smaller issues](https://github.com/dataproofer/Dataproofer/issues?q=is%3Aopen+is%3Aissue+label%3Asmall) and leave a comment
+
+### Got more time?
+See our [medium-sized issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Amedium) and leave a comment
+
+### Plenty of time?
+See our [larger issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Alarge) and leave a comment
 
 ![](http://i.imgur.com/3YekdjW.png)
 
