@@ -6,7 +6,12 @@
 var Processing = require('./processing');
 var Rendering = require('./rendering');
 
-var pkg = require('./package.json')
+var pkg = require('./package.json');
+
+var inquirer = require("inquirer");
+var fs = require('fs');
+var _ = require('lodash');
+
 module.exports = {
   Processing: Processing,
   Rendering: Rendering,
@@ -30,13 +35,13 @@ if(require.main === module) {
     type: "checkbox", name: "suites", message: "Select optional test suites to run against your dataset.",
     // TODO: make these real suites. perhaps pull them from a config?
     choices: [
+      {name: "Info", value:"dataproofer-info-suite"},
+      {name: "Core", value:"dataproofer-info-suite"},
       {name: "Mapping & Geographic", value: "dataproofer-geo-suite"},
-      {name: "Statistics", value:"dataproofer-stats-suite"},
-      {name: "A+", value:"dataproofer-foo-suite"}
+      {name: "Statistics", value:"dataproofer-stats-suite"}
     ]
   })
 
-  var inquirer = require("inquirer");
   inquirer.prompt(questions, function( answers ) {
     // TODO: check for file existing
     var config = {
