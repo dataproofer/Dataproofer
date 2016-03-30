@@ -183,6 +183,10 @@ The binary (Dataproofer.app) can be uploaded to the [releases page](https://gith
 - [A Guide to Bulletproofing Your Data](https://github.com/propublica/guides/blob/master/data-bulletproofing.md), by [ProPublica](https://www.propublica.org/)
 - [Checklist to bulletproof your data work](http://www.tommeagher.com/blog/2012/06/checklist.html), by [Tom Meagher](http://www.tommeagher.com/blog/2012/06/checklist.html) (Data Editor, [The Marshall Project](https://www.themarshallproject.org))
 - [The Quartz guide to bad data](https://github.com/Quartz/bad-data-guide), by [Chris Groskopf](github.com/onyxfish) (Things Reporter, [Quartz](http://qz.com))
+- [OpenNewsLabs Data Smells](https://github.com/OpenNewsLabs/datasmells), by [Aurelia Moser](https://github.com/auremoser) ([Mozilla Science Lab](https://www.mozillascience.org/))
+- SRCCON panel notes
+  - [Handguns and tequila: Avoiding data disasters](https://old.etherpad-mozilla.org/MmSOTIOIDg)
+  - [How NOT to Skew with Statistics](https://old.etherpad-mozilla.org/bOwBSAeLe5)
 
 ## Thank You
 ![vocativ-logo](https://cloud.githubusercontent.com/assets/1578563/14050100/e23d531e-f276-11e5-920a-b882eca5933a.png)<br>
