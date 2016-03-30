@@ -26,13 +26,14 @@ Proof your data, get your results, and feel confident about your dataset.
 ## Table of Contents
 
 * [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
-* [How You Can Help](https://github.com/dataproofer/Dataproofer#how-you-can-help)
 * [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
   * [Stats](https://github.com/dataproofer/Dataproofer#stats-suite)
 * [Development](https://github.com/dataproofer/Dataproofer#development)
+  * [How You Can Help](https://github.com/dataproofer/Dataproofer#how-you-can-help)
+  * [Modifying a test suite](https://github.com/dataproofer/Dataproofer#modifying-a-test-suite) 
   * [Create a new test](https://github.com/dataproofer/Dataproofer#creating-a-new-test)
     * [name](https://github.com/dataproofer/Dataproofer#name)
     * [description](https://github.com/dataproofer/Dataproofer#description)
@@ -43,26 +44,7 @@ Proof your data, get your results, and feel confident about your dataset.
   * [Packaging the Desktop App](https://github.com/dataproofer/Dataproofer#packaging-an-executable)
   * [Releasing new versions](https://github.com/dataproofer/Dataproofer#release)
 * [Sources](https://github.com/dataproofer/Dataproofer#sources)
-* [Special Thanks](https://github.com/dataproofer/Dataproofer#special-thanks)
-
-![](http://i.imgur.com/3YekdjW.png)
-
-## How You Can Help
-
-### Write a test
-See our [test to-do list](https://github.com/dataproofer/Dataproofer/issues?q=is%3Aissue+is%3Aopen+label%3Atest) and leave a comment
-
-### Add a feature
-See our [features list](https://github.com/dataproofer/Dataproofer/issues?utf8=✓&q=is%3Aissue+is%3Aopen+-label%3Atest+) and leave a comment
-
-### Short on time?
-See our [smaller issues](https://github.com/dataproofer/Dataproofer/issues?q=is%3Aopen+is%3Aissue+label%3Asmall) and leave a comment
-
-### Got more time?
-See our [medium-sized issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Amedium) and leave a comment
-
-### Plenty of time?
-See our [larger issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Alarge) and leave a comment
+* [Thank You](https://github.com/dataproofer/Dataproofer#thank-you)
 
 ![](http://i.imgur.com/3YekdjW.png)
 
@@ -107,6 +89,23 @@ npm run electron
 ```
 
 If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
+
+### How You Can Help
+
+#### Write a test
+See our [test to-do list](https://github.com/dataproofer/Dataproofer/issues?q=is%3Aissue+is%3Aopen+label%3Atest) and leave a comment
+
+#### Add a feature
+See our [features list](https://github.com/dataproofer/Dataproofer/issues?utf8=✓&q=is%3Aissue+is%3Aopen+-label%3Atest+) and leave a comment
+
+#### Short on time?
+See our [smaller issues](https://github.com/dataproofer/Dataproofer/issues?q=is%3Aopen+is%3Aissue+label%3Asmall) and leave a comment
+
+#### Got more time?
+See our [medium-sized issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Amedium) and leave a comment
+
+#### Plenty of time?
+See our [larger issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Alarge) and leave a comment
 
 ### Modifying a test suite
 All tests belong to a suite, which is essentially just a node module that packages a group of tests together. In order to modify a test or add a new test to a suite, you will want to clone the project and link it. Let's say we want to modify the [core-suite](https://github.com/dataproofer/core-suite).
@@ -171,6 +170,8 @@ Helper scripts help you test and display the results of Dataproofer tests. These
 
 For more information, please see the full `util` [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md#util)
 
+![](http://i.imgur.com/3YekdjW.png)
+
 ### Troubleshooting a test that won't run
 Tests are run inside a try catch loop in `src/processing.js`. You may wish to temporarily remove the try/catch while iterating on a test.
 Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger. 
@@ -214,7 +215,7 @@ The binary (Dataproofer.app) can be uploaded to the [releases page](https://gith
 
 A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation](http://knightfoundation.org/). This project was funded in part by the Knight Foundation's [Prototype Fund](http://knightfoundation.org/funding-initiatives/knight-prototype-fund/).
 
-# Special Thanks
+### Special Thanks
 * Alex Koppelman (interviewee), Editorial Director @ Vocativ
 * Allee Manning (interviewee), Data Reporter @ Vocativ
 * Allegra Denton (design consulting), Designer @ Vocativ
