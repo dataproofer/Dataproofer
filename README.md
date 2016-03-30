@@ -26,7 +26,7 @@ Proof your data, get your results, and feel confident about your dataset.
 ## Table of Contents
 
 * [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
-* [How You Can Help]()
+* [How You Can Help](https://github.com/dataproofer/Dataproofer#how-you-can-help)
 * [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
