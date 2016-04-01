@@ -32,6 +32,7 @@ exports.run = function(config) {
     ];
     if (nonExcelExtensions.indexOf(ext) > -1) {
       rows = indianOcean.readDataSync(filepath);
+      console.log("rows", rows);
     } else if (excelExtensions.indexOf(ext) > -1) {
       var sheets = xlsx.readFile(filepath).Sheets;
       var firstSheetName = _.keys(sheets)[0];

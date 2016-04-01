@@ -354,7 +354,6 @@ function handleFileSelect(evt) {
       "psv",
       "xlsx",
       "xls"
-      // "dbf"
     ];
     var currFileName = file.name;
     var currExt = currFileName.split(".").pop();
