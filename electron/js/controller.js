@@ -403,10 +403,12 @@ d3.select("#spreadsheet-input").on("keyup", function() {
   }
 
 });
+
 window.onerror = function(message) {
   console.log(arguments);
   console.log(message);
 };
+
 function handleSpreadsheet() {
   var keyRegex = /\/d\/([\w-_]+)/;
   var spreadsheetInputStr = d3.select("#spreadsheet-input").node().value;
