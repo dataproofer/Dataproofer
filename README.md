@@ -50,21 +50,32 @@ Proof your data, get your results, and feel confident about your dataset.
 
 ## Test Suites
 ### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
+A set of tests that infer descriptive information based on the contents of a table's cells. Please click on the link above to see further documentation in the test suite's repository.
+
 + Count the number of rows
 + Check for empty columns (no values)
 + Check for numeric values in columns
 
 ### [Core Suite](https://github.com/dataproofer/core-suite)
+A set of tests related to common problems and data checks — namely, making sure data has not been truncated by looking for specific cut-off indicators. Please click on the link above to see further documentation in the test suite's repository.
+
 + Check for duplicate rows
-+ Integers at their upper limit (an indication there may be missing data lost when the data was exported)
-+ Check for whether there are exactly 65k rows (an indication there may be missing rows lost when the data was exported)
-+ Check for strings that are exactly 255 characters (an indication there may be missing data lost when the data was exported)
++ Check for **big integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
++ Check for **integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
++ Check for **small integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
++ Check for whether there are exactly 65k rows — an indication there may be missing rows lost when the
+data was exported from a database
++ Check for strings that are exactly 255 characters — an indication there may be missing data lost when the data was exported from MySQL
 
 ### [Geo Suite](https://github.com/dataproofer/geo-suite)
+A set of tests related to common geographic data problems. Please click on the link above to see further documentation in the test suite's repository.
+
 + Check for invalid latitude and longitude values (values outside the range of -180º to 180º)
 + Check for void latitude and longitude values (values at 0º,0º)
 
 ### [Stats Suite](https://github.com/dataproofer/stats-suite)
+A set of test related to common statistical used to detect outlying data. Please click on the link above to see further documentation in the test suite's repository.
+
 + Check for outliers within a column relative to the column's median
 + Check for outliers within a column relative to the column's mean
 
