@@ -1,6 +1,5 @@
-var _ = require('lodash')
-var d3 = require('d3')
-var jQuery = $ = require('jquery')
+var _ = require('lodash');
+var d3 = require('d3');
 var Renderer = require('dataproofer').Rendering;
 
 function HTMLRenderer(config) {

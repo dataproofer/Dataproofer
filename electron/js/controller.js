@@ -57,7 +57,7 @@ function loadTest(testFile) {
     eval("methodology = (function(){ return " + testFile.methodology + "})();");
   } catch (e) {
     methodology = function(rows, columnHeads) {
-      console.log("error loading test", testFile);
+      alert("error loading test", testFile);
       console.error(e.stack);
     };
     test.code = testFile.methodology;
@@ -348,29 +348,45 @@ function handleFileSelect(evt) {
   for(var i = 0, f; i < files.length; i++) {
     var file = files[i];
     //console.log("loading file", file.name, file);
-
+    var allowFileExtensions = [
+      "csv",
+      "tsv",
+      "psv",
+      "xlsx",
+      "xls"
+      // "dbf"
+    ];
+    var currFileName = file.name;
+    var currExt = currFileName.split(".").pop();
     var reader = new FileReader();
-    // Closure to capture the file information.
-    reader.onload = (function(progress) {
-      var contents = progress.target.result;
+    if (allowFileExtensions.indexOf(currExt) > -1) {
+      // Closure to capture the file information.
+      reader.onload = (function(progress) {
+        var contents = progress.target.result;
 
-      // we send our "server" the file so we can load it by defualt
-      ipc.send("file-selected", JSON.stringify({name: file.name, path: file.path, contents: contents}));
+        // we send our "server" the file so we can load it by defualt
+        ipc.send("file-selected", JSON.stringify({name: file.name, path: file.path, contents: contents}));
 
-      var processorConfig = {
-        fileString: contents,
-        filename: file.name,
-        // TODO: replace this with activeSuites
-        suites: SUITES,
-        renderer: HTMLRenderer,
-        input: {}
-      };
-      lastProcessorConfig = processorConfig;
-      renderStep1(processorConfig);
-      currentStep = 2;
-      renderNav();
-      renderCurrentStep();
-    });
+        var processorConfig = {
+          ext: currExt,
+          filepath: file.path,
+          // fileString: contents,
+          filename: currFileName,
+          // TODO: replace this with activeSuites
+          suites: SUITES,
+          renderer: HTMLRenderer,
+          input: {}
+        };
+        lastProcessorConfig = processorConfig;
+        renderStep1(processorConfig);
+        currentStep = 2;
+        renderNav();
+        renderCurrentStep();
+      });
+    } else {
+      var fileTypes = nonExcelExtensions.join(", ").toUpperCase();
+      alert("Must upload one of the following file types: " + fileTypes);
+    }
   }
   reader.readAsText(file);
 }
@@ -378,7 +394,8 @@ function handleFileSelect(evt) {
 ipc.on("last-file-selected", function(event, file) {
   //console.log("last file selected was", file);
   lastProcessorConfig = {
-    fileString: file.contents,
+    filepath: file.path,
+    // fileString: file.contents,
     filename: file.name,
     suites: SUITES,
     renderer: HTMLRenderer,
@@ -407,6 +424,7 @@ d3.select("#spreadsheet-input").on("keyup", function() {
 window.onerror = function(message) {
   console.log(arguments);
   console.log(message);
+  alert(message);
 };
 
 function handleSpreadsheet() {
@@ -443,7 +461,6 @@ function handleSpreadsheet() {
       //console.log("sheet", sheet);
       var column_names = Object.keys(sheet.data[0]);
       var config = {
-        //fileString: contents,
         filename: sheet.title,
         columnsHeads: column_names,
         rows: sheet.data,
@@ -456,7 +473,7 @@ function handleSpreadsheet() {
       renderCurrentStep();
       renderNav();
     } else {
-      console.log("Warning: must use non-empty worksheet");
+      alert("Warning: must use non-empty worksheet");
     }
   }
 }
