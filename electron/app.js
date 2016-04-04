@@ -1,12 +1,14 @@
 const electron = require('electron');
-var app = electron.app  // Module to control application life.
-var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
-var Menu = require('menu')
-var defaultMenu = require('electron-default-menu')
+// Module to control application life.
+var app = electron.app;
+// Module to create native browser window.
+var BrowserWindow = electron.BrowserWindow;
+var Menu = require('menu');
+var defaultMenu = require('electron-default-menu');
 var uuid = require('uuid');
 // We can listen to messages from the renderer here:
 const ipcMain = electron.ipcMain;
-fs = require('fs')
+fs = require('fs');
 
 var DEVELOPMENT = process.argv[2] && process.argv[2] == "--dev"
 

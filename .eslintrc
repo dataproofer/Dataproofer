@@ -27,7 +27,7 @@
         "no-constant-condition": 0,
 
         // Require semicolons where they should be.
-        "semi": [0, "never"],
+        "semi": [2],
 
         "no-console": [0],
 
@@ -42,11 +42,5 @@
 
         // Don't enforce disallowing dangling underscores in identifiers
         "no-underscore-dangle": [0]
-    },
-    "ecmaFeatures": {
-        "jsx": true
-    },
-    "plugins": [
-        "react"
-    ]
+    }
 }
