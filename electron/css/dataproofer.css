@@ -316,6 +316,45 @@ STEP  3
   background-color: aliceblue;
 }
 
+.column {
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid orange;
+
+}
+.column-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+.column .test {
+  margin: 3px;
+}
+.column .test .summary {
+  cursor: pointer;
+}
+.column .test .summary.interesting {
+  font-weight: bold;
+}
+.column .test .description {
+  display: none;
+}
+.column .test .conclusion {
+  display: none;
+}
+.column .test .visualization {
+  display: none;
+}
+.column .test.active .description {
+  display: block;
+}
+.column .test.active .conclusion {
+  display: block;
+}
+.column .test.active .visualization {
+  display: block;
+}
+
 /* =============================================================================
 General Suites and test
 ============================================================================= */
