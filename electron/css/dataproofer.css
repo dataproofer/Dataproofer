@@ -96,7 +96,7 @@ Grid
 #grid-wrapper {
   float: right;
   position: relative;
-  width: 50%;
+  width: calc(50% - 210px);
 }
 
 #grid {
@@ -308,7 +308,7 @@ button.run-tests {
 STEP  3
 ============================================================================= */
 .step-3-results {
-  width: 50%;
+  width: calc(50% - 210px);
   display: none;
 }
 
@@ -543,6 +543,25 @@ General Suites and test
   cursor: pointer;
 }
 
+/* =============================================================================
+FINGERPRINT
+============================================================================= */
+#fingerprint-wrapper {
+  width: 200px;
+  float: left;
+  height: 100%;
+  display: none;
+}
+#fingerprint {
+  width: 200px;
+  position:absolute;
+}
+#fingerprint-overlay {
+  width: 202px;
+  margin-left: -1px;
+  position:absolute;
+  pointer-events: none;
+}
 
 
 /* =============================================================================

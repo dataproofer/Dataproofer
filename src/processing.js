@@ -123,4 +123,5 @@ exports.run = function(config) {
     })
   })
   renderer.done();
+  return renderer;
 }

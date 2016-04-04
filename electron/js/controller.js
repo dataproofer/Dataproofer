@@ -17,6 +17,9 @@ var uuid = require('uuid');
 console.log("dataproofer app version", require('./package.json').version)
 console.log("dataproofer lib version", require('dataproofer').version)
 
+// keep track of global renderer
+var renderer;
+
 
 var SUITES = [
   require('dataproofer-info-suite'),
@@ -334,9 +337,11 @@ function renderStep2(processorConfig) {
 }
 
 function renderStep3(processorConfig) {
-  Processor.run(processorConfig)
+  if(renderer) renderer.destroy();
+  renderer = Processor.run(processorConfig)
   d3.select(".step-3-results").style("display", "block")
   d3.select(".step-2-select").style("display", "none")
+  d3.select("#fingerprint-wrapper").style("display", "block")
 }
 
 function clear() {
@@ -344,6 +349,7 @@ function clear() {
   d3.select(".step-1-data").style("display", "none")
   d3.select(".step-2-select").style("display", "none")
   d3.select(".step-3-results").style("display", "none")
+  d3.select("#fingerprint-wrapper").style("display", "none")
 
   d3.select(".step-2-select").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite").remove();
