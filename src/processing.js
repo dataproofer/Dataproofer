@@ -37,6 +37,8 @@ exports.run = function(config) {
       var sheets = xlsx.readFile(filepath).Sheets;
       var firstSheetName = _.keys(sheets)[0];
       rows = xlsx.utils.sheet_to_json(sheets[firstSheetName]);
+    } else {
+      rows = [];
     }
   }
   if(!columnHeads || !columnHeads.length) {

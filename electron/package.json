@@ -34,6 +34,8 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
-    "electron-packager": "^5.2.1"
+    "babel-eslint": "^6.0.2",
+    "electron-packager": "^5.2.1",
+    "eslint": "^2.7.0"
   }
 }
