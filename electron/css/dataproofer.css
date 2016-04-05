@@ -160,25 +160,40 @@ Grid
 }
 
 .column {
-  padding: 5px;
-  margin: 10px;
-  border: 1px solid orange;
+  padding: 1em;
+  margin: 8px;
+  /*border: 1px solid orange;*/
 
 }
 .column-header {
   font-size: 24px;
+  line-height: 1em;
   font-weight: bold;
   margin: 5px 0;
 }
+/*
+.column-header::after {
+  content: " column";
+  font-weight: normal;
+}
+*/
+
 .column .test {
   margin: 3px;
 }
 .column .test .summary {
+  font-size: 10px;
+  line-height: 1.1em;
   cursor: pointer;
+  opacity: 0.8;
 }
 .column .test .summary.interesting {
+  font-size: 14px;
   font-weight: bold;
+  opacity: 1;
 }
+
+
 .column .test .description {
   display: none;
 }
@@ -188,8 +203,14 @@ Grid
 .column .test .visualization {
   display: none;
 }
+
+
 .column .test.active .description {
   display: block;
+  padding-left: 1em;
+  padding-top: 0.5em;
+  font-size: 14px;
+  line-height: 1.2em;
 }
 .column .test.active .conclusion {
   display: block;
@@ -350,6 +371,11 @@ General Suites and test
   position: absolute;
   bottom: 0px;
   left: 0px;
+  opacity: 0.25;
+}
+
+.suite .test .edit-test:hover {
+  opacity: 1;
 }
 
 .suite .test .delete-test {
@@ -658,11 +684,12 @@ STEP  3
 }
 
 .step-3-results .test {
+  line-height: 1.2em;
   width: 88%;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  min-height: 24px;
+  min-height: 1em;
   padding: 4px 1em;
 }
 

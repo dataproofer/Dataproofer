@@ -217,7 +217,8 @@ function renderStep2(processorConfig) {
   var loaded = processorConfig.loaded
   if(loaded.trueRows > loaded.rows.length) {
     d3.select("#info-top-bar").style({
-      "background-color": "#a87575"
+      "background-color": "#ED4224",
+      "color": "white"
     })
     d3.select("#file-size-warning")
       .text("Your file is too large for us to process at the moment. We are rendering the first "
