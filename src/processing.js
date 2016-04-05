@@ -32,7 +32,7 @@ exports.run = function(config) {
     ];
     if (nonExcelExtensions.indexOf(ext) > -1) {
       rows = indianOcean.readDataSync(filepath);
-      console.log("rows", rows);
+      //console.log("rows", rows);
     } else if (excelExtensions.indexOf(ext) > -1) {
       var sheets = xlsx.readFile(filepath).Sheets;
       var firstSheetName = _.keys(sheets)[0];
@@ -103,8 +103,8 @@ exports.run = function(config) {
   var result = badColumnHeadsTest.proof(rows, columnHeads);
   renderer.addResult("dataproofer-info-suite", badColumnHeadsTest, result);
 
-  var cleanedcolumnHeads = _.without(columnHeads, result.badColumnHeads.join(", "));
-  var cleanedRows = rows;
+  var cleanedColumnHeads = _.without(columnHeads, result.badColumnHeads.join(', '));
+  var cleanedRows = rows
 
   // TODO: use async series? can run suites in series for better UX?
   suites.forEach(function(suite) {
@@ -115,7 +115,17 @@ exports.run = function(config) {
       if(!test.active) return;
       try {
         // run the test!
-        var result = test.proof(cleanedRows, cleanedcolumnHeads, input);
+        var result = test.proof(cleanedRows, cleanedColumnHeads, input)
+        // aggregate the number of highlighted cells for each column
+        result.columnWise = {};
+        if(result && result.highlightCells) {
+          cleanedColumnHeads.forEach(function(column) {
+            result.columnWise[column] = _.reduce(result.highlightCells, function(count, row) {
+              // if there is a value in this cell, increment count, otherwise leave it alone
+              return !!row[column] ? count + 1 : count
+            }, 0)
+          })
+        }
         // incrementally report as tests run
         renderer.addResult(suite.name, test, result);
       } catch(e) {
@@ -125,4 +135,5 @@ exports.run = function(config) {
     });
   });
   renderer.done();
+  return renderer;
 };

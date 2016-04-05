@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var d3 = require('d3');
 var Renderer = require('dataproofer').Rendering;
+var util = require("dataproofertest-js/util");
 
 function HTMLRenderer(config) {
   //console.log('config', config);
@@ -8,10 +9,7 @@ function HTMLRenderer(config) {
   window.rows = config.rows;
   this.rows = config.rows;
   this.columnHeads = config.columnHeads;
-  var resultList = {}
-  config.suites.forEach(function(suite) {
-    resultList[suite.name] = []
-  })
+  var resultList = []
   this.resultList = resultList;
 
   var data = []
@@ -33,7 +31,7 @@ function HTMLRenderer(config) {
       height: containerHeight,
       rowHeaders: true,
       colHeaders: headers,
-      columnSorting: true,
+      //columnSorting: true,
       sortIndicator: true,
       readOnly: true,
       manualRowResize: true,
@@ -47,12 +45,14 @@ function HTMLRenderer(config) {
     });
 
   this.handsOnTable = handsOnTable
+  window.handsOnTable = handsOnTable // for debugging
 
   resultsHeight = containerHeight + 'px'
   // we just remove everything rather than get into update pattern
-  d3.select(".step-3-results").selectAll(".suite").remove();
+  d3.select(".step-3-results").selectAll("*").remove();
   d3.select(".step-3-results")
     .style('height', resultsHeight)
+    /*
     .selectAll(".suite")
     .data(config.suites)
     .enter().append("div")
@@ -60,6 +60,7 @@ function HTMLRenderer(config) {
       class: function(d) { return "suite " + d.name + (d.active ? " active" : "" )}
     })
     .append("h2").text(function(d) { return d.fullName })
+    */
   //d3.select(".test-results").selectAll(".test").remove();
 }
 
@@ -68,33 +69,47 @@ HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log("add result", suite, test.name(), result)
-  this.resultList[suite].push({ suite: suite, test: test, result: result || {} })
+  //this.resultList[suite].push({ suite: suite, test: test, result: result || {} })
+  this.resultList.push({ suite: suite, test: test, result: result || {} })
 
-  // setup/update the comments
   var columnHeads = this.columnHeads;
   var rows = this.rows;
   var resultList = this.resultList;
-  var handsOnTable = this.handsOnTable;
-  renderCellComments(rows, columnHeads, resultList, handsOnTable);
 
-  var container = d3.select(".step-3-results ." + suite)
-  var tests = container.selectAll(".test")
-    .data(this.resultList[suite])
+  // setup/update the comments in our Hands On Table
+  //renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
+
+  var container = d3.select(".step-3-results")
+  // rerender all the columns
+  var columns = container.selectAll(".column")
+    .data(columnHeads)
+
+  var columnsEnter = columns.enter().append("div").classed("column", true)
+  // render the column header
+  columnsEnter.append("div").classed("column-header", true)
+    .text(function(d) { return d})
+
+  var tests = columns.selectAll(".test")
+    .data(function(column) {
+      return resultList.map(function(d) {
+        return { test: d.test, result: d.result, suite: d.suite, column: column}
+      })
+    })
 
   var testsEnter = tests.enter().append("div")
   .attr("class", function(d) {
-     return 'test' + (d.test.active ? " active" : "" )
+     return 'test';// + (d.test.active ? " active" : "" )
   })
   testsEnter.append("div").classed("passfail", true)
-  testsEnter.append("div").classed("message", true)
-  testsEnter.append("div").classed("fingerprint", true).each(function(d) {
-    if(d.result.highlightCells && d.result.highlightCells.length) {
-      d3.select(this).append("canvas")
-    }
-  })
+  testsEnter.append("div").classed("summary", true)
+  testsEnter.append("div").classed("description", true)
+  testsEnter.append("div").classed("conclusion", true)
+  testsEnter.append("div").classed("visualization", true)
 
   tests.on("click", function(d) {
-    console.log(d)
+    console.log(d);
+    var dis = d3.select(this)
+    dis.classed("active", !dis.classed("active"))
   })
 
   tests.select("div.passfail").html(function(d) {
@@ -109,57 +124,35 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     return passFailIconHtml
   })
 
-  tests.select("div.message").html(function(d) {
-
-    var html = '<div class="test-header">' + (d.test.name() || "") + '</div><p>'
-    html += d.result.summary || ""
-    html += "</p>"
-    return html
+  tests.select("div.summary").html(function(d) {
+    var column = d.column;
+    var name = d.test.name();
+    var columnWise = d.result.columnWise || {} // not gauranteed to exist
+    var num = columnWise[column] || 0;
+    var string = name + " " + num + " (" + util.percent(num/rows.length) + ")"
+    return string
+  }).classed("interesting", function(d) {
+    var column = d.column;
+    var columnWise = d.result.columnWise || {} // not gauranteed to exist
+    var num = columnWise[column] || 0;
+    return !!num;
   })
 
-  function drawFingerPrint(d, handsOnTable, that) {
-    var width = 200;
-    var height = 200;
-    var cellWidth = 2;
-    var cellHeight = 1;
+  tests.select("div.description").html(function(d) {
+    return d.test.description()
+  })
+  tests.select("div.conclusion").html(function(d) {
+    return d.test.conclusion ? d.test.conclusion(d.result) : "";
+  })
 
-    var rows = (d.result.highlightCells > 500) ? d.result.highlightCells.splice(0, 500) : d.result.highlightCells;
-    var cols = Object.keys(rows[0]);
-    cellWidth = width / cols.length;
-    cellHeight = height / rows.length;
-
-    var canvas = d3.select(that).select("canvas").node();
-    var context = canvas.getContext("2d")
-    canvas.width = width;
-    canvas.height = height;
-
-    rows.forEach(function(row, i) {
-      cols.forEach(function(col, j) {
-        context.fillStyle = row[col] ? "#d88282" : "#ddd";
-        context.fillRect(j*cellWidth, i*cellHeight, cellWidth, cellHeight)
-      })
-    })
-
-    var drag = d3.behavior.drag()
-      .on("drag", function(d,i){
-        var mouse = d3.mouse(that);
-        var x = mouse[0];
-        var y = mouse[1];
-        if(y < 0) y = 0;
-        var row = Math.floor(y); // for now our cells are 1 pixel high so this works
-        var col = Math.floor(x / width * cols.length);
-        //console.log("row, col", row, col)
-        handsOnTable.selectCell(row, col, row, col, true);
-      })
-    d3.select(that).select("canvas").call(drag)
-  }
-
+  /*
   var handsOnTable = this.handsOnTable
   tests.select("div.fingerprint").each(function(d) {
     if(!d.result.highlightCells || !d.result.highlightCells.length) return;
     var that = this;
     drawFingerPrint(d, handsOnTable, that);
   })
+  */
 }
 
 HTMLRenderer.prototype.done = function() {
@@ -167,7 +160,104 @@ HTMLRenderer.prototype.done = function() {
   var rows = this.rows;
   var resultList = this.resultList;
   var handsOnTable = this.handsOnTable;
-  renderCellComments(rows, columnHeads, resultList, handsOnTable)
+  this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable)
+  var that = this;
+  setTimeout(function() {
+    that.renderFingerPrint()
+  }, 100)
+
+  handsOnTable.addHook('afterColumnSort', function(columnIndex) {
+    that.renderFingerPrint(columnIndex)
+  })
+  handsOnTable.addHook('afterOnCellMouseDown', function(evt, coords) {
+    console.log("clicked", coords)
+    that.renderFingerPrint(coords.col, coords.row)
+  })
+}
+
+HTMLRenderer.prototype.destroy = function() {
+  this.handsOnTable.destroy();
+  d3.select("#grid").selectAll("*").remove();
+}
+HTMLRenderer.prototype.renderFingerPrint = function(columnIndex, rowIndex) {
+  var rows = this.rows;
+  var columnHeads = this.columnHeads;
+  var comments = this.comments;
+  var handsOnTable = this.handsOnTable;
+
+  var width = 200;
+  var resultsBBOX = d3.select(".step-3-results").node().getBoundingClientRect();
+  var height = resultsBBOX.height;
+  var cellWidth = 2;
+  var cellHeight = 1;
+
+  var cols = Object.keys(rows[0]);
+  cellWidth = width / cols.length;
+  cellHeight = height / rows.length;
+
+  var canvas = d3.select('#fingerprint').node();
+  var context = canvas.getContext("2d")
+  canvas.width = width;
+  canvas.height = height;
+
+  var overlay = d3.select('#fingerprint-overlay')
+
+  var colorScale = d3.scale.ordinal()
+  .domain([1, 2, 3])
+  .range(["#ed8282","#da8282", "#d88282"])
+
+  function renderPrint() {
+    context.fillStyle = "#fff"
+    context.fillRect(0, 0, width, height);
+    var transformRowIndex = 0;
+    comments.forEach(function(comment) {
+      context.fillStyle = colorScale(comment.array.length)//"#d88282"
+      //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)
+      var transformRowIndex;
+      if(handsOnTable.sortIndex && handsOnTable.sortIndex.length) {
+        transformRowIndex = handsOnTable.sortIndex[comment.row][0]
+      } else {
+        transformRowIndex  = comment.row;
+      }
+      context.fillRect(comment.col * cellWidth, transformRowIndex * cellHeight, cellWidth, cellHeight)
+    })
+  }
+  renderPrint();
+
+
+  function renderCol(col) {
+    context.strokeStyle = "#111"
+    context.strokeRect(col * cellWidth, 0, cellWidth, height)
+  }
+  function renderRow(row) {
+    context.strokeStyle = "#111"
+    context.strokeRect(0, row * cellHeight, width, cellHeight)
+  }
+  if(columnIndex || columnIndex === 0) {
+    renderCol(columnIndex)
+  }
+  if(rowIndex || rowIndex === 0) {
+    renderRow(rowIndex)
+  }
+
+  var that = this;
+  var drag = d3.behavior.drag()
+    .on("drag.fp", function(d,i){
+      var mouse = d3.mouse(canvas);
+      var x = mouse[0];
+      var y = mouse[1];
+      if(y < 0) y = 0;
+      var row = Math.floor(y / height * rows.length); // for now our cells are 1 pixel high so this works
+      var col = Math.floor(x / width * cols.length);
+      //console.log("row, col", row, col)
+      handsOnTable.selectCell(row, col, row, col, true);
+
+      //that.renderFingerPrint(row, col);
+      renderPrint();
+      renderCol(col);
+      renderRow(row);
+    })
+  d3.select(canvas).call(drag)
 }
 
 function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
@@ -183,30 +273,29 @@ function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
   });
 
   // loop over resultList
-  Object.keys(resultList).forEach(function(suite) {
-    resultList[suite].forEach(function(d){
-      if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
-        _.each(rows, function(row, rowIndex) {
-          _.each(columnHeads, function(columnHead) {
-            var value = d.result.highlightCells[rowIndex][columnHead];
-            //console.log("value", value, rowIndex, columnHead)
-            if(value) {
-              //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
-              commentCollector[rowIndex][columnHead].push(d.test.name())
-            }
-          })
-        });
-      }
-    })
+  resultList.forEach(function(d){
+    if(d.result && d.result.highlightCells && d.result.highlightCells.length) {
+      _.each(rows, function(row, rowIndex) {
+        _.each(columnHeads, function(columnHead) {
+          var value = d.result.highlightCells[rowIndex][columnHead];
+          //console.log("value", value, rowIndex, columnHead)
+          if(value) {
+            //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
+            commentCollector[rowIndex][columnHead].push(d.test.name())
+          }
+        })
+      });
+    }
   })
   _.each(rows, function(row, rowIndex) {
     _.each(columnHeads, function(columnHead, columnIndex) {
       var array = commentCollector[rowIndex][columnHead]
       if(array && array.length && array.length > 0) {
         var string = array.join("\n")
-        comments.push({row: rowIndex, col: columnIndex, comment: string})
+        comments.push({row: rowIndex, col: columnIndex, comment: string, array: array})
       }
     });
   });
   handsOnTable.updateSettings({cell: comments})
+  return comments;
 }

@@ -11,6 +11,9 @@ var uuid = require("uuid");
 console.log("dataproofer app version", require("./package.json").version);
 console.log("dataproofer lib version", require("dataproofer").version);
 
+// keep track of global renderer
+var renderer;
+
 var SUITES = [
   require("dataproofer-info-suite"),
   require("dataproofer-core-suite"),
@@ -210,6 +213,7 @@ function renderStep2(processorConfig) {
   d3.select(".step-2-select").style("display", "block");
   d3.select(".step-3-results").style("display", "none");
   d3.select(".step-1-data").style("display", "none");
+  d3.select("#fingerprint-wrapper").style("display", "none")
 
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
@@ -307,7 +311,7 @@ function renderStep2(processorConfig) {
       renderTestEditor(d);
     });
 
-  
+
   /*
   testsEnter.append("button").classed("duplicate-test", true)
     .text(function(d) {
@@ -317,7 +321,7 @@ function renderStep2(processorConfig) {
     .on("click", function(d) {
       duplicateTest(d);
     });
-    */  
+    */
 
   d3.select("#current-file-name").text(processorConfig.filename);
 
@@ -331,16 +335,20 @@ function renderStep2(processorConfig) {
 }
 
 function renderStep3(processorConfig) {
-  Processor.run(processorConfig);
-  d3.select(".step-3-results").style("display", "block");
-  d3.select(".step-2-select").style("display", "none");
+  if(renderer) renderer.destroy();
+  renderer = Processor.run(processorConfig)
+  d3.select(".step-3-results").style("display", "block")
+  d3.select(".step-2-select").style("display", "none")
+  d3.select("#fingerprint-wrapper").style("display", "block")
+
 }
 
 function clear() {
   d3.select("#current-file-name").text("");
-  d3.select(".step-1-data").style("display", "none");
-  d3.select(".step-2-select").style("display", "none");
-  d3.select(".step-3-results").style("display", "none");
+  d3.select(".step-1-data").style("display", "none")
+  d3.select(".step-2-select").style("display", "none")
+  d3.select(".step-3-results").style("display", "none")
+  d3.select("#fingerprint-wrapper").style("display", "none")
 
   d3.select(".step-2-select").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite").remove();
@@ -401,6 +409,7 @@ function handleFileSelect(evt) {
 ipc.on("last-file-selected", function(event, file) {
   //console.log("last file selected was", file);
   lastProcessorConfig = {
+    ext: file.name.split(".").pop(),
     filepath: file.path,
     // fileString: file.contents,
     filename: file.name,

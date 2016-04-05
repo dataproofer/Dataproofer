@@ -122,7 +122,7 @@ Grid
 #grid-wrapper {
   float: right;
   position: relative;
-  width: 50%;
+  width: calc(50% - 210px);
 }
 
 #grid {
@@ -159,6 +159,44 @@ Grid
 
 }
 
+.column {
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid orange;
+
+}
+.column-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+.column .test {
+  margin: 3px;
+}
+.column .test .summary {
+  cursor: pointer;
+}
+.column .test .summary.interesting {
+  font-weight: bold;
+}
+.column .test .description {
+  display: none;
+}
+.column .test .conclusion {
+  display: none;
+}
+.column .test .visualization {
+  display: none;
+}
+.column .test.active .description {
+  display: block;
+}
+.column .test.active .conclusion {
+  display: block;
+}
+.column .test.active .visualization {
+  display: block;
+}
 
 /* =============================================================================
 General Suites and test
@@ -393,6 +431,26 @@ General Suites and test
   cursor: pointer;
 }
 
+/* =============================================================================
+FINGERPRINT
+============================================================================= */
+#fingerprint-wrapper {
+  width: 200px;
+  float: left;
+  height: 100%;
+  display: none;
+}
+#fingerprint {
+  width: 200px;
+  position:absolute;
+  cursor: crosshair;
+}
+#fingerprint-overlay {
+  width: 202px;
+  margin-left: -1px;
+  position:absolute;
+  pointer-events: none;
+}
 
 
 
@@ -591,7 +649,7 @@ button.run-tests {
 STEP  3
 ============================================================================= */
 .step-3-results {
-  width: 50%;
+  width: calc(50% - 220px);
   display: none;
 }
 .step-3-results .title {
