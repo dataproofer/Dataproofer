@@ -89,9 +89,32 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   columnsEnter.append("div").classed("column-header", true)
     .text(function(d) { return d})
 
+  // Want to separate out tests that failed and tests that passed here
+
+  // Summarize testsPassed.length, and then append all failed tests like normal
+
+  console.log("Result list: ", resultList)
+
+  passedResults = _.filter(resultList, function(d){
+    return d.result.passed
+  })
+
+  failedResults = _.filter(resultList, function(d){
+    return !d.result.passed
+  })
+
+  //console.log("Passed list", passedResults)
+  //console.log("Failed list", failedResults)
+
+  /*
+  var testsPassed = columnsEnter.append("h4")
+    
+  testsPassed.html("<div class='icon icon-check'></div> " + passedResults.length + " tests passed ")
+  */
+
   var tests = columns.selectAll(".test")
     .data(function(column) {
-      return resultList.map(function(d) {
+      return failedResults.map(function(d) {
         return { test: d.test, result: d.result, suite: d.suite, column: column}
       })
     })
@@ -146,8 +169,11 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var column = d.column;
     var name = d.test.name();
     var columnWise = d.result.columnWise || {} // not gauranteed to exist
+
+    var simpleFormat = d3.format(",%");
+
     var num = columnWise[column] || 0;
-    var string = name + " " + num + " (" + util.percent(num/rows.length) + ")"
+    var string = name +  " (" + util.percent(num/rows.length) + ")"
     return string
   }).classed("interesting", function(d) {
     var column = d.column;
@@ -155,10 +181,17 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var num = columnWise[column] || 0;
     return !!num;
   })
+  .attr("title", function(d){
+    return d.test.description()
+  })
 
+  /*
   tests.select("div.description").html(function(d) {
     return d.test.description()
   })
+  */
+
+  
   tests.select("div.conclusion").html(function(d) {
     return d.test.conclusion ? d.test.conclusion(d.result) : "";
   })

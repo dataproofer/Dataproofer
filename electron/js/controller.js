@@ -40,7 +40,7 @@ ipc.on("load-saved-tests", function(evt, loaded) {
 
   var suite = {
     name: "local-tests",
-    fullName: "Locally saved tests",
+    fullName: "My custom tests",
     active: true,
     tests: []
   };
@@ -103,7 +103,7 @@ ipc.on("last-test-config", function(event, testConfig) {
 });
 
 function loadTestConfig(config) {
-  console.log("loading test config", config);
+  console.log("Loading test configuration.", config);
   if(!config) return;
   // update the active status of each suite and test found in the config.
   // if nothing is found for a given test in the config, then nothing is done to it.
@@ -123,6 +123,8 @@ function loadTestConfig(config) {
 }
 
 function saveTestConfig() {
+
+  
   // We save the test config (whether each test/suite is active) whenever
   // the active state of any test changes
   var testConfig = {};
@@ -132,6 +134,9 @@ function saveTestConfig() {
       testConfig[suite.name].tests[test.name()] = { active: test.active };
     });
   });
+
+  console.log("Saving test configuration.", testConfig)
+
   // TODO: people may want to save various configurations under different names
   // like workspaces in illustrator/IDE
   ipc.send("test-config", {name: "latest", config: testConfig });
@@ -190,8 +195,14 @@ function renderCurrentStep() {
 
 d3.select("#back-button").on("click", function() {
   currentStep--;
-  renderNav();
-  renderCurrentStep();
+  console.log('currentStep', currentStep)
+  if(currentStep == 1){
+    document.location.reload(true)
+  }
+  else {
+    renderNav();
+    renderCurrentStep();
+  }
 });
 d3.select("#forward-button").on("click", function() {
   currentStep++;
@@ -221,7 +232,7 @@ function renderStep2(processorConfig) {
       "color": "white"
     })
     d3.select("#file-size-warning")
-      .text("Your file is too large for us to process at the moment. We are rendering the first "
+      .text("Because your file is so large, we have only loaded  "
         + loaded.rows.length
         + " rows out of " + loaded.trueRows)
   }
@@ -231,16 +242,17 @@ function renderStep2(processorConfig) {
   // create the containers for each suite
   var suites = container.selectAll(".suite")
     .data(processorConfig.suites);
+
   var suitesEnter = suites.enter().append("div")
     .attr({
       id: function(d) { return d.name; },
       class: function(d) { return "suite " + (d.active ? "active" : ""); }
     });
-  var suitesHeds = suitesEnter.append("div")
-    .attr("class", "suite-hed");
 
-    suiteHedAndToggle = suitesHeds.append("h2")
-      .text(function(d) { return d.fullName; });
+  var suitesHeds = suitesEnter.append("div")
+    .attr("class", "suite-hed"); 
+
+    suiteHedAndToggle = suitesHeds.append("h2")   
 
     suiteHedAndToggle.append("input")
           .attr({
@@ -259,10 +271,16 @@ function renderStep2(processorConfig) {
           .attr("for", function(d,i){return "suite-" + i;})
           .on("click", function(d) {
             d.active = !d.active;
-            d3.select(this.parentNode.parentNode).classed("active", d.active);
+            d3.select(this.parentNode.parentNode.parentNode).classed("active", d.active);
             console.log("suite", d);
             saveTestConfig();
           });
+
+      suiteHedAndToggle.append("span")
+        .attr("class", "suite-hed-title")
+        .text(function(d) { 
+          return d.fullName + " – " + d.active; 
+        });
 
   // render the tests
   var tests = suitesEnter.selectAll(".test")
@@ -272,7 +290,7 @@ function renderStep2(processorConfig) {
     .attr("class", function(d) { return d.active ? "test active" : "test"; });
 
   testsEnter.append("button").classed("delete-test", true)
-    .text("Delete test")
+    .html("<span class=\"icon icon-cancel-squared\"></span>")
     .style("display", function(d) {
       if(d.filename) return "block";
       return "none";
@@ -315,12 +333,18 @@ function renderStep2(processorConfig) {
 
   testsEnter.append("button").classed("edit-test", true)
     .text(function(d) {
-      if(d.local) return "Edit source";
-      return "View source";
+      if(d.local) return "Customize test";
+      return "Customize test";
     })
     .on("click", function(d) {
       renderTestEditor(d);
     });
+
+  testsEnter.on("click", function(d){
+    if (d3.event.shiftKey) {
+      renderTestEditor(d);
+    }
+  })
 
   /*
   testsEnter.append("button").classed("duplicate-test", true)
