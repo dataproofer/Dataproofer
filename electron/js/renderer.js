@@ -10,7 +10,7 @@ function HTMLRenderer(config) {
   this.rows = config.rows;
   this.columnHeads = config.columnHeads;
   var resultList = []
-  this.resultList = resultList;
+  this.resultList = resultList;  
 
   var data = []
   var headers = _.keys( rows[0] )
@@ -106,10 +106,18 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   testsEnter.append("div").classed("conclusion", true)
   testsEnter.append("div").classed("visualization", true)
 
+  var that = this;
   tests.on("click", function(d) {
     console.log(d);
     var dis = d3.select(this)
     dis.classed("active", !dis.classed("active"))
+    //that.renderFingerPrint({ test: d.test.name() })
+  })
+  tests.on("mouseover", function(d) {
+    that.renderFingerPrint({ test: d.test.name(), column: d.column })
+  })
+  tests.on("mouseout", function(d) {
+    that.renderFingerPrint()
   })
 
   tests.select("div.passfail").html(function(d) {
@@ -167,11 +175,11 @@ HTMLRenderer.prototype.done = function() {
   }, 100)
 
   handsOnTable.addHook('afterColumnSort', function(columnIndex) {
-    that.renderFingerPrint(columnIndex)
+    that.renderFingerPrint({col: columnIndex })
   })
   handsOnTable.addHook('afterOnCellMouseDown', function(evt, coords) {
     console.log("clicked", coords)
-    that.renderFingerPrint(coords.col, coords.row)
+    that.renderFingerPrint({col: coords.col, row: coords.row })
   })
 }
 
@@ -179,7 +187,14 @@ HTMLRenderer.prototype.destroy = function() {
   this.handsOnTable.destroy();
   d3.select("#grid").selectAll("*").remove();
 }
-HTMLRenderer.prototype.renderFingerPrint = function(columnIndex, rowIndex) {
+HTMLRenderer.prototype.renderFingerPrint = function(options) {
+  if(!options) options = {};
+
+  var columnIndex = options.col;
+  var rowIndex = options.row;
+  var test = options.test;
+  var column = options.column;
+
   var rows = this.rows;
   var columnHeads = this.columnHeads;
   var comments = this.comments;
@@ -211,7 +226,20 @@ HTMLRenderer.prototype.renderFingerPrint = function(columnIndex, rowIndex) {
     context.fillRect(0, 0, width, height);
     var transformRowIndex = 0;
     comments.forEach(function(comment) {
-      context.fillStyle = colorScale(comment.array.length)//"#d88282"
+      var array = [];
+      if(test) {
+        array = comment.array.filter(function(d) { return d === test })
+      } else {
+        array = comment.array;
+      }
+      // only render this cell if its got items in the array
+      if(!array.length && !comment.array.length) return;
+      if((!array.length && comment.array.length) || (columnHeads.indexOf(column) !== comment.col)) {
+        context.fillStyle = "#ddd";
+      } else {
+        context.fillStyle = colorScale(array.length)//"#d88282"
+      }
+
       //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)
       var transformRowIndex;
       if(handsOnTable.sortIndex && handsOnTable.sortIndex.length) {
@@ -226,11 +254,11 @@ HTMLRenderer.prototype.renderFingerPrint = function(columnIndex, rowIndex) {
 
 
   function renderCol(col) {
-    context.strokeStyle = "#111"
+    context.strokeStyle = "#444"
     context.strokeRect(col * cellWidth, 0, cellWidth, height)
   }
   function renderRow(row) {
-    context.strokeStyle = "#111"
+    context.strokeStyle = "#444"
     context.strokeRect(0, row * cellHeight, width, cellHeight)
   }
   if(columnIndex || columnIndex === 0) {

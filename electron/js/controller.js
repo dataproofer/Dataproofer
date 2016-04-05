@@ -204,16 +204,26 @@ function renderStep1(processorConfig) {
   var step1 = d3.select(".step-1-data");
   clear();
   step1.style("display", "block");
+  step1.select("#file-loader-button").text("Choose a dataset")
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
 function renderStep2(processorConfig) {
   var container = d3.select(".step-2-select-content");
 
+  clear();
   d3.select(".step-2-select").style("display", "block");
-  d3.select(".step-3-results").style("display", "none");
-  d3.select(".step-1-data").style("display", "none");
-  d3.select("#fingerprint-wrapper").style("display", "none")
+  console.log("STEP 2", processorConfig)
+  var loaded = processorConfig.loaded
+  if(loaded.trueRows > loaded.rows.length) {
+    d3.select("#info-top-bar").style({
+      "background-color": "#a87575"
+    })
+    d3.select("#file-size-warning")
+      .text("Your file is too large for us to process at the moment. We are rendering the first "
+        + loaded.rows.length
+        + " rows out of " + loaded.trueRows)
+  }
 
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
@@ -311,7 +321,6 @@ function renderStep2(processorConfig) {
       renderTestEditor(d);
     });
 
-
   /*
   testsEnter.append("button").classed("duplicate-test", true)
     .text(function(d) {
@@ -323,8 +332,9 @@ function renderStep2(processorConfig) {
     });
     */
 
-  d3.select("#current-file-name").text(processorConfig.filename);
+  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
 
+  // set the warning states for large file
   d3.select(".run-tests")
     .text("Run tests")
     .on("click", function() {
@@ -340,7 +350,6 @@ function renderStep3(processorConfig) {
   d3.select(".step-3-results").style("display", "block")
   d3.select(".step-2-select").style("display", "none")
   d3.select("#fingerprint-wrapper").style("display", "block")
-
 }
 
 function clear() {
@@ -349,6 +358,8 @@ function clear() {
   d3.select(".step-2-select").style("display", "none")
   d3.select(".step-3-results").style("display", "none")
   d3.select("#fingerprint-wrapper").style("display", "none")
+  d3.select("#info-top-bar").style({"background-color": "#fff"})
+  d3.select("#file-size-warning").text("")
 
   d3.select(".step-2-select").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite").remove();
@@ -359,11 +370,12 @@ function clear() {
 document.getElementById("file-loader").addEventListener("change", handleFileSelect, false);
 
 function handleFileSelect(evt) {
+  d3.select("#file-loader-button").text("Loading")
   var files = evt.target.files;
   if(!files || !files.length) return;
   for(var i = 0, f; i < files.length; i++) {
     var file = files[i];
-    //console.log("loading file", file.name, file);
+    console.log("loading file", file.name, file);
     var allowFileExtensions = [
       "csv",
       "tsv",
@@ -380,18 +392,22 @@ function handleFileSelect(evt) {
         var contents = progress.target.result;
 
         // we send our "server" the file so we can load it by defualt
-        ipc.send("file-selected", JSON.stringify({name: file.name, path: file.path, contents: contents}));
+        if(file.size < 5000000) // 5MB
+          ipc.send("file-selected", JSON.stringify({name: file.name, path: file.path, contents: contents}));
 
-        var processorConfig = {
+        var loadConfig = {
           ext: currExt,
           filepath: file.path,
           // fileString: contents,
           filename: currFileName,
-          // TODO: replace this with activeSuites
+        };
+        var loaded = Processor.load(loadConfig);
+        var processorConfig = {
           suites: SUITES,
           renderer: HTMLRenderer,
-          input: {}
-        };
+          input: {},
+          loaded: loaded
+        }
         lastProcessorConfig = processorConfig;
         renderStep1(processorConfig);
         currentStep = 2;
@@ -408,15 +424,19 @@ function handleFileSelect(evt) {
 
 ipc.on("last-file-selected", function(event, file) {
   //console.log("last file selected was", file);
-  lastProcessorConfig = {
+  var loadConfig = {
     ext: file.name.split(".").pop(),
     filepath: file.path,
     // fileString: file.contents,
     filename: file.name,
+  };
+  var loaded = Processor.load(loadConfig)
+  lastProcessorConfig = {
     suites: SUITES,
     renderer: HTMLRenderer,
-    input: {}
-  };
+    input: {},
+    loaded: loaded
+  }
   //loadLastFile();
 });
 

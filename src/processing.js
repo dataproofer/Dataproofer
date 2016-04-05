@@ -3,15 +3,10 @@ var xlsx = require("xlsx");
 var indianOcean = require("indian-ocean");
 var DataprooferTest = require("dataproofertest-js");
 
-// TODO: refactor into class more like DataprooferTest so we can chain
-// configuration and separate initializing from running tests
-exports.run = function(config) {
+exports.load = function(config) {
   var filename = config.filename;
   var filepath = config.filepath;
   var ext = config.ext;
-  var suites = config.suites;
-  var Renderer = config.renderer;
-  var input = config.input;
 
   // user can optionally pass in rows and columnHeads already parsed
   // (i.e. from Tabletop)
@@ -44,12 +39,40 @@ exports.run = function(config) {
     columnHeads = Object.keys(rows[0]);
   }
 
+  // TODO: use webworkers or something so we don't need an upper limit
+  var trueRows = rows.length;
+  rows = rows.slice(0, 1024);
+
+  return {
+    rows: rows,
+    columnHeads: columnHeads,
+    trueRows: trueRows,
+    config: config
+  }
+}
+// TODO: refactor into class more like DataprooferTest so we can chain
+// configuration and separate initializing from running tests
+exports.run = function(config) {
+  //var filename = config.filename;
+  //var filepath = config.filepath;
+  //var ext = config.ext;
+  var suites = config.suites;
+  var Renderer = config.renderer;
+  var input = config.input;
+
+  var loaded = config.loaded
+
+  var columnHeads = loaded.columnHeads;
+  var rows = loaded.rows;
+
+
   // Initialize the renderer
   var renderer = new Renderer({
-    filename: filename,
+    filename: loaded. filename,
     suites: suites,
     columnHeads: columnHeads,
-    rows: rows
+    rows: rows,
+    trueRows: loaded.trueRows
   });
 
   var badColumnHeadsTest = new DataprooferTest()
