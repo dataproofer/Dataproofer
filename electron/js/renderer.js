@@ -10,7 +10,7 @@ function HTMLRenderer(config) {
   this.rows = config.rows;
   this.columnHeads = config.columnHeads;
   var resultList = []
-  this.resultList = resultList;  
+  this.resultList = resultList;
 
   var data = []
   var headers = _.keys( rows[0] )
@@ -130,6 +130,16 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       passFailIconHtml += "<div class='icon icon-neutral'></div>"
     }
     return passFailIconHtml
+  })
+
+  tests.sort(function(a,b) {
+    var aColumn = a.column;
+    var aColumnWise = a.result.columnWise || {} // not gauranteed to exist
+    var bColumn = b.column;
+    var bColumnWise = b.result.columnWise || {} // not gauranteed to exist
+    var aNum = aColumnWise[aColumn] || 0
+    var bNum = bColumnWise[bColumn] || 0
+    return bNum - aNum
   })
 
   tests.select("div.summary").html(function(d) {
