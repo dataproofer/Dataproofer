@@ -31,7 +31,7 @@ function HTMLRenderer(config) {
       height: containerHeight,
       rowHeaders: true,
       colHeaders: headers,
-      columnSorting: true,
+      //columnSorting: true,
       sortIndicator: true,
       readOnly: true,
       manualRowResize: true,
@@ -103,7 +103,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   testsEnter.append("div").classed("passfail", true)
   testsEnter.append("div").classed("summary", true)
   testsEnter.append("div").classed("description", true)
-  testsEnter.append("div").classed("conclustion", true)
+  testsEnter.append("div").classed("conclusion", true)
   testsEnter.append("div").classed("visualization", true)
 
   tests.on("click", function(d) {
@@ -141,6 +141,9 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   tests.select("div.description").html(function(d) {
     return d.test.description()
   })
+  tests.select("div.conclusion").html(function(d) {
+    return d.test.conclusion ? d.test.conclusion(d.result) : "";
+  })
 
   /*
   var handsOnTable = this.handsOnTable
@@ -157,19 +160,104 @@ HTMLRenderer.prototype.done = function() {
   var rows = this.rows;
   var resultList = this.resultList;
   var handsOnTable = this.handsOnTable;
-  var comments = renderCellComments(rows, columnHeads, resultList, handsOnTable)
+  this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable)
+  var that = this;
   setTimeout(function() {
-    renderFingerPrint(rows, columnHeads, comments, handsOnTable)
+    that.renderFingerPrint()
   }, 100)
 
   handsOnTable.addHook('afterColumnSort', function(columnIndex) {
-    renderFingerPrint(rows, columnHeads, comments, handsOnTable, columnHeads[columnIndex])
+    that.renderFingerPrint(columnIndex)
+  })
+  handsOnTable.addHook('afterOnCellMouseDown', function(evt, coords) {
+    console.log("clicked", coords)
+    that.renderFingerPrint(coords.col, coords.row)
   })
 }
 
 HTMLRenderer.prototype.destroy = function() {
   this.handsOnTable.destroy();
   d3.select("#grid").selectAll("*").remove();
+}
+HTMLRenderer.prototype.renderFingerPrint = function(columnIndex, rowIndex) {
+  var rows = this.rows;
+  var columnHeads = this.columnHeads;
+  var comments = this.comments;
+  var handsOnTable = this.handsOnTable;
+
+  var width = 200;
+  var resultsBBOX = d3.select(".step-3-results").node().getBoundingClientRect();
+  var height = resultsBBOX.height;
+  var cellWidth = 2;
+  var cellHeight = 1;
+
+  var cols = Object.keys(rows[0]);
+  cellWidth = width / cols.length;
+  cellHeight = height / rows.length;
+
+  var canvas = d3.select('#fingerprint').node();
+  var context = canvas.getContext("2d")
+  canvas.width = width;
+  canvas.height = height;
+
+  var overlay = d3.select('#fingerprint-overlay')
+
+  var colorScale = d3.scale.ordinal()
+  .domain([1, 2, 3])
+  .range(["#ed8282","#da8282", "#d88282"])
+
+  function renderPrint() {
+    context.fillStyle = "#fff"
+    context.fillRect(0, 0, width, height);
+    var transformRowIndex = 0;
+    comments.forEach(function(comment) {
+      context.fillStyle = colorScale(comment.array.length)//"#d88282"
+      //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)
+      var transformRowIndex;
+      if(handsOnTable.sortIndex && handsOnTable.sortIndex.length) {
+        transformRowIndex = handsOnTable.sortIndex[comment.row][0]
+      } else {
+        transformRowIndex  = comment.row;
+      }
+      context.fillRect(comment.col * cellWidth, transformRowIndex * cellHeight, cellWidth, cellHeight)
+    })
+  }
+  renderPrint();
+
+
+  function renderCol(col) {
+    context.strokeStyle = "#111"
+    context.strokeRect(col * cellWidth, 0, cellWidth, height)
+  }
+  function renderRow(row) {
+    context.strokeStyle = "#111"
+    context.strokeRect(0, row * cellHeight, width, cellHeight)
+  }
+  if(columnIndex || columnIndex === 0) {
+    renderCol(columnIndex)
+  }
+  if(rowIndex || rowIndex === 0) {
+    renderRow(rowIndex)
+  }
+
+  var that = this;
+  var drag = d3.behavior.drag()
+    .on("drag.fp", function(d,i){
+      var mouse = d3.mouse(canvas);
+      var x = mouse[0];
+      var y = mouse[1];
+      if(y < 0) y = 0;
+      var row = Math.floor(y / height * rows.length); // for now our cells are 1 pixel high so this works
+      var col = Math.floor(x / width * cols.length);
+      //console.log("row, col", row, col)
+      handsOnTable.selectCell(row, col, row, col, true);
+
+      //that.renderFingerPrint(row, col);
+      renderPrint();
+      renderCol(col);
+      renderRow(row);
+    })
+  d3.select(canvas).call(drag)
 }
 
 function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
@@ -210,62 +298,4 @@ function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
   });
   handsOnTable.updateSettings({cell: comments})
   return comments;
-}
-
-function renderFingerPrint(rows, columnHeads, comments, handsOnTable, column) {
-  var width = 200;
-  var resultsBBOX = d3.select(".step-3-results").node().getBoundingClientRect();
-  var height = resultsBBOX.height;
-  var cellWidth = 2;
-  var cellHeight = 1;
-
-  var cols = Object.keys(rows[0]);
-  cellWidth = width / cols.length;
-  cellHeight = height / rows.length;
-
-  var canvas = d3.select('#fingerprint').node();
-  var context = canvas.getContext("2d")
-  canvas.width = width;
-  canvas.height = height;
-
-  var overlay = d3.select('#fingerprint-overlay')
-
-  var colorScale = d3.scale.ordinal()
-  .domain([1, 2, 3])
-  .range(["#ed8282","#da8282", "#d88282"])
-
-  var rowIndex = 0;
-  comments.forEach(function(comment) {
-    context.fillStyle = colorScale(comment.array.length)//"#d88282"
-    rowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)
-    context.fillRect(comment.col * cellWidth, rowIndex * cellHeight, cellWidth, cellHeight)
-  })
-
-  if(column) {
-    var index = columnHeads.indexOf(column);
-    context.strokeStyle = "#111"
-    context.strokeRect(index * cellWidth, 0, cellWidth, height)
-  }
-
-  /*
-  rows.forEach(function(row, i) {
-    cols.forEach(function(col, j) {
-      context.fillStyle = row[col] ? "#d88282" : "#ddd";
-      context.fillRect(j*cellWidth, i*cellHeight, cellWidth, cellHeight)
-    })
-  })
-  */
-
-  var drag = d3.behavior.drag()
-    .on("drag", function(d,i){
-      var mouse = d3.mouse(canvas);
-      var x = mouse[0];
-      var y = mouse[1];
-      if(y < 0) y = 0;
-      var row = Math.floor(y / height * rows.length); // for now our cells are 1 pixel high so this works
-      var col = Math.floor(x / width * cols.length);
-      //console.log("row, col", row, col)
-      handsOnTable.selectCell(row, col, row, col, true);
-    })
-  d3.select(canvas).call(drag)
 }
