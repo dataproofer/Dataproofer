@@ -555,6 +555,7 @@ FINGERPRINT
 #fingerprint {
   width: 200px;
   position:absolute;
+  cursor: crosshair;
 }
 #fingerprint-overlay {
   width: 202px;
