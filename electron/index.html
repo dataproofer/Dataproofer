@@ -31,11 +31,11 @@
 
         <div class="steps">
           <div class="step step-1-data">
-            <h2 class="title">Step 1: Load data</h5>
-            <h4>XLSX, XLS, CSV, TSV, or PSV files</h4>
+            <h2 class="title">Step 1: <br /> Load data you'd like to run tests on</h5>
             <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader">Choose a dataset</label>
+            <small id="filetypes-accepted">Currently supported: CSV, TSV, PSV, XLSX, XLS</small>
 
-            <h3 id="or-separator">Or...</h3>
+            <hr />
 
               <!--
               <button class="reload btn btn-default">
@@ -61,7 +61,7 @@
           </div>
 
           <div class="step step-3-results">
-            <h2 class="title">Step 3: Review test results</h5>
+            <h2 class="title">Step 3: <br /> Review test results</h5>
             <!-- we will insert our results here -->
           </div>
           <div id="grid-wrapper">
@@ -70,13 +70,11 @@
           <div class="test-editor" style="display:none">
             <h3>Editing test:</h3>
             <input id="test-editor-name" placeholder="Name of test">
-            <br>
             <input id="test-editor-description" placeholder="Short description of test">
-            <br>
             <div id="test-editor-js"></div>
             <button id="cancel-test">Cancel</button>
             <button id="copy-test">Copy</button>
-            <button id="save-test" style="display: none;">Save</button>
+            <button id="save-test">Save</button>
           </div>
 
         </div>

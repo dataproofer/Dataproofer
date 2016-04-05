@@ -13,6 +13,23 @@
   background-color: #F7F6F5;
   box-sizing: border-box;
  }
+
+ button {
+  font-size: 16px;
+  padding: 0.5em 1em;
+  /*margin: 0.25em;*/
+  margin-top: 2px;
+  border: 0;
+  background-color: #CFCFCF;
+  font-weight: bold;
+  cursor: pointer;
+ }
+
+ hr {
+  margin: 48px 0;
+  border: 1px dotted #CCC;
+  border-bottom: transparent;
+ }
 .icon-check {
   background-color: #29A03B;
 }
@@ -31,6 +48,11 @@
 }
 #file-loader {
   font-size: 12px;
+}
+#filetypes-accepted {
+  text-align: center;
+  display: block;
+  margin-top: 1em;
 }
 
 span.reload {
@@ -81,10 +103,14 @@ Navigation buttons
 }
 
 #back-button {
-  background-color: #46CC69;
+  /*background-color: #46CC69;*/
+  background-color: #48C2C5;
+  /*color: black !important;*/
 }
 #forward-button {
-  background-color: #ED4224;
+  /*background-color: #ED4224;*/
+  background-color: #4A66B0;
+
 }
 
 
@@ -133,200 +159,22 @@ Grid
 
 }
 
-/* =============================================================================
-STEP  1
-============================================================================= */
-.step-1-data {
-
-}
-
-.step-1-data #file-loader {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-
-.step-1-data #file-loader-button {
-  display: block;
-  text-align: center;
-  background-color: #46CC69;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  color: white;
-  font-size: 24px;
-  padding: 1em;
-}
-
-#spreadsheet-input {
-  width: 80%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  font-size: 24px;
-  padding: 1em;
-}
-
-#spreadsheet-input::-webkit-input-placeholder {
-  text-align: center;
-}
-#spreadsheet-button {
-  width: 25%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  font-size: 24px;
-  margin-top: 5px;
-  padding: 1em;
-  background-color: #46CC69;
-  color: white;
-  border: 0;
-
-}
-
-#gsheets-response {
-  width: 80%;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 20px;
-  color: #a23
-}
-
-/* =============================================================================
-STEP  2
-============================================================================= */
-.step-2-select {
-  padding: 5px;
-  width: 100%;
-  /*opacity: 0.2; */
-  display: none;
-  margin-bottom: 200px;
-}
-.step-2-select .suite {
-  opacity: 0.2;
-}
-.step-2-select .suite.active {
-  opacity: 1;
-}
-
-button.run-tests {
-  /*
-  font-size: 1.8em;
-  padding: 1em;
-  width: 100%;
-  display: block;
-  text-align: center;
-  */
-  display: block;
-  text-align: center;
-  background-color: #ED4224;
-  border: 0;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 48px;
-  color: white;
-  font-size: 24px;
-  padding: 1em;
-}
-
-.test-editor {
-  position: fixed;
-  /*top: 87px;*/
-  top: 0;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  background-color: rgba(255, 255, 255, 0.95);
-}
-.test-editor h3 {
-  margin-left: 20px;
-}
-.test-editor input {
-  margin: 20px;
-  border: none;
-  border-bottom: 2px solid white;
-  padding: 3px;
-  outline: none;
-  width: 80%;
-}
-#test-editor-name {
-  font-size: 20px;
-}
-#test-editor-description {
-  font-size: 14px;
-}
-.test-editor input:focus {
-  border-bottom: 2px solid #333;
-}
-#test-editor-js {
-  display: block;
-  margin-left: 20px;
-  width: 100%;
-  height: calc(100% - 250px);
-}
-.CodeMirror {
-  width: 100%;
-  height: 100%;
-}
-
-.test-editor button {
-  display: inline-block;
-  float: left;
-  font-size: 16px;
-  border: 0;
-  padding: 0.5em;
-  margin-bottom: 2px;
-  margin-right: 2px;
-  margin-left: 20px;
-  margin-top: 10px;
-  outline: none;
-}
-.test-editor button:hover {
-  box-shadow: 3px 3px 6px #999;
-}
-#cancel-test {
-  background-color: #ccc;
-}
-#save-test {
-  margin-left: 10px;
-  background-color: #ED4224;
-  color: white;
-}
-#copy-test {
-  margin-left: 10px;
-  background-color: #7fc;
-}
-
-/* =============================================================================
-STEP  3
-============================================================================= */
-.step-3-results {
-  width: 50%;
-  display: none;
-}
-
-.handsontable td:hover {
-  background-color: aliceblue;
-}
 
 /* =============================================================================
 General Suites and test
 ============================================================================= */
 .suite {
-  border-top: 2px solid #CCC;
-  margin: 0.5em 0;
+  /*border-top: 2px solid #CCC;*/
+  margin: 8px 0;
+}
+
+#local-tests .test {
+  border: 1px solid #4A4A4A;
 }
 
 .suite-hed * {
-  display: inline-block;
-  text-decoration: underline;
+  /*display: inline-block;
+  text-decoration: underline;*/
 }
 
 .suite-hed input.toggle+label {
@@ -343,7 +191,7 @@ General Suites and test
   padding: 2px;
   width: 60px;
   height: 30px;
-  top: 0.7em;
+  top: 0.4em;
   background-color: #bebebe;
   -webkit-border-radius: 30px;
   border-radius: 30px;
@@ -374,7 +222,7 @@ General Suites and test
 
 .suite input.toggle+label:before {
   right: 1px;
-  background-color: #d7d7d7;
+  background-color: #48C2C5;
   -webkit-border-radius: 30px;
   border-radius: 30px;
   -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
@@ -403,7 +251,11 @@ General Suites and test
 }
 
 .suite input.toggle:checked+label:before {
-  background-color: #08ab88;
+  background-color: #48C2C5;
+}
+
+.suite-hed input.toggle:checked+label:before {
+  background-color: #1C7C7C;
 }
 
 .suite input.toggle:checked+label {
@@ -433,11 +285,11 @@ General Suites and test
   max-width: 100%;
   */
   margin: 4px;
-  padding: 1em;
+  padding: 0.8em;
   margin-top: 1em;
   width: 20%;
   min-width: 110px;
-  min-height: 200px;
+  min-height: 190px;
   /*max-height: 400px;*/
   /*overflow-y: auto;*/
   display: inline-block;
@@ -448,7 +300,39 @@ General Suites and test
   opacity: 0.2;
   position: relative;
   overflow: hidden;
+  padding-bottom: 42px;
 }
+
+.suite .test button {
+  width: 100%;
+}
+.suite .test .edit-test {
+  font-size: 12px;
+  color: #58595B;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.suite .test .delete-test {
+  position: absolute;
+  font-weight: normal;
+  top: 0;
+  left: 0;
+  font-size: 10px;
+  height: 14px;
+  padding: 0;
+  margin: 0;
+  /*background-color: #EC4324;*/
+  background-color: #4A4A4A;
+  color: white;
+}
+
+/*
+.suite .test .delete-test::before {
+  content: "X ";
+}
+*/
 
 .suite .test canvas {
   width: 100%;
@@ -459,7 +343,7 @@ General Suites and test
 }
 
 .suite .test.active {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   opacity: 1;
 }
 
@@ -475,6 +359,7 @@ General Suites and test
   border-radius: 50%;
   float:left;
   margin-right: 7px;
+  margin-top: 7px;
 }
 
 .suite .test .message {
@@ -486,6 +371,10 @@ General Suites and test
 .suite .test .test-header {
   font-size: 14px;
   font-weight: bold;
+  margin: 0.5em 0;
+  margin-top: 0.8em;
+  line-height: 1.2em;
+
 }
 .suite .test .test-column {
   font-size: 12px;
@@ -505,6 +394,230 @@ General Suites and test
 }
 
 
+
+
+/* =============================================================================
+STEP  1
+============================================================================= */
+.step-1-data {
+  text-align: center;
+}
+
+.step-1-data #file-loader {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.step-1-data .title {
+  font-size: 2em;
+  text-align: center;
+}
+
+.step-1-data #file-loader-button {
+  display: block;
+  text-align: center;
+  background-color: #48C2C5;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 1em;
+  cursor: pointer;
+}
+
+#spreadsheet-input {
+  width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  font-size: 24px;
+  padding: 1em;
+}
+
+#spreadsheet-input::-webkit-input-placeholder {
+  text-align: center;
+}
+#spreadsheet-button {
+  width: 25%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  font-size: 24px;
+  margin-top: 5px;
+  padding: 1em;
+  background-color: #48C2C5;
+  color: white;
+  border: 0;
+
+}
+
+#gsheets-response {
+  width: 80%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  color: #a23
+}
+
+/* =============================================================================
+STEP  2
+============================================================================= */
+.step-2-select {
+  padding: 5px;
+  width: 100%;
+  /*opacity: 0.2; */
+  display: none;
+  margin-bottom: 200px;
+}
+.step-2-select .title {
+  font-size: 2em;
+  text-align: center;
+}
+.step-2-select .suite {
+  opacity: 0.2;
+}
+.step-2-select .suite.active {
+  opacity: 1;
+}
+
+button.run-tests {
+  /*
+  font-size: 1.8em;
+  padding: 1em;
+  width: 100%;
+  display: block;
+  text-align: center;
+  */
+  display: block;
+  text-align: center;
+  /*background-color: #ED4224;*/
+  background-color: #4A66B0;
+  border: 0;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 48px;
+  color: white;
+  font-size: 24px;
+  padding: 1em;
+}
+
+.test-editor {
+  position: fixed;
+  /*top: 87px;*/
+  top: 0;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding-top: 24px;
+}
+.test-editor h3 {
+  margin: 8px;
+  margin-left: 0.8em;
+}
+.test-editor input {
+  margin: 0.8em;
+  margin-left: 0.5em;
+  border: none;
+  border-bottom: 2px solid white;
+  outline: none;
+  width: 100%;
+  background-color: #F1F2F2;
+  padding: 12px;
+}
+#test-editor-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+#test-editor-description {
+  font-size: 14px;
+}
+.test-editor input:focus {
+  border-bottom: 2px solid #333;
+}
+#test-editor-js {
+  display: block;
+  width: 100%;
+  height: calc(100% - 210px);
+}
+.CodeMirror {
+  width: 100%;
+  height: 100%;
+}
+
+.test-editor button {
+  display: inline-block;
+  /*
+  float: left;
+  font-size: 16px;
+  border: 0;
+  padding: 0.5em;
+  margin-bottom: 2px;
+  margin-right: 2px;
+  margin-left: 20px;
+  margin-top: 10px;
+  outline: none;
+  */
+}
+/*
+.test-editor button:hover {
+  box-shadow: 3px 3px 6px #999;
+}
+*/
+#cancel-test {
+  background-color: #ccc;
+}
+#save-test {
+  display: inline-block;
+  background-color: #ED4224;
+  color: white;
+}
+#copy-test {
+  background-color: #7fc;
+}
+
+/* =============================================================================
+STEP  3
+============================================================================= */
+.step-3-results {
+  width: 50%;
+  display: none;
+}
+.step-3-results .title {
+  font-size: 2em;
+  text-align: center;
+}
+
+.step-3-results .test {
+  width: 88%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 24px;
+  padding: 4px 1em;
+}
+
+/*
+TODO: Make this hide/unhide with click
+*/
+.step-3-results .fingerprint {
+  display: none;
+}
+
+.handsontable td:hover {
+  background-color: aliceblue;
+}
 
 /* =============================================================================
 HEADER
