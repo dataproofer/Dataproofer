@@ -213,6 +213,7 @@ function renderStep2(processorConfig) {
   d3.select(".step-2-select").style("display", "block");
   d3.select(".step-3-results").style("display", "none");
   d3.select(".step-1-data").style("display", "none");
+  d3.select("#fingerprint-wrapper").style("display", "none")
 
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
@@ -226,28 +227,31 @@ function renderStep2(processorConfig) {
     });
   var suitesHeds = suitesEnter.append("div")
     .attr("class", "suite-hed");
-  suitesHeds.append("h2")
-    .text(function(d) { return d.fullName; });
-  suitesHeds.append("input")
-    .attr({
-      "class": "toggle",
-      "type": "checkbox",
-      "id": function(d,i){return "suite-" + i;}
-    }).each(function(d) {
-      if(d.active) {
-        d3.select(this).attr("checked", true);
-      } else {
-        d3.select(this).attr("checked", null);
-      }
-    });
-  suitesHeds.append("label")
-    .attr("for", function(d,i){return "suite-" + i;})
-    .on("click", function(d) {
-      d.active = !d.active;
-      d3.select(this.parentNode.parentNode).classed("active", d.active);
-      console.log("suite", d);
-      saveTestConfig();
-    });
+
+    suiteHedAndToggle = suitesHeds.append("h2")
+      .text(function(d) { return d.fullName; });
+
+    suiteHedAndToggle.append("input")
+          .attr({
+            "class": "toggle",
+            "type": "checkbox",
+            "id": function(d,i){return "suite-" + i;}
+          }).each(function(d) {
+            if(d.active) {
+              d3.select(this).attr("checked", true);
+            } else {
+              d3.select(this).attr("checked", null);
+            }
+          });
+
+      suiteHedAndToggle.append("label")
+          .attr("for", function(d,i){return "suite-" + i;})
+          .on("click", function(d) {
+            d.active = !d.active;
+            d3.select(this.parentNode.parentNode).classed("active", d.active);
+            console.log("suite", d);
+            saveTestConfig();
+          });
 
   // render the tests
   var tests = suitesEnter.selectAll(".test")
@@ -255,6 +259,16 @@ function renderStep2(processorConfig) {
 
   var testsEnter = tests.enter().append("div")
     .attr("class", function(d) { return d.active ? "test active" : "test"; });
+
+  testsEnter.append("button").classed("delete-test", true)
+    .text("Delete test")
+    .style("display", function(d) {
+      if(d.filename) return "block";
+      return "none";
+    })
+    .on("click", function(d) {
+      deleteTest(d);
+    });
 
   var onOff = testsEnter.append("div").classed("onoff", true);
   onOff.append("input")
@@ -296,23 +310,18 @@ function renderStep2(processorConfig) {
     .on("click", function(d) {
       renderTestEditor(d);
     });
-  testsEnter.append("button").classed("delete-test", true)
-    .text("Delete test")
-    .style("display", function(d) {
-      if(d.filename) return "block";
-      return "none";
-    })
-    .on("click", function(d) {
-      deleteTest(d);
-    });
+
+
+  /*
   testsEnter.append("button").classed("duplicate-test", true)
     .text(function(d) {
       if(d.local) return "Duplicate test";
-      return "Duplicate to local suite";
+      return "Make a copy";
     })
     .on("click", function(d) {
       duplicateTest(d);
     });
+    */
 
   d3.select("#current-file-name").text(processorConfig.filename);
 
@@ -531,7 +540,7 @@ function renderTestEditor(test) {
       hideEditor();
     });
   if (test.local) {
-    saveTest.style("display", "block");
+    saveTest.style("display", "inline-block");
   }
 
   testEditor.style("display", "block");
