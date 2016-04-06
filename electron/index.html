@@ -36,7 +36,12 @@
 
         <div class="steps">
           <div class="step step-1-data">
-            <h2 class="title">Step 1: <br /> Load data you'd like to run tests on</h5>
+            <h1><img id="intro-logo" src="img/dataproofer-logo-2.png" alt="Dataproofer"/></h1>
+            <h4>Slack style welcome message?</h4>
+            <div id="dataproofer-intro-description">
+              Dataproofer is here. Load the dataset you'd like to run some checks on. Then you can run all of our checks automatically or select checks specific for what you're trying to do.
+            </div>
+            <!-- <h2 class="title">Step 1: Load data you'd like to run tests on</h5> -->
             <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader"><i class="fa fa-search"></i> Select a dataset</label>
             <small id="filetypes-accepted">Currently supported: CSV, TSV, PSV, XLSX, XLS</small>
 
@@ -57,7 +62,8 @@
 
           </div>
           <div class="step step-2-select">
-            <h2 class="title">Step 2: Select tests</h5>
+            <button class="btn btn-large run-tests">Run tests</button>
+            <h2 class="title">Modify your tests</h5>
             <!-- we will insert our test suites here -->
             <div class="step-2-select-content">
             </div>

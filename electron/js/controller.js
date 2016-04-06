@@ -216,6 +216,7 @@ function renderStep1(processorConfig) {
   clear();
   step1.style("display", "block");
   step1.select("#file-loader-button").text("Choose a dataset")
+  d3.select("#info-top-bar").style("display", "none");
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
@@ -224,6 +225,8 @@ function renderStep2(processorConfig) {
 
   clear();
   d3.select(".step-2-select").style("display", "block");
+
+  d3.select("#info-top-bar").style("display", "block");
   console.log("STEP 2", processorConfig)
   var loaded = processorConfig.loaded
   if(loaded.trueRows > loaded.rows.length) {
@@ -279,7 +282,7 @@ function renderStep2(processorConfig) {
       suiteHedAndToggle.append("span")
         .attr("class", "suite-hed-title")
         .text(function(d) {
-          return d.fullName + " – " + d.active;
+          return d.fullName //+ " – " + d.active;
         });
 
   // render the tests
@@ -374,6 +377,7 @@ function renderStep3(processorConfig) {
   renderer = Processor.run(processorConfig)
   d3.select(".step-3-results").style("display", "block")
   d3.select(".step-2-select").style("display", "none")
+  d3.select("#info-top-bar").style("display", "block");
   d3.select("#fingerprint-wrapper").style("display", "block")
 }
 

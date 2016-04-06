@@ -70,15 +70,16 @@ button.reload {
   padding-right: 10px;
 }
 
-#info-top-bar {
+#info-top-bar {  
   padding: 1em;
   padding-top: 32px;
   width: 100%;
-  display: block;
   background-color: rgba(255,255,255,0.9);
   position: fixed;
   top: 0;
   z-index: 2;
+
+  display: none;
 }
 
 #info-top-bar #current-file-name{
@@ -212,6 +213,10 @@ Grid
 }
 .column .test .conclusion {
   display: none;
+
+  font-size: 14px;
+  background-color: #ECE9E3;
+  padding: 8px;
 }
 .column .test .visualization {
   display: none;
@@ -506,7 +511,25 @@ STEP  1
 ============================================================================= */
 .step-1-data {
   text-align: center;
-  padding: 1.5em;
+  /*padding: 1.5em;*/
+}
+
+.step-1-data h1 {
+  margin: 0;
+}
+
+#intro-logo {
+  max-width: 400px;
+  height: auto;
+}
+
+#dataproofer-intro-description {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  padding: 1em;
+  text-align: left;
 }
 
 .step-1-data #file-loader {
@@ -578,7 +601,7 @@ STEP  1
 STEP  2
 ============================================================================= */
 .step-2-select {
-  padding: 5px;
+  /*padding: 5px;*/
   width: 100%;
   /*opacity: 0.2; */
   display: none;
