@@ -168,8 +168,12 @@ Grid
   padding: 1em;
   margin: 8px;
   border-bottom: 1px solid #ADADAD;
-
 }
+
+.column:last-of-type {
+  border-bottom: none;
+}
+
 .column-header {
   font-size: 24px;
   line-height: 1em;
