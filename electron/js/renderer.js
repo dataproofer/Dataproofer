@@ -165,12 +165,12 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var columnWise = d.result.columnWise;
     if (columnWise) {
       if (columnWise[currentResultsColumn] === 0) {
-        passFailIconHtml += "<div class='icon icon-check'></div>";
+        passFailIconHtml += "<i class=\"fa fa-check-circle-o pass-icon\"></i>";
       } else if (columnWise[currentResultsColumn] > 0) {
-        passFailIconHtml += "<div class='icon icon-cancel-circled'></div>";
+        passFailIconHtml += "<i class=\"fa fa-flag-o fail-icon\"></i>";
       } else {
         console.log("d", d);
-        passFailIconHtml += "<div class='icon icon-neutral'></div>";
+        passFailIconHtml += "";
       }
     }
     return passFailIconHtml;

@@ -23,6 +23,7 @@
   background-color: #CFCFCF;
   font-weight: bold;
   cursor: pointer;
+  outline: none;
  }
 
  hr {
@@ -35,7 +36,7 @@
   display: none !important;
 }
 
-.icon-check {
+.pass-icon {
   color: #29A03B;
 }
 
@@ -43,8 +44,9 @@
   color: #858585;
 }
 
-.icon-cancel-circled {
-  /*color: #D43833;*/
+.fail-icon {
+  display: inline-block;
+  color: #D43833;
 }
 
 .nav-group-row {
@@ -156,7 +158,7 @@ Grid
   top: 30;
   height: calc(100% - 230px); */
   /*padding: 1.5em;*/
-  padding-top: 90px;
+  padding-top: 82px;
 }
 
 .step {
@@ -444,7 +446,10 @@ General Suites and test
   background-color: #efefef;
 }
 */
-
+.test .passfail {
+  float: left;
+  margin-right: 0.6em;
+}
 .test .passfail div{
   width: 12px;
   height: 12px;
@@ -616,7 +621,7 @@ STEP  2
   width: 100%;
   /*opacity: 0.2; */
   display: none;
-  margin-bottom: 200px;
+  margin-bottom: 72px;
 }
 .step-2-select-content {
   padding: 1.5em;
@@ -747,6 +752,8 @@ STEP  3
 .step-3-results {
   width: calc(50% - 220px);
   display: none;
+  word-wrap: break-word;
+  overflow-x: hidden;
 }
 .step-3-results .title {
   font-size: 2em;
