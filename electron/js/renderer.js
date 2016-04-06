@@ -82,49 +82,63 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   var columns = container.selectAll(".column")
     .data(columnHeads);
 
+  function slugifyColumnHeader(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]/i, function(s) {
+      var c = s.charCodeAt(0);
+      console.log("s", s);
+      console.log("c", c);
+      if (c == 32) return "-";
+      if (c >= 65 && c <= 90) s.toLowerCase();
+      return c.toString(16).slice(-4);
+    });
+  }
+
   var columnsEnter = columns.enter().append("div").classed("column", true);
   // render the column header
   columnsEnter.append("div").classed("column-header", true)
     .text(function(d) { return d; } )
     .attr("title", function(d,i){
       return "Column " + i
-    });
+    })
+    .attr("id", function(d) { return slugifyColumnHeader(d); });
 
   // Want to separate out tests that failed and tests that passed here
 
   // Summarize testsPassed.length, and then append all failed tests like normal
 
-  //console.log("Result list: ", resultList)
+  console.log("Result list: ", resultList);
 
-  passedResults = _.filter(resultList, function(d){
-    return d.result.passed
-  })
 
-  failedResults = _.filter(resultList, function(d){
-    return !d.result.passed
-  })
+  // var passedResults = _.filter(resultList, function(d){
+  //   return d.result.passed;
+  // });
+
+  var failedResults = _.filter(resultList, function(d) {
+    return !d.result.passed;
+  });
 
   //console.log("Passed list", passedResults)
   //console.log("Failed list", failedResults)
 
   /*
   var testsPassed = columnsEnter.append("h4")
-    
+
   testsPassed.html("<div class='icon icon-check'></div> " + passedResults.length + " tests passed ")
   */
 
   var tests = columns.selectAll(".test")
     .data(function(column) {
       return failedResults.map(function(d) {
-        return { test: d.test, result: d.result, suite: d.suite, column: column}
-      })
-    })
+        return { test: d.test, result: d.result, suite: d.suite, column: column};
+      });
+    });
 
 
   var testsEnter = tests.enter().append("div")
   .attr("class", function(d) {
     return "test";// + (d.test.active ? " active" : "" )
   });
+
   testsEnter.append("div").classed("passfail", true);
   testsEnter.append("div").classed("summary", true);
   testsEnter.append("div").classed("description", true);
@@ -147,12 +161,17 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
   tests.select("div.passfail").html(function(d) {
     var passFailIconHtml = "";
-    if (d.result.passed === true) {
-      passFailIconHtml += "<div class='icon icon-check'></div>";
-    } else if (d.result.passed === false) {
-      passFailIconHtml += "<div class='icon icon-cancel-circled'></div>";
-    } else {
-      passFailIconHtml += "<div class='icon icon-neutral'></div>";
+    var currentResultsColumn = d.column;
+    var columnWise = d.result.columnWise;
+    if (columnWise) {
+      if (columnWise[currentResultsColumn] === 0) {
+        passFailIconHtml += "<div class='icon icon-check'></div>";
+      } else if (columnWise[currentResultsColumn] > 0) {
+        passFailIconHtml += "<div class='icon icon-cancel-circled'></div>";
+      } else {
+        console.log("d", d);
+        passFailIconHtml += "<div class='icon icon-neutral'></div>";
+      }
     }
     return passFailIconHtml;
   });
@@ -181,8 +200,20 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     return !!num;
   })
   .attr("title", function(d){
-    return d.test.description()
-  })
+    return d.test.description();
+  });
+
+  d3.selectAll("div.summary:not(.interesting)")
+    .each(function() {
+      d3.select(this.parentNode)
+        .classed("hidden", true);
+    });
+
+  d3.selectAll("div.test.hidden")
+    .each(function() {
+      d3.select(this.parentNode)
+        .classed("hidden", true);
+    });
 
   tests.select("div.conclusion").html(function(d) {
     return d.test.conclusion ? d.test.conclusion(d.result) : "";
@@ -216,6 +247,11 @@ HTMLRenderer.prototype.done = function() {
     console.log("clicked", coords);
     that.renderFingerPrint({col: coords.col, row: coords.row });
   });
+
+  d3.selectAll("#grid .ht_clone_top th")
+    .on("click", function(e) {
+      d3.select(this).select(".colHeader");
+    });
 };
 
 HTMLRenderer.prototype.destroy = function() {
