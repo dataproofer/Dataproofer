@@ -44,7 +44,7 @@
 }
 
 .icon-cancel-circled {
-  color: #D43833;
+  /*color: #D43833;*/
 }
 
 .nav-group-row {
@@ -168,9 +168,11 @@ Grid
 }
 
 .column {
-  padding: 1em;
+  padding: 4px;
   margin: 8px;
-  border-bottom: 1px solid #ADADAD;
+  /*border-bottom: 1px solid #ADADAD;*/
+  color: #454544;
+
 }
 
 .column:last-of-type {
@@ -178,11 +180,13 @@ Grid
 }
 
 .column-header {
-  font-size: 24px;
+  /*color: #2B3992;*/
+  color: black;
+  font-size: 18px;
   line-height: 1em;
   font-weight: bold;
   margin: 5px 0;
-  text-align: center;
+  /*text-align: center;*/
 }
 /*
 .column-header::after {
@@ -202,7 +206,7 @@ Grid
 }
 .column .test .summary.interesting {
   font-size: 14px;
-  font-weight: bold;
+  /*font-weight: bold;*/
   opacity: 1;
 }
 
@@ -446,7 +450,7 @@ General Suites and test
   height: 12px;
   border-radius: 50%;
   float:left;
-  margin-top: -4px;
+  margin-top: -2px;
   margin-right: 6px;
   /*margin-top: 7px;*/
 }
@@ -751,7 +755,8 @@ STEP  3
 
 .step-3-results .test {
   line-height: 1.2em;
-  width: 88%;
+  /*width: 88%;*/
+  width: 98%;
   display: block;
   margin-left: auto;
   margin-right: auto;
