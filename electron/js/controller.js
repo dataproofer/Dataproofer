@@ -124,7 +124,7 @@ function loadTestConfig(config) {
 
 function saveTestConfig() {
 
-  
+
   // We save the test config (whether each test/suite is active) whenever
   // the active state of any test changes
   var testConfig = {};
@@ -164,14 +164,14 @@ function renderNav() {
       break;
     case 2:
       back.style("display", "inline-block")
-        .text("Load data");
+        .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
-        .text("Run Tests");
+        .html("Run Tests <i class='fa fa-chevron-circle-right'></i>");
       grid.style("display", "none");
       break;
     case 3:
       back.style("display", "inline-block")
-        .text("Select Tests");
+        .html("<i class='fa fa-chevron-circle-left'></i> Select Tests");
       forward.style("display", "none");
       grid.style("display", "inline-block");
       break;
@@ -250,9 +250,9 @@ function renderStep2(processorConfig) {
     });
 
   var suitesHeds = suitesEnter.append("div")
-    .attr("class", "suite-hed"); 
+    .attr("class", "suite-hed");
 
-    suiteHedAndToggle = suitesHeds.append("h2")   
+    suiteHedAndToggle = suitesHeds.append("h2")
 
     suiteHedAndToggle.append("input")
           .attr({
@@ -278,8 +278,8 @@ function renderStep2(processorConfig) {
 
       suiteHedAndToggle.append("span")
         .attr("class", "suite-hed-title")
-        .text(function(d) { 
-          return d.fullName + " – " + d.active; 
+        .text(function(d) {
+          return d.fullName + " – " + d.active;
         });
 
   // render the tests
@@ -332,9 +332,9 @@ function renderStep2(processorConfig) {
     });
 
   testsEnter.append("button").classed("edit-test", true)
-    .text(function(d) {
-      if(d.local) return "Customize test";
-      return "Customize test";
+    .html(function(d) {
+      if(d.local) return "<i class='fa fa-file-code-o'></i> Customize test";
+      return "<i class='fa fa-file-code-o'></i> Customize test";
     })
     .on("click", function(d) {
       renderTestEditor(d);

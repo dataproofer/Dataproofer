@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/minimaltheme.css">
     <link rel="stylesheet" href="css/dataproofer.css">
     <link rel="stylesheet" href="css/photon-icons.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+
 
   </head>
   <body>
@@ -35,7 +37,7 @@
         <div class="steps">
           <div class="step step-1-data">
             <h2 class="title">Step 1: <br /> Load data you'd like to run tests on</h5>
-            <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader">Choose a dataset</label>
+            <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader"><i class="fa fa-search"></i> Select a dataset</label>
             <small id="filetypes-accepted">Currently supported: CSV, TSV, PSV, XLSX, XLS</small>
 
             <hr />
@@ -48,7 +50,7 @@
               -->
 
             <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
-            <button id="spreadsheet-button">Load Sheet</button>
+            <button id="spreadsheet-button"><i class="fa fa-google"></i> Load</button>
 
             <div id="gsheets-response">
             </div>
