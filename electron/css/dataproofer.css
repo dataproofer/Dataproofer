@@ -152,7 +152,7 @@ Grid
   position: absolute;
   top: 30;
   height: calc(100% - 230px); */
-  padding: 1.5em;
+  /*padding: 1.5em;*/
   padding-top: 90px;
 }
 .step {
@@ -167,7 +167,7 @@ Grid
 .column {
   padding: 1em;
   margin: 8px;
-  /*border: 1px solid orange;*/
+  border-bottom: 1px solid #ADADAD;
 
 }
 .column-header {
@@ -175,6 +175,7 @@ Grid
   line-height: 1em;
   font-weight: bold;
   margin: 5px 0;
+  text-align: center;
 }
 /*
 .column-header::after {
@@ -501,6 +502,7 @@ STEP  1
 ============================================================================= */
 .step-1-data {
   text-align: center;
+  padding: 1.5em;
 }
 
 .step-1-data #file-loader {
