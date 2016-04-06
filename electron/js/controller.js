@@ -196,7 +196,7 @@ function renderCurrentStep() {
 d3.select("#back-button").on("click", function() {
   currentStep--;
   if(currentStep == 1){
-    document.location.reload(true)
+    document.location.reload(true);
   }
   else {
     renderNav();
@@ -214,7 +214,7 @@ function renderStep1(processorConfig) {
   var step1 = d3.select(".step-1-data");
   clear();
   step1.style("display", "block");
-  step1.select("#file-loader-button").text("Choose a dataset")
+  step1.select("#file-loader-button").text("Choose a dataset");
   d3.select("#info-top-bar").style("display", "none");
 }
 
@@ -227,13 +227,13 @@ function renderStep2(processorConfig) {
 
   d3.select("#info-top-bar").style("display", "block");
   //console.log("STEP 2", processorConfig)
-  var loaded = processorConfig.loaded
+  var loaded = processorConfig.loaded;
   if(loaded.trueRows > loaded.rows.length) {
     d3.select("#file-size-warning")
       .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Loaded "
         + loaded.rows.length
         + " rows out of "
-        + loaded.trueRows)
+        + loaded.trueRows);
   }
 
   // we just remove everything rather than get into update pattern
@@ -251,7 +251,7 @@ function renderStep2(processorConfig) {
   var suitesHeds = suitesEnter.append("div")
     .attr("class", "suite-hed");
 
-    suiteHedAndToggle = suitesHeds.append("h2")
+    suiteHedAndToggle = suitesHeds.append("h2");
 
     suiteHedAndToggle.append("input")
           .attr({
@@ -370,8 +370,8 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if(renderer) renderer.destroy();
   renderer = Processor.run(processorConfig)
-  d3.select(".step-3-results").style("display", "block")
-  d3.select(".step-2-select").style("display", "none")
+  d3.select(".step-3-results").style("display", "block");
+  d3.select(".step-2-select").style("display", "none");
   d3.select("#info-top-bar").style("display", "block");
   d3.select("#fingerprint-wrapper").style("display", "block")
 }

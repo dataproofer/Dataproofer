@@ -70,7 +70,7 @@ button.reload {
   padding-right: 10px;
 }
 
-#info-top-bar {  
+#info-top-bar {
   padding: 1em;
   padding-top: 32px;
   width: 100%;
@@ -167,12 +167,17 @@ Grid
   /*margin-bottom: 200px;*/
 }
 
-.column {
+.column,
+.summary-results {
   padding: 4px;
   margin: 8px;
   /*border-bottom: 1px solid #ADADAD;*/
   color: #454544;
+}
 
+.summary-results {
+  font-weight: bold;
+  text-align: center;
 }
 
 .column:last-of-type {

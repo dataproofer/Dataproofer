@@ -157,7 +157,13 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //   //that.renderFingerPrint({ test: d.test.name() })
   // });
   tests.on("click", filterResults)
-    .on("dblclick", clearFilteredResults);
+    .on("dblclick", clearFilteredResults)
+    .on("mouseover", function (d) {
+      that.renderFingerPrint({ test: d.test.name(), column: d.column });
+    })
+    .on("mouseout", function(d) {
+      that.renderFingerPrint();
+    });
 
   tests.select("div.passfail").html(function(d) {
     var passFailIconHtml = "";
@@ -169,7 +175,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       } else if (columnWise[currentResultsColumn] > 0) {
         passFailIconHtml += "<div class='icon icon-cancel-circled'></div>";
       } else {
-        console.log("d", d);
         passFailIconHtml += "<div class='icon icon-neutral'></div>";
       }
     }
