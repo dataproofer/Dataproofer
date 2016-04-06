@@ -277,7 +277,6 @@ HTMLRenderer.prototype.filterGrid = function(options) {
   if (highlightCells && column) {
     var headers = _.keys(highlightCells[0]);
     var colIdx = headers.indexOf(column);
-    console.log("colIdx");
     highlightCells.forEach(function(highlightRow, idx) {
       if (highlightRow[column] > 0) {
         rowsToShow.push(_.values(rows[idx]));
