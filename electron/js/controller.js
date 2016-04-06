@@ -36,11 +36,11 @@ SUITES.forEach(function(suite) {
 // There is a possible edge case when loading from last file where this could
 // happen after step 2 & 3, thereby missing the saved ones until next rerendering.
 ipc.on("load-saved-tests", function(evt, loaded) {
-  console.log("loading saved tests", loaded);
+  //console.log("Loading saved checks", loaded);
 
   var suite = {
     name: "local-tests",
-    fullName: "My custom tests",
+    fullName: "My custom checks",
     active: true,
     tests: []
   };
@@ -103,7 +103,7 @@ ipc.on("last-test-config", function(event, testConfig) {
 });
 
 function loadTestConfig(config) {
-  console.log("Loading test configuration.", config);
+  //console.log("Loading check configuration.", config);
   if(!config) return;
   // update the active status of each suite and test found in the config.
   // if nothing is found for a given test in the config, then nothing is done to it.
@@ -135,7 +135,7 @@ function saveTestConfig() {
     });
   });
 
-  console.log("Saving test configuration.", testConfig)
+  //console.log("Saving check configuration.", testConfig)
 
   // TODO: people may want to save various configurations under different names
   // like workspaces in illustrator/IDE
@@ -166,12 +166,12 @@ function renderNav() {
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
-        .html("Run Tests <i class='fa fa-chevron-circle-right'></i>");
+        .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
       grid.style("display", "none");
       break;
     case 3:
       back.style("display", "inline-block")
-        .html("<i class='fa fa-chevron-circle-left'></i> Select Tests");
+        .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
       forward.style("display", "none");
       grid.style("display", "inline-block");
       break;
@@ -195,7 +195,6 @@ function renderCurrentStep() {
 
 d3.select("#back-button").on("click", function() {
   currentStep--;
-  console.log('currentStep', currentStep)
   if(currentStep == 1){
     document.location.reload(true)
   }
@@ -227,7 +226,7 @@ function renderStep2(processorConfig) {
   d3.select(".step-2-select").style("display", "block");
 
   d3.select("#info-top-bar").style("display", "block");
-  console.log("STEP 2", processorConfig)
+  //console.log("STEP 2", processorConfig)
   var loaded = processorConfig.loaded
   if(loaded.trueRows > loaded.rows.length) {
     d3.select("#info-top-bar").style({
@@ -275,7 +274,7 @@ function renderStep2(processorConfig) {
           .on("click", function(d) {
             d.active = !d.active;
             d3.select(this.parentNode.parentNode.parentNode).classed("active", d.active);
-            console.log("suite", d);
+            //console.log("suite", d);
             saveTestConfig();
           });
 
@@ -328,7 +327,7 @@ function renderStep2(processorConfig) {
 
   tests.select("label")
     .on("click", function(d) {
-      console.log("test", d);
+      //console.log("test", d);
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active);
       saveTestConfig();
@@ -364,7 +363,6 @@ function renderStep2(processorConfig) {
 
   // set the warning states for large file
   d3.select(".run-tests")
-    .text("Run tests")
     .on("click", function() {
       currentStep = 3;
       renderNav();
@@ -404,7 +402,7 @@ function handleFileSelect(evt) {
   if(!files || !files.length) return;
   for(var i = 0, f; i < files.length; i++) {
     var file = files[i];
-    console.log("loading file", file.name, file);
+    //console.log("loading file", file.name, file);
     var allowFileExtensions = [
       "csv",
       "tsv",

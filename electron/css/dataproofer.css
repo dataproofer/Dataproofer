@@ -568,6 +568,11 @@ STEP  1
   height: auto;
   font-size: 24px;
   padding: 1em;
+  outline: none;
+  background-color: #F3F1ED;
+}
+#spreadsheet-input:active, #spreadsheet-input:focus {
+  background-color: white;
 }
 
 #spreadsheet-input::-webkit-input-placeholder {
@@ -607,6 +612,9 @@ STEP  2
   display: none;
   margin-bottom: 200px;
 }
+.step-2-select-content {
+  padding: 1.5em;
+}
 .step-2-select .title {
   font-size: 2em;
   text-align: center;
@@ -638,6 +646,11 @@ button.run-tests {
   color: white;
   font-size: 24px;
   padding: 1em;
+}
+
+#top-run-tests {
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 .test-editor {
