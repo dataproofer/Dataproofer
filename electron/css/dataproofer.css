@@ -31,6 +31,10 @@
   border-bottom: transparent;
  }
 
+.hidden {
+  display: none !important;
+}
+
 .icon-check {
   color: #29A03B;
 }
@@ -193,7 +197,6 @@ Grid
   font-weight: bold;
   opacity: 1;
 }
-
 
 .column .test .description {
   /*display: none;*/
