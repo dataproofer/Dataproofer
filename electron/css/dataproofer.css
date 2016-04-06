@@ -121,18 +121,18 @@ Grid
 ============================================================================= */
 
 #grid-wrapper {
-  float: right;
+  float: left;
   position: relative;
-  width: calc(50% - 210px);
+  width: 55%;
 }
 
-#grid {
+#grid,
+#fingerprint {
   font-size: 12px;
   box-sizing: content-box !important;
   width: 50%;
   position: fixed;
-  right: 0;
-  top: 90px;
+  top: 86px;
   bottom: 0;
   background-color: #EEE;
   overflow: hidden;
@@ -473,19 +473,21 @@ FINGERPRINT
 ============================================================================= */
 #fingerprint-wrapper {
   width: 200px;
-  float: left;
+  float: right;
   height: 100%;
   display: none;
 }
+
 #fingerprint {
   width: 200px;
-  position:absolute;
-  cursor: crosshair;
+  cursor: pointer;
+  right: 0px;
+  display: block;
 }
 #fingerprint-overlay {
   width: 202px;
   margin-left: -1px;
-  position:absolute;
+  position:fixed;
   pointer-events: none;
 }
 
