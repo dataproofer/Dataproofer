@@ -142,18 +142,22 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   testsEnter.append("div").classed("visualization", true);
 
   var that = this;
-  tests.on("click", function(d) {
-    console.log(d);
-    var dis = d3.select(this);
-    dis.classed("active", !dis.classed("active"));
-    //that.renderFingerPrint({ test: d.test.name() })
-  });
-  tests.on("mouseover", function(d) {
+  var filterResults = function (d) {
     that.renderFingerPrint({ test: d.test.name(), column: d.column });
-  });
-  tests.on("mouseout", function(d) {
+    that.filterGrid({ highlightCells: d.result.highlightCells, column: d.column });
+  };
+  var clearFilteredResults = function(d) {
     that.renderFingerPrint();
-  });
+    that.filterGrid();
+  };
+  // tests.on("click", function(d) {
+  //   console.log(d);
+  //   var dis = d3.select(this);
+  //   dis.classed("active", !dis.classed("active"));
+  //   //that.renderFingerPrint({ test: d.test.name() })
+  // });
+  tests.on("click", filterResults)
+    .on("dblclick", clearFilteredResults);
 
   tests.select("div.passfail").html(function(d) {
     var passFailIconHtml = "";
@@ -258,6 +262,38 @@ HTMLRenderer.prototype.done = function() {
 HTMLRenderer.prototype.destroy = function() {
   this.handsOnTable.destroy();
   d3.select("#grid").selectAll("*").remove();
+};
+
+HTMLRenderer.prototype.filterGrid = function(options) {
+  if(!options) options = {};
+  var highlightCells = options.highlightCells;
+  var column = options.column;
+
+  var rows = this.rows;
+  var comments = this.comments;
+  var handsOnTable = this.handsOnTable;
+
+  var rowsToShow = [];
+  if (highlightCells && column) {
+    var headers = _.keys(highlightCells[0]);
+    var colIdx = headers.indexOf(column);
+    console.log("colIdx");
+    highlightCells.forEach(function(highlightRow, idx) {
+      if (highlightRow[column] > 0) {
+        rowsToShow.push(_.values(rows[idx]));
+      }
+    });
+    handsOnTable.updateSettings({ data: rowsToShow });
+    handsOnTable.selectCell(0, colIdx, 0, colIdx, true);
+  } else {
+    _.forEach( rows, function(row) {
+      rowsToShow.push( _.values(row) );
+    });
+    handsOnTable.updateSettings({
+      data: rowsToShow,
+      cell: comments
+    });
+  }
 };
 
 HTMLRenderer.prototype.renderFingerPrint = function(options) {

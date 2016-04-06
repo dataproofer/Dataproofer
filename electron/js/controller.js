@@ -229,14 +229,11 @@ function renderStep2(processorConfig) {
   //console.log("STEP 2", processorConfig)
   var loaded = processorConfig.loaded
   if(loaded.trueRows > loaded.rows.length) {
-    d3.select("#info-top-bar").style({
-      "background-color": "#ED4224",
-      "color": "white"
-    })
     d3.select("#file-size-warning")
-      .text("Because your file is so large, we have only loaded  "
+      .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Loaded "
         + loaded.rows.length
-        + " rows out of " + loaded.trueRows)
+        + " rows out of "
+        + loaded.trueRows)
   }
 
   // we just remove everything rather than get into update pattern
