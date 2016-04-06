@@ -29,6 +29,7 @@ function HTMLRenderer(config) {
       wordWrap: false,
       width: containerWidth,
       height: containerHeight,
+      colWidths: 100,
       rowHeaders: true,
       colHeaders: headers,
       readOnly: true,
@@ -85,8 +86,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   function slugifyColumnHeader(name) {
     return name.toLowerCase().replace(/[^a-z0-9]/i, function(s) {
       var c = s.charCodeAt(0);
-      console.log("s", s);
-      console.log("c", c);
       if (c == 32) return "-";
       if (c >= 65 && c <= 90) s.toLowerCase();
       return c.toString(16).slice(-4);
@@ -105,9 +104,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   // Want to separate out tests that failed and tests that passed here
 
   // Summarize testsPassed.length, and then append all failed tests like normal
-
-  console.log("Result list: ", resultList);
-
 
   // var passedResults = _.filter(resultList, function(d){
   //   return d.result.passed;
@@ -213,11 +209,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     .each(function() {
       var totalTests = d3.select(this).selectAll(".test")[0].length;
       var hiddenTests = d3.select(this).selectAll(".test.hidden")[0].length;
-      console.log("tests", d3.select(this).selectAll(".test"));
-      console.log("totalTests", totalTests);
-      console.log("hiddenTests", hiddenTests);
       if (totalTests === hiddenTests) {
-        console.log("hide this", this);
         d3.select(this).classed("hidden", true);
       } else {
         d3.select(this).classed("hidden", false);
@@ -346,23 +338,27 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
     renderRow(rowIndex);
   }
 
-  var drag = d3.behavior.drag()
-    .on("drag.fp", function(d,i){
-      var mouse = d3.mouse(canvas);
-      var x = mouse[0];
-      var y = mouse[1];
-      if (y < 0) y = 0;
-      var row = Math.floor(y / height * rows.length); // for now our cells are 1 pixel high so this works
-      var col = Math.floor(x / width * cols.length);
-      //console.log("row, col", row, col)
-      handsOnTable.selectCell(row, col, row, col, true);
+  function selectGridCell (d,i){
+    var mouse = d3.mouse(canvas);
+    var x = mouse[0];
+    var y = mouse[1];
+    if (y < 0) y = 0;
+    var row = Math.floor(y / height * rows.length); // for now our cells are 1 pixel high so this works
+    var col = Math.floor(x / width * cols.length);
+    //console.log("row, col", row, col)
+    handsOnTable.selectCell(row, col, row, col, true);
 
-      //that.renderFingerPrint(row, col);
-      renderPrint();
-      renderCol(col);
-      renderRow(row);
-    });
-  d3.select(canvas).call(drag);
+    //that.renderFingerPrint(row, col);
+    renderPrint();
+    renderCol(col);
+    renderRow(row);
+  }
+
+  var drag = d3.behavior.drag()
+    .on("drag.fp", selectGridCell);
+  d3.select(canvas)
+    .call(drag)
+    .on("click.fp", selectGridCell);
 };
 
 function renderCellComments(rows, columnHeads, resultList, handsOnTable) {

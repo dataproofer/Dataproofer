@@ -155,13 +155,13 @@ Grid
   /*padding: 1.5em;*/
   padding-top: 90px;
 }
+
 .step {
   float:left;
   clear:left;
   width: 100%;
   overflow-y: scroll;
   /*margin-bottom: 200px;*/
-
 }
 
 .column {
