@@ -98,7 +98,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   columnsEnter.append("div").classed("column-header", true)
     .text(function(d) { return d; } )
     .attr("title", function(d,i){
-      return "Column " + i
+      return "Column " + i;
     })
     .attr("id", function(d) { return slugifyColumnHeader(d); });
 
@@ -209,10 +209,19 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         .classed("hidden", true);
     });
 
-  d3.selectAll("div.test.hidden")
+  d3.selectAll("div.column")
     .each(function() {
-      d3.select(this.parentNode)
-        .classed("hidden", true);
+      var totalTests = d3.select(this).selectAll(".test")[0].length;
+      var hiddenTests = d3.select(this).selectAll(".test.hidden")[0].length;
+      console.log("tests", d3.select(this).selectAll(".test"));
+      console.log("totalTests", totalTests);
+      console.log("hiddenTests", hiddenTests);
+      if (totalTests === hiddenTests) {
+        console.log("hide this", this);
+        d3.select(this).classed("hidden", true);
+      } else {
+        d3.select(this).classed("hidden", false);
+      }
     });
 
   tests.select("div.conclusion").html(function(d) {

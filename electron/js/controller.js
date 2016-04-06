@@ -556,14 +556,14 @@ function renderTestEditor(test) {
 
   testEditor.append("button")
     .attr("id", "cancel-test")
-    .text("Cancel")
+    .html("<i class='fa fa-chevron-circle-left'></i> Return")
     .on("click", function() {
       hideEditor();
     });
 
   testEditor.append("button")
     .attr("id", "copy-test")
-    .text("Copy")
+    .html("<i class='fa fa-files-o'></i> Duplicate")
     .on("click", function() {
       // saving without passing in the filename will inform the server
       // to generate a new filename
