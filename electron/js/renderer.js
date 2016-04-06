@@ -85,13 +85,16 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   var columnsEnter = columns.enter().append("div").classed("column", true);
   // render the column header
   columnsEnter.append("div").classed("column-header", true)
-    .text(function(d) { return d; } );
+    .text(function(d) { return d; } )
+    .attr("title", function(d,i){
+      return "Column " + i
+    });
 
   // Want to separate out tests that failed and tests that passed here
 
   // Summarize testsPassed.length, and then append all failed tests like normal
 
-  console.log("Result list: ", resultList)
+  //console.log("Result list: ", resultList)
 
   passedResults = _.filter(resultList, function(d){
     return d.result.passed
