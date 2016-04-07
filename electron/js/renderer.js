@@ -188,12 +188,8 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     that.renderFingerPrint();
     that.filterGrid();
   };
-  // tests.on("click", function(d) {
-  //   console.log(d);
-  //   var dis = d3.select(this);
-  //   dis.classed("active", !dis.classed("active"));
-  //   //that.renderFingerPrint({ test: d.test.name() })
-  // });
+  that.clearFilteredResults = clearFilteredResults;
+
   tests.select(".filter-btn").on("click", function(d) {
     var isFiltered = d3.select(this.parentNode).classed("filtered");
     if (isFiltered) {
@@ -369,6 +365,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   var columnHeads = this.columnHeads;
   var comments = this.comments;
   var handsOnTable = this.handsOnTable;
+  var clearFilteredResults = this.clearFilteredResults;
 
   var width = 200;
   var resultsBBOX = d3.select(".step-3-results").node().getBoundingClientRect();
@@ -436,7 +433,15 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   }
 
   function selectGridCell (d,i) {
-    filteredCol = d3.selectAll(".test").select(".filtered");
+    var selectFiltered = d3.selectAll(".filtered");
+    var isFiltered = (selectFiltered[0].length > 0)? true : false;
+    console.log("is filtered", isFiltered);
+    console.log("filtered", selectFiltered);
+    if (isFiltered) {
+      d3.selectAll(".test").classed("filtered", false);
+      d3.selectAll(".filter-btn").classed("nonopaque", false);
+      clearFilteredResults();
+    }
     var mouse = d3.mouse(canvas);
     var x = mouse[0];
     var y = mouse[1];
