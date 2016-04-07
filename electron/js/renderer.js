@@ -345,6 +345,8 @@ HTMLRenderer.prototype.filterGrid = function(options) {
     });
     handsOnTable.updateSettings({ data: rowsToShow });
     handsOnTable.selectCell(0, colIdx, 0, colIdx, true);
+    d3.selectAll(".ht_clone_left th .rowHeader")
+      .classed("hidden", true);
   } else {
     _.forEach( rows, function(row) {
       rowsToShow.push( _.values(row) );
@@ -353,6 +355,8 @@ HTMLRenderer.prototype.filterGrid = function(options) {
       data: rowsToShow,
       cell: comments
     });
+    d3.selectAll(".ht_clone_left th .rowHeader")
+      .classed("hidden", false);
   }
 };
 
