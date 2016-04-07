@@ -200,7 +200,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.selectAll(".filter-btn").classed("nonopaque", false);
       clearFilteredResults(d);
       that.renderFingerPrint();
-      
+
       d3.selectAll('table td').style('border-bottom', '')
       d3.selectAll('table td').style('border-right', '')
       d3.selectAll('table td').style('font-weight', '')
@@ -217,14 +217,15 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.selectAll('table td').style('border-right', '1px solid #E0535A')
       d3.selectAll('table td').style('font-weight', 'bold')
       d3.selectAll('table td').style('color', 'black')
-      
+
     }
   })
   .on("mouseover", function (d) {
-    that.renderFingerPrint({ test: d.test.name(), column: d.column });
+    var isFiltered = d3.selectAll(".filtered")[0].length > 0;
+    if (!isFiltered) that.renderFingerPrint({ test: d.test.name(), column: d.column });
   })
   .on("mouseout", function(d) {
-    var isFiltered = d3.select(this.parentNode).classed("filtered");
+    var isFiltered = d3.selectAll(".filtered")[0].length > 0;
     if (!isFiltered) that.renderFingerPrint();
   });
 
