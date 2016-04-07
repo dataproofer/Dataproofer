@@ -224,6 +224,11 @@ Grid
   opacity: 1;
 }
 
+.column .test .summary.interesting:hover {
+  color: #ED4224;
+  text-decoration: underline;
+}
+
 .column .test .description {
   /*display: none;*/
   padding-left: 1em;

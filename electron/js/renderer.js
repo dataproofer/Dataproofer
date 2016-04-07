@@ -156,14 +156,20 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //   dis.classed("active", !dis.classed("active"));
   //   //that.renderFingerPrint({ test: d.test.name() })
   // });
-  tests.on("click", filterResults)
-    .on("dblclick", clearFilteredResults)
-    .on("mouseover", function (d) {
-      that.renderFingerPrint({ test: d.test.name(), column: d.column });
-    })
-    .on("mouseout", function(d) {
-      that.renderFingerPrint();
-    });
+  tests.on("click", function(d) {
+    d3.select(this).style("font-weight", "bold");
+    filterResults(d);
+  })
+  .on("dblclick", function(d) {
+    d3.select(this).style("font-weight", "normal");
+    clearFilteredResults(d);
+  })
+  .on("mouseover", function (d) {
+    that.renderFingerPrint({ test: d.test.name(), column: d.column });
+  })
+  .on("mouseout", function(d) {
+    that.renderFingerPrint();
+  });
 
   tests.select("div.passfail").html(function(d) {
     var passFailIconHtml = "";
