@@ -400,8 +400,8 @@ function renderStep3(processorConfig) {
           passedTests += 1;
         }
       });
-      var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";
-      resultsStr += "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
+      /*var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";*/
+      var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
       return resultsStr;
     });
   d3.select(".step-2-select").style("display", "none");
