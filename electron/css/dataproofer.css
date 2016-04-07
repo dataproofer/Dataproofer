@@ -167,8 +167,12 @@ Grid
 }
 
 .filtered-cells table td {
+  /*
   border-right: 1px solid #48C2C5;
   border-bottom: 1px solid #48C2C5;
+  */
+  font-weight: bold;
+  color: black !important;
 }
 
 .changed {
