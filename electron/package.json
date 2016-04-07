@@ -14,20 +14,20 @@
     "url": "git+https://github.com/dataproofer/dataproofer.git"
   },
   "dependencies": {
-    "codemirror": "^5.13.2",
+    "codemirror": "^5.13.4",
     "d3": "^3.5.12",
     "dataproofer": "file:../src/",
-    "dataproofertest": "git://github.com/dataproofer/dataproofertest.js.git",
     "dataproofer-core-suite": "git://github.com/dataproofer/core-suite.git",
     "dataproofer-geo-suite": "git://github.com/dataproofer/geo-suite.git",
     "dataproofer-info-suite": "git://github.com/dataproofer/info-suite.git",
     "dataproofer-stats-suite": "git://github.com/dataproofer/stats-suite.git",
+    "dataproofertest": "git://github.com/dataproofer/dataproofertest.js.git",
     "electron-default-menu": "^0.1.1",
-    "electron-prebuilt": "^0.36.3",
+    "electron-prebuilt": "^0.37.5",
     "gsheets": "^1.2.3",
     "handsontable": "^0.24.1",
-    "jquery": "^2.2.0",
-    "lodash": "^4.0.0",
+    "jquery": "^2.2.3",
+    "lodash": "^4.8.2",
     "require-from-string": "^1.1.0",
     "simple-statistics": "^1.0.1",
     "slickgrid": "^2.1.0",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",
-    "electron-packager": "^5.2.1",
+    "electron-packager": "^6.0.0",
     "eslint": "^2.7.0"
   }
 }

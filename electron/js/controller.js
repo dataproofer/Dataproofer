@@ -251,35 +251,35 @@ function renderStep2(processorConfig) {
   var suitesHeds = suitesEnter.append("div")
     .attr("class", "suite-hed");
 
-    suiteHedAndToggle = suitesHeds.append("h2");
+  var suiteHedAndToggle = suitesHeds.append("h2");
 
-    suiteHedAndToggle.append("input")
-          .attr({
-            "class": "toggle",
-            "type": "checkbox",
-            "id": function(d,i){return "suite-" + i;}
-          }).each(function(d) {
-            if(d.active) {
-              d3.select(this).attr("checked", true);
-            } else {
-              d3.select(this).attr("checked", null);
-            }
-          });
+  suiteHedAndToggle.append("input")
+    .attr({
+      "class": "toggle",
+      "type": "checkbox",
+      "id": function(d,i){return "suite-" + i;}
+    }).each(function(d) {
+      if(d.active) {
+        d3.select(this).attr("checked", true);
+      } else {
+        d3.select(this).attr("checked", null);
+      }
+    });
 
-      suiteHedAndToggle.append("label")
-          .attr("for", function(d,i){return "suite-" + i;})
-          .on("click", function(d) {
-            d.active = !d.active;
-            d3.select(this.parentNode.parentNode.parentNode).classed("active", d.active);
-            //console.log("suite", d);
-            saveTestConfig();
-          });
+  suiteHedAndToggle.append("label")
+      .attr("for", function(d,i){return "suite-" + i;})
+      .on("click", function(d) {
+        d.active = !d.active;
+        d3.select(this.parentNode.parentNode.parentNode).classed("active", d.active);
+        //console.log("suite", d);
+        saveTestConfig();
+      });
 
-      suiteHedAndToggle.append("span")
-        .attr("class", "suite-hed-title")
-        .text(function(d) {
-          return d.fullName //+ " – " + d.active;
-        });
+  suiteHedAndToggle.append("span")
+    .attr("class", "suite-hed-title")
+    .text(function(d) {
+      return d.fullName; //+ " – " + d.active;
+    });
 
   // render the tests
   var tests = suitesEnter.selectAll(".test")
@@ -343,7 +343,7 @@ function renderStep2(processorConfig) {
     if (d3.event.shiftKey) {
       renderTestEditor(d);
     }
-  })
+  });
 
   /*
   testsEnter.append("button").classed("duplicate-test", true)
@@ -369,7 +369,7 @@ function renderStep2(processorConfig) {
 
 function renderStep3(processorConfig) {
   if(renderer) renderer.destroy();
-  renderer = Processor.run(processorConfig)
+  renderer = Processor.run(processorConfig);
   console.log("renderer", renderer);
   d3.select(".step-3-results").style("display", "block")
     .insert("div", ":first-child")
@@ -379,13 +379,13 @@ function renderStep3(processorConfig) {
       if (!headersCheck.result.passed) {
         console.log("headers check", headersCheck);
         missingHeadersStr += "<div class='info'>";
-        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>"
+        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
         missingHeadersStr += " Ignored ";
         missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
         missingHeadersStr += " because of missing or duplicate column headers";
         missingHeadersStr += "</div>";
       }
-      return missingHeadersStr
+      return missingHeadersStr;
     });
   d3.select(".step-3-results").insert("div", ":first-child")
     .attr("class", "summary-results")
@@ -406,17 +406,17 @@ function renderStep3(processorConfig) {
     });
   d3.select(".step-2-select").style("display", "none");
   d3.select("#info-top-bar").style("display", "block");
-  d3.select("#fingerprint-wrapper").style("display", "block")
+  d3.select("#fingerprint-wrapper").style("display", "block");
 }
 
 function clear() {
   d3.select("#current-file-name").text("");
-  d3.select(".step-1-data").style("display", "none")
-  d3.select(".step-2-select").style("display", "none")
-  d3.select(".step-3-results").style("display", "none")
-  d3.select("#fingerprint-wrapper").style("display", "none")
-  d3.select("#info-top-bar").style({"background-color": "#fff"})
-  d3.select("#file-size-warning").text("")
+  d3.select(".step-1-data").style("display", "none");
+  d3.select(".step-2-select").style("display", "none");
+  d3.select(".step-3-results").style("display", "none");
+  d3.select("#fingerprint-wrapper").style("display", "none");
+  d3.select("#info-top-bar").style({"background-color": "#fff"});
+  d3.select("#file-size-warning").text("");
 
   d3.select(".step-2-select").selectAll(".suite").remove();
   d3.select(".step-3-results").selectAll(".suite").remove();
@@ -427,7 +427,7 @@ function clear() {
 document.getElementById("file-loader").addEventListener("change", handleFileSelect, false);
 
 function handleFileSelect(evt) {
-  d3.select("#file-loader-button").text("Loading")
+  d3.select("#file-loader-button").text("Loading");
   var files = evt.target.files;
   if(!files || !files.length) return;
   for(var i = 0, f; i < files.length; i++) {
@@ -456,7 +456,7 @@ function handleFileSelect(evt) {
           ext: currExt,
           filepath: file.path,
           // fileString: contents,
-          filename: currFileName,
+          filename: currFileName
         };
         var loaded = Processor.load(loadConfig);
         var processorConfig = {
@@ -464,7 +464,7 @@ function handleFileSelect(evt) {
           renderer: HTMLRenderer,
           input: {},
           loaded: loaded
-        }
+        };
         lastProcessorConfig = processorConfig;
         renderStep1(processorConfig);
         currentStep = 2;
@@ -472,7 +472,7 @@ function handleFileSelect(evt) {
         renderCurrentStep();
       });
     } else {
-      var fileTypes = nonExcelExtensions.join(", ").toUpperCase();
+      var fileTypes = allowFileExtensions.join(", ").toUpperCase();
       alert("Must upload one of the following file types: " + fileTypes);
     }
   }
@@ -485,15 +485,15 @@ ipc.on("last-file-selected", function(event, file) {
     ext: file.name.split(".").pop(),
     filepath: file.path,
     // fileString: file.contents,
-    filename: file.name,
+    filename: file.name
   };
-  var loaded = Processor.load(loadConfig)
+  var loaded = Processor.load(loadConfig);
   lastProcessorConfig = {
     suites: SUITES,
     renderer: HTMLRenderer,
     input: {},
     loaded: loaded
-  }
+  };
   //loadLastFile();
 });
 
