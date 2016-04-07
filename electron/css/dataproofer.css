@@ -5,7 +5,7 @@
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: '.SFNSText-Regular', 'SF UI Text', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif !important;
+  font-family: '.SFNSText-Regular', 'SF UI Text', 'Helvetica Neue', Helvetica, 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif !important;
   font-size: 16px;
   line-height: 1.4;
   color: #333;
@@ -238,6 +238,7 @@ Grid
   opacity: 1;
 }
 .column .test.filtered .summary {
+  color: black;
   font-weight: bold;
 }
 
