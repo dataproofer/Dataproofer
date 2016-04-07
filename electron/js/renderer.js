@@ -201,10 +201,14 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       clearFilteredResults(d);
       that.renderFingerPrint();
       
+      /*
       d3.selectAll('table td').style('border-bottom', '')
       d3.selectAll('table td').style('border-right', '')
+      */
+
       d3.selectAll('table td').style('font-weight', '')
       d3.selectAll('table td').style('color', 'black')
+
     } else {
       d3.selectAll(".test").classed("filtered", false);
       d3.selectAll(".filter-btn").classed("nonopaque", false);
@@ -213,8 +217,10 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       filterResults(d);
       that.renderFingerPrint({ test: d.test.name(), column: d.column });
 
+      /*
       d3.selectAll('table td').style('border-bottom', '1px solid #E0535A')
       d3.selectAll('table td').style('border-right', '1px solid #E0535A')
+      */
       d3.selectAll('table td').style('font-weight', 'bold')
       d3.selectAll('table td').style('color', 'black')
       
