@@ -148,14 +148,10 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     .on("click", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
       var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
-      infoWrapper.classed("collapsed", false);
-      infoBtn.classed("nonopaque", true);
-    })
-    .on("dblclick", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
-      infoWrapper.classed("collapsed", true);
-      infoBtn.classed("nonopaque", false);
+      var isCollapsed = infoWrapper.classed("collapsed");
+      var isOpaque = infoBtn.classed("nonopaque");
+      infoWrapper.classed("collapsed", !isCollapsed);
+      infoBtn.classed("nonopaque", !isOpaque);
     });
   testsEnter.append("i").attr("class", "info-btn fa fa-info-circle opaque")
     .on("mouseover", function(d) {
@@ -201,11 +197,13 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   tests.select(".filter-btn").on("click", function(d) {
     var isFiltered = d3.select(this.parentNode).classed("filtered");
     if (isFiltered) {
-      d3.select(this.parentNode).classed("filtered", false);
-      d3.select(this).classed("nonopaque", false);
+      d3.selectAll(".test").classed("filtered", false);
+      d3.selectAll(".filter-btn").classed("nonopaque", false);
       clearFilteredResults(d);
       that.renderFingerPrint();
     } else {
+      d3.selectAll(".test").classed("filtered", false);
+      d3.selectAll(".filter-btn").classed("nonopaque", false);
       d3.select(this.parentNode).classed("filtered", true);
       d3.select(this).classed("nonopaque", true);
       filterResults(d);
@@ -437,7 +435,8 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
     renderRow(rowIndex);
   }
 
-  function selectGridCell (d,i){
+  function selectGridCell (d,i) {
+    filteredCol = d3.selectAll(".test").select(".filtered");
     var mouse = d3.mouse(canvas);
     var x = mouse[0];
     var y = mouse[1];
