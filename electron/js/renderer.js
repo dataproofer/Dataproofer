@@ -146,7 +146,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     })
     .on("mouseout", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      infoBtn.classed("opaque", true);
+      if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
     })
     .on("click", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
@@ -156,22 +156,15 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       infoWrapper.classed("collapsed", !isCollapsed);
       infoBtn.classed("nonopaque", !isOpaque);
     });
-  testsEnter.append("i").attr("class", "info-btn fa fa-info-circle opaque")
+  testsEnter.append("div")
+    .attr("class", "info-btn fa fa-info-circle opaque")
     .on("mouseover", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
       infoBtn.classed("opaque", false);
     })
     .on("mouseout", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      infoBtn.classed("opaque", true);
-    })
-    .on("click", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
-      var isCollapsed = infoWrapper.classed("collapsed");
-      var isOpaque = infoBtn.classed("nonopaque");
-      infoWrapper.classed("collapsed", !isCollapsed);
-      infoBtn.classed("nonopaque", !isOpaque);
+      if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
     });
   testsEnter.append("button").classed("filter-btn", true)
     .html("<i class='fa fa-filter'></i> Filter");
