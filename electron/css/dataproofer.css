@@ -370,7 +370,7 @@ General Suites and test
   transition: all .1s cubic-bezier(.4, 0, .2, 1)
 }
 
-.suite .test:hover .onoff {
+.suite.active .test:hover .onoff {
   opacity: 1;
 }
 
@@ -414,10 +414,6 @@ General Suites and test
   bottom: 0px;
   left: 0px;
   opacity: 0.25;
-}
-
-.suite .test .edit-test:hover {
-  opacity: 1;
 }
 
 .suite .test .delete-test {
@@ -638,6 +634,7 @@ STEP  2
 .step-2-select .suite {
   opacity: 0.2;
 }
+
 .step-2-select .suite.active {
   opacity: 1;
 }
