@@ -207,7 +207,11 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   .attr("title", function(d){
     return d.test.description();
   });
-
+  d3.selectAll("div.summary")
+    .each(function() {
+      d3.select(this.parentNode)
+        .classed("hidden", false);
+    });
   d3.selectAll("div.summary:not(.interesting)")
     .each(function() {
       d3.select(this.parentNode)

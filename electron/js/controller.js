@@ -370,7 +370,40 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if(renderer) renderer.destroy();
   renderer = Processor.run(processorConfig)
-  d3.select(".step-3-results").style("display", "block");
+  console.log("renderer", renderer);
+  d3.select(".step-3-results").style("display", "block")
+    .insert("div", ":first-child")
+    .html(function() {
+      var headersCheck = renderer.resultList[0];
+      var missingHeadersStr = "";
+      if (!headersCheck.result.passed) {
+        console.log("headers check", headersCheck);
+        missingHeadersStr += "<div class='info'>";
+        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>"
+        missingHeadersStr += " Ignored ";
+        missingHeadersStr += headersCheck.result.badColumnHeads.length;
+        missingHeadersStr += " columns because of missing or duplicate column headers";
+        missingHeadersStr += "</div>";
+      }
+      return missingHeadersStr
+    });
+  d3.select(".step-3-results").insert("div", ":first-child")
+    .attr("class", "summary-results")
+    .html(function() {
+      var totalTests = renderer.resultList.length;
+      var failedTests = 0;
+      var passedTests = 0;
+      renderer.resultList.forEach(function(test) {
+        if (!test.result.passed) {
+          failedTests += 1;
+        } else {
+          passedTests += 1;
+        }
+      });
+      var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";
+      resultsStr += "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
+      return resultsStr;
+    });
   d3.select(".step-2-select").style("display", "none");
   d3.select("#info-top-bar").style("display", "block");
   d3.select("#fingerprint-wrapper").style("display", "block")
@@ -508,7 +541,7 @@ function handleSpreadsheet() {
   gsheets.getWorksheetById(gid, "od6", process);
 
   function handleGsheetsError(err) {
-    d3.select("#gsheets-response").text(err.toString() );
+    alert(err.toString());
   }
 
   function process(err, sheet) {
@@ -516,7 +549,7 @@ function handleSpreadsheet() {
     // console.log(sheet);
     if (err) {
       handleGsheetsError(err);
-      console.log(err);
+      alert(err);
     } else if (sheet) {
       //console.log("sheet", sheet);
       var column_names = Object.keys(sheet.data[0]);

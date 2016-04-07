@@ -169,6 +169,13 @@ Grid
   /*margin-bottom: 200px;*/
 }
 
+.info {
+  line-height: 1.2;
+  text-align: center;
+  color: darkgray;
+  padding: 0.5em;
+}
+
 .column,
 .summary-results {
   padding: 4px;

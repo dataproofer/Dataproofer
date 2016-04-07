@@ -100,25 +100,16 @@ exports.run = function(config) {
       if (badHeaderCount > 0) {
         passed = false;
         var columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
-        summary = _.template(`
-          <p>We found <span class="test-value"><%= badHeaderCount  %></span> <%= columnOrcolumnHeads %> a missing header.</p>
-          <p>We've ignored that column for now, but if you give that column a unique, descriptive name and reupload the data we'll test that column, too.</p>
-        `)({
-          "badHeaderCount": badHeaderCount,
-          "columnOrcolumnHeads": columnOrcolumnHeads
-        });
+
       } else if (badHeaderCount === 0) {
         passed = true;
-        summary = "No errors found in the header of the spreadsheet";
         //consoleMessage = "No anomolies detected";
       } else {
         passed = false;
-        summary = "We had problems reading your column headers";
       }
 
       var result = {
         passed: passed,
-        summary: summary,
         badColumnHeads: badColumnHeads
       };
       return result;
