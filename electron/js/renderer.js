@@ -200,11 +200,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.selectAll(".filter-btn").classed("nonopaque", false);
       clearFilteredResults(d);
       that.renderFingerPrint();
-
-      d3.selectAll('table td').style('border-bottom', '')
-      d3.selectAll('table td').style('border-right', '')
-      d3.selectAll('table td').style('font-weight', '')
-      d3.selectAll('table td').style('color', 'black')
+      d3.selectAll("#grid").classed("filtered-cells", false);
     } else {
       d3.selectAll(".test").classed("filtered", false);
       d3.selectAll(".filter-btn").classed("nonopaque", false);
@@ -212,12 +208,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       d3.select(this).classed("nonopaque", true);
       filterResults(d);
       that.renderFingerPrint({ test: d.test.name(), column: d.column });
-
-      d3.selectAll('table td').style('border-bottom', '1px solid #E0535A')
-      d3.selectAll('table td').style('border-right', '1px solid #E0535A')
-      d3.selectAll('table td').style('font-weight', 'bold')
-      d3.selectAll('table td').style('color', 'black')
-
+      d3.selectAll("#grid").classed("filtered-cells", true);
     }
   })
   .on("mouseover", function (d) {
@@ -357,8 +348,6 @@ HTMLRenderer.prototype.filterGrid = function(options) {
     });
     handsOnTable.updateSettings({ data: rowsToShow });
     handsOnTable.selectCell(0, colIdx, 0, colIdx, true);
-    d3.selectAll(".ht_clone_left th .rowHeader")
-      .classed("hidden", true);
   } else {
     _.forEach( rows, function(row) {
       rowsToShow.push( _.values(row) );
@@ -367,8 +356,6 @@ HTMLRenderer.prototype.filterGrid = function(options) {
       data: rowsToShow,
       cell: comments
     });
-    d3.selectAll(".ht_clone_left th .rowHeader")
-      .classed("hidden", false);
   }
 };
 

@@ -162,6 +162,15 @@ Grid
   display: none;
 }
 
+.filtered-cells .ht_clone_left th .rowHeader {
+  display: none;
+}
+
+.filtered-cells table td {
+  border-right: 1px solid #48C2C5;
+  border-bottom: 1px solid #48C2C5;
+}
+
 .changed {
   background: pink;
 }
