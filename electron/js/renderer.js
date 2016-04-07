@@ -136,10 +136,52 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   });
 
   testsEnter.append("div").classed("passfail", true);
-  testsEnter.append("div").classed("summary", true);
-  testsEnter.append("div").classed("description", true);
-  testsEnter.append("div").classed("conclusion", true);
-  testsEnter.append("div").classed("visualization", true);
+  testsEnter.append("div").classed("summary", true)
+    .on("mouseover", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      infoBtn.classed("opaque", false);
+    })
+    .on("mouseout", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      infoBtn.classed("opaque", true);
+    })
+    .on("click", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
+      infoWrapper.classed("collapsed", false);
+      infoBtn.classed("nonopaque", true);
+    })
+    .on("dblclick", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
+      infoWrapper.classed("collapsed", true);
+      infoBtn.classed("nonopaque", false);
+    });
+  testsEnter.append("i").attr("class", "info-btn fa fa-info-circle opaque")
+    .on("mouseover", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      infoBtn.classed("opaque", false);
+    })
+    .on("mouseout", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      infoBtn.classed("opaque", true);
+    })
+    .on("click", function(d) {
+      var infoBtn = d3.select(this.parentNode).select(".info-btn");
+      var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
+      var isCollapsed = infoWrapper.classed("collapsed");
+      var isOpaque = infoBtn.classed("nonopaque");
+      infoWrapper.classed("collapsed", !isCollapsed);
+      infoBtn.classed("nonopaque", !isOpaque);
+    });
+  testsEnter.append("button").classed("filter-btn", true)
+    .html("<i class='fa fa-filter'></i> Filter");
+  var infoWrapper = testsEnter.append("div").classed("info-wrapper collapsed", true);
+  infoWrapper.append("div").classed("description", true)
+    .html(function(d) { return d.test.description();});
+  infoWrapper.append("div").classed("conclusion", true)
+    .text(function(d) { return d.test.conclusion();});
+  infoWrapper.append("div").classed("visualization", true);
 
   var that = this;
   var filterResults = function (d) {
@@ -156,19 +198,26 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //   dis.classed("active", !dis.classed("active"));
   //   //that.renderFingerPrint({ test: d.test.name() })
   // });
-  tests.on("click", function(d) {
-    d3.select(this).style("font-weight", "bold");
-    filterResults(d);
-  })
-  .on("dblclick", function(d) {
-    d3.select(this).style("font-weight", "normal");
-    clearFilteredResults(d);
+  tests.select(".filter-btn").on("click", function(d) {
+    var isFiltered = d3.select(this.parentNode).classed("filtered");
+    if (isFiltered) {
+      d3.select(this.parentNode).classed("filtered", false);
+      d3.select(this).classed("nonopaque", false);
+      clearFilteredResults(d);
+      that.renderFingerPrint();
+    } else {
+      d3.select(this.parentNode).classed("filtered", true);
+      d3.select(this).classed("nonopaque", true);
+      filterResults(d);
+      that.renderFingerPrint({ test: d.test.name(), column: d.column });
+    }
   })
   .on("mouseover", function (d) {
     that.renderFingerPrint({ test: d.test.name(), column: d.column });
   })
   .on("mouseout", function(d) {
-    that.renderFingerPrint();
+    var isFiltered = d3.select(this.parentNode).classed("filtered");
+    if (!isFiltered) that.renderFingerPrint();
   });
 
   tests.select("div.passfail").html(function(d) {
@@ -202,7 +251,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var name = d.test.name();
     var columnWise = d.result.columnWise || {}; // not gauranteed to exist
     var num = columnWise[column] || 0;
-    var string = name + " (" + util.percent(num / rows.length) + ")";
+    var string = name + ": " + util.percent(num / rows.length);
     return string;
   }).classed("interesting", function(d) {
     var column = d.column;

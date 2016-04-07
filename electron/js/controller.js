@@ -511,7 +511,6 @@ d3.select("#spreadsheet-input").on("keyup", function() {
   if(d3.event.keyIdentifier == "Enter") {
     handleSpreadsheet();
   }
-
 });
 
 window.onerror = function(message) {
