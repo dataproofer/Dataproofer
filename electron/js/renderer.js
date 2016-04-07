@@ -13,7 +13,10 @@ function HTMLRenderer(config) {
   this.resultList = resultList;
 
   var data = [];
-  var headers = _.keys( rows[0] );
+  var headers = _.map(_.keys(rows[0]), function(header, idx) {
+    if (util.isEmpty(header)) return "Column " + idx;
+    return header;
+  });
   _.forEach( rows, function(row) {
     data.push( _.values(row) );
   });
@@ -435,8 +438,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   function selectGridCell (d,i) {
     var selectFiltered = d3.selectAll(".filtered");
     var isFiltered = (selectFiltered[0].length > 0)? true : false;
-    console.log("is filtered", isFiltered);
-    console.log("filtered", selectFiltered);
+
     if (isFiltered) {
       d3.selectAll(".test").classed("filtered", false);
       d3.selectAll(".filter-btn").classed("nonopaque", false);

@@ -2,6 +2,7 @@ var _ = require("lodash");
 var xlsx = require("xlsx");
 var indianOcean = require("indian-ocean");
 var DataprooferTest = require("dataproofertest-js");
+var util = require("dataproofertest-js/util");
 
 exports.load = function(config) {
   var filename = config.filename;
@@ -88,8 +89,9 @@ exports.run = function(config) {
       var passed;
 
       _.forEach(columnHeads, function(columnHead, counts) {
-        if (counts[columnHead] || columnHead.length < 1 || columnHead === null) {
-          badColumnHeads.push(columnHead);
+        if (counts[columnHead] || util.isEmpty(columnHead)) {
+          var subColumnHead = "Column " + counts;
+          badColumnHeads.push(subColumnHead);
           badHeaderCount += 1;
         } else {
           counts[columnHead] = 0;
@@ -103,7 +105,6 @@ exports.run = function(config) {
 
       } else if (badHeaderCount === 0) {
         passed = true;
-        //consoleMessage = "No anomolies detected";
       } else {
         passed = false;
       }

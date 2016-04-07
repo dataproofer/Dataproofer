@@ -381,8 +381,8 @@ function renderStep3(processorConfig) {
         missingHeadersStr += "<div class='info'>";
         missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>"
         missingHeadersStr += " Ignored ";
-        missingHeadersStr += headersCheck.result.badColumnHeads.length;
-        missingHeadersStr += " columns because of missing or duplicate column headers";
+        missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
+        missingHeadersStr += " because of missing or duplicate column headers";
         missingHeadersStr += "</div>";
       }
       return missingHeadersStr
