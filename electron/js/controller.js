@@ -250,7 +250,12 @@ function renderStep2(processorConfig) {
 
   suitesEnter.append("div")
     .attr("class", "suite-btn")
-    .html("<i class='fa fa-bars'></i>");
+    .html("<i class='fa fa-bars'></i>")
+    .on("click", function() {
+      var testWrapper = d3.select(this.parentNode).select(".tests-wrapper");
+      var isCollapsed = testWrapper.classed("collapsed");
+      testWrapper.classed("collapsed", !isCollapsed);
+    });
 
   var suitesHeds = suitesEnter.append("div")
     .attr("class", "suite-hed");
@@ -286,7 +291,9 @@ function renderStep2(processorConfig) {
     });
 
   // render the tests
-  var tests = suitesEnter.selectAll(".test")
+  var tests = suitesEnter.append("div")
+    .attr("class", "tests-wrapper collapsed")
+    .selectAll(".test")
     .data(function(d) { return d.tests; });
 
   var testsEnter = tests.enter().append("div")

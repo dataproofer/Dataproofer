@@ -704,7 +704,9 @@ STEP  2
 }
 
 .suite-btn {
+  margin-top: 5px;
   float: left;
+  cursor: pointer;
 }
 
 .step-2-select .suite:not(.active) .suite-hed-title,
@@ -714,6 +716,10 @@ STEP  2
 
 .step-2-select .suite:not(.active) label {
   opacity: 1;
+}
+
+.step-2-select .suite:not(.active) .onoff {
+  pointer-events: none;
 }
 
 button.run-tests {

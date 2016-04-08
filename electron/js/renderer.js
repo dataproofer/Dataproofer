@@ -134,9 +134,9 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
 
   var testsEnter = tests.enter().append("div")
-  .attr("class", function(d) {
-    return "test";// + (d.test.active ? " active" : "" )
-  });
+    .attr("class", function(d) {
+      return "test";// + (d.test.active ? " active" : "" )
+    });
 
   testsEnter.append("div").classed("passfail", true);
   testsEnter.append("div").classed("summary", true)
