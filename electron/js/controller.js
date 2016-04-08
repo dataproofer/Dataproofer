@@ -252,7 +252,6 @@ function renderStep2(processorConfig) {
     .attr("class", "suite-btn")
     .html("<i class='fa fa-bars'></i>")
     .on("click", function() {
-      console.log("this", this);
       var testWrapper = d3.select(this.parentNode).select(".tests-wrapper");
       var isCollapsed = testWrapper.classed("collapsed");
       var iconStr = isCollapsed ? "times" : "bars";
