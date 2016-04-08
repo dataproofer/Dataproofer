@@ -5,7 +5,6 @@ var DataprooferTest = require("dataproofertest-js");
 var util = require("dataproofertest-js/util");
 
 exports.load = function(config) {
-  var filename = config.filename;
   var filepath = config.filepath;
   var ext = config.ext;
 
@@ -51,8 +50,8 @@ exports.load = function(config) {
     columnHeads: columnHeads,
     trueRows: trueRows,
     config: config
-  }
-}
+  };
+};
 // TODO: refactor into class more like DataprooferTest so we can chain
 // configuration and separate initializing from running tests
 exports.run = function(config) {
@@ -63,7 +62,7 @@ exports.run = function(config) {
   var Renderer = config.renderer;
   var input = config.input;
 
-  var loaded = config.loaded
+  var loaded = config.loaded;
 
   var columnHeads = loaded.columnHeads;
   var rows = loaded.rows;
@@ -85,7 +84,6 @@ exports.run = function(config) {
       //console.log("checking column headers", columnHeads.length);
       var badHeaderCount = 0;
       var badColumnHeads = [];
-      var summary;
       var passed;
 
       _.forEach(columnHeads, function(columnHead, counts) {
@@ -101,7 +99,6 @@ exports.run = function(config) {
 
       if (badHeaderCount > 0) {
         passed = false;
-        var columnOrcolumnHeads = badHeaderCount > 1 ? "columnHeads" : "column";
 
       } else if (badHeaderCount === 0) {
         passed = true;
@@ -120,8 +117,8 @@ exports.run = function(config) {
   var result = badColumnHeadsTest.proof(rows, columnHeads);
   renderer.addResult("dataproofer-info-suite", badColumnHeadsTest, result);
 
-  var cleanedColumnHeads = _.without(columnHeads, result.badColumnHeads.join(', '));
-  var cleanedRows = rows
+  var cleanedColumnHeads = _.without(columnHeads, result.badColumnHeads.join(", "));
+  var cleanedRows = rows;
 
   // TODO: use async series? can run suites in series for better UX?
   suites.forEach(function(suite) {
@@ -132,16 +129,16 @@ exports.run = function(config) {
       if(!test.active) return;
       try {
         // run the test!
-        var result = test.proof(cleanedRows, cleanedColumnHeads, input)
+        var result = test.proof(cleanedRows, cleanedColumnHeads, input);
         // aggregate the number of highlighted cells for each column
         result.columnWise = {};
         if(result && result.highlightCells) {
           cleanedColumnHeads.forEach(function(column) {
             result.columnWise[column] = _.reduce(result.highlightCells, function(count, row) {
               // if there is a value in this cell, increment count, otherwise leave it alone
-              return !!row[column] ? count + 1 : count
-            }, 0)
-          })
+              return !!row[column] ? count + 1 : count;
+            }, 0);
+          });
         }
         // incrementally report as tests run
         renderer.addResult(suite.name, test, result);
