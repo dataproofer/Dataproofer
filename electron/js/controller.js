@@ -317,7 +317,7 @@ function renderStep2(processorConfig) {
     .attr({
       "class": "toggle",
       "type": "checkbox",
-      "id": function(d,i){return d3.select(this.parentNode.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;}
+      "id": function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;}
     }).each(function(d) {
       if(d.active) {
         d3.select(this).attr("checked", true);
@@ -326,7 +326,7 @@ function renderStep2(processorConfig) {
       }
     });
   onOff.append("label")
-    .attr("for", function(d,i){return d3.select(this.parentNode.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;});
+    .attr("for", function(d,i){return d3.select(this.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;});
 
   testsEnter.append("div").classed("message", true);
 
@@ -338,9 +338,13 @@ function renderStep2(processorConfig) {
 
   tests.select("label")
     .on("click", function(d) {
+      //console.log("test", d);
       d.active = !d.active;
-      d3.select(this.parentNode.parentNode).classed("active", d.active);
-      saveTestConfig();
+      var isSuiteOn = suitesEnter.classed("active");
+      if (isSuiteOn) {
+        d3.select(this.parentNode.parentNode).classed("active", d.active);
+        saveTestConfig();
+      }
     });
 
   testsEnter.append("button").classed("edit-test", true)
