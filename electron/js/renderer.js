@@ -33,7 +33,7 @@ function HTMLRenderer(config) {
       width: containerWidth,
       height: containerHeight,
       colWidths: 100,
-      rowHeaders: true,
+      fixedColumnsLeft: 1,
       colHeaders: headers,
       readOnly: true,
       manualRowResize: true,

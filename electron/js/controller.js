@@ -230,9 +230,9 @@ function renderStep2(processorConfig) {
   var loaded = processorConfig.loaded;
   if(loaded.trueRows > loaded.rows.length) {
     d3.select("#file-size-warning")
-      .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Loaded "
+      .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Sampled "
         + d3.format(",")(loaded.rows.length)
-        + " rows out of "
+        + " rows randomly out of "
         + d3.format(",")(loaded.trueRows));
   }
 
