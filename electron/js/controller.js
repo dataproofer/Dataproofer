@@ -1,4 +1,5 @@
 var d3 = require("d3");
+var _ = require("lodash");
 var Processor = require("dataproofer").Processing;
 var gsheets = require("gsheets");
 var ipc = require("electron").ipcRenderer;
@@ -40,7 +41,7 @@ ipc.on("load-saved-tests", function(evt, loaded) {
 
   var suite = {
     name: "local-tests",
-    fullName: "My custom checks",
+    fullName: "Custom Checks",
     active: true,
     tests: []
   };
@@ -246,8 +247,12 @@ function renderStep2(processorConfig) {
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
   // create the containers for each suite
+  var filteredSuites = _.filter(processorConfig.suites, function(suite) {
+    return suite.tests.length > 0;
+  });
+  console.log("suites", processorConfig.suites);
   var suites = container.selectAll(".suite")
-    .data(processorConfig.suites);
+    .data(filteredSuites);
 
   var suitesEnter = suites.enter().append("div")
     .attr({
