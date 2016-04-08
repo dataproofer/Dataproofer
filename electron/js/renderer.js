@@ -149,15 +149,12 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
     })
     .on("click", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
       var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
       var isCollapsed = infoWrapper.classed("collapsed");
-      var isOpaque = infoBtn.classed("nonopaque");
       infoWrapper.classed("collapsed", !isCollapsed);
-      infoBtn.classed("nonopaque", !isOpaque);
     });
   testsEnter.append("div")
-    .attr("class", "info-btn fa fa-info-circle opaque")
+    .attr("class", "info-btn fa fa-info-circle nonopaque")
     .on("mouseover", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
       infoBtn.classed("opaque", false);
