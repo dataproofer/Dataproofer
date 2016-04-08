@@ -40,28 +40,30 @@
             <div id="dataproofer-intro-description">
               Upload your dataset, then select from Dataproofer’s suite of checks to identify any potential red flags before use.
             </div>
-            <!-- <h2 class="title">Step 1: Load data you'd like to run tests on</h5> -->
-            <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader"><i class="fa fa-search"></i> Select a dataset</label>
-            <small id="filetypes-accepted">Currently supported: CSV, TSV, PSV, XLSX, XLS</small>
-
-            <hr />
-
-              <!--
-              <button class="reload btn btn-default">
-                <span class="reload icon icon-arrows-ccw"></span>
-                Reload
-              </button>
-              -->
-
-            <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
-            <button id="spreadsheet-button"><i class="fa fa-cloud-download"></i> Load sheet</button>
-
+            <div class="file-upload-wrapper">
+              <small id="filetypes-accepted">Accepted filetypes: XLSX, XLS, CSV, TSV, PSV</small>
+              <label id="file-loader-button" for="file-loader">
+                <i class="fa fa-search"></i> Browse
+              </label>
+              <input id="file-loader" type="file"/>
+              <div id="spreadsheet-button">
+                <i class="fa fa-table"></i> Load
+              </div>
+              <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
+            </div>
+            <div class="spreadsheet-download-wrapper">
+              <small id="filetypes-accepted">
+                Paste a link or the ID of a published spreadsheet.
+                <br>
+                For more information, checkout the official <a href="https://support.google.com/docs/answer/37579?hl=en">official walkthrough</a>
+              </small>
+            </div>
             <div id="gsheets-response">
             </div>
 
           </div>
           <div class="step step-2-select">
-            <button id="top-run-tests" class="btn btn-large run-tests">Run selected checks</button>
+            <!-- <button id="top-run-tests" class="btn btn-large run-tests">Run selected checks</button> -->
             <!-- <h2 class="title">Modify your checks</h5> -->
             <!-- we will insert our test suites here -->
             <div class="step-2-select-content">

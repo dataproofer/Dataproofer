@@ -40,7 +40,7 @@ ipc.on("load-saved-tests", function(evt, loaded) {
 
   var suite = {
     name: "local-tests",
-    fullName: "My custom checks",
+    fullName: "Custom Checks",
     active: true,
     tests: []
   };
@@ -454,6 +454,7 @@ function handleFileSelect(evt) {
       "xls"
     ];
     var currFileName = file.name;
+    d3.select("#file-loader").text(file.path);
     var currExt = currFileName.split(".").pop();
     var reader = new FileReader();
     if (allowFileExtensions.indexOf(currExt) > -1) {
