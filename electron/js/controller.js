@@ -231,9 +231,9 @@ function renderStep2(processorConfig) {
   if(loaded.trueRows > loaded.rows.length) {
     d3.select("#file-size-warning")
       .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Loaded "
-        + loaded.rows.length
+        + d3.format(",")(loaded.rows.length)
         + " rows out of "
-        + loaded.trueRows);
+        + d3.format(",")(loaded.trueRows));
   }
 
   // we just remove everything rather than get into update pattern
@@ -247,6 +247,10 @@ function renderStep2(processorConfig) {
       id: function(d) { return d.name; },
       class: function(d) { return "suite " + (d.active ? "active" : ""); }
     });
+
+  suitesEnter.append("div")
+    .attr("class", "suite-btn")
+    .html("<i class='fa fa-bars'></i>");
 
   var suitesHeds = suitesEnter.append("div")
     .attr("class", "suite-hed");
@@ -326,8 +330,11 @@ function renderStep2(processorConfig) {
     .on("click", function(d) {
       //console.log("test", d);
       d.active = !d.active;
-      d3.select(this.parentNode.parentNode).classed("active", d.active);
-      saveTestConfig();
+      var isSuiteOn = suitesEnter.classed("active");
+      if (isSuiteOn) {
+        d3.select(this.parentNode.parentNode).classed("active", d.active);
+        saveTestConfig();
+      }
     });
 
   testsEnter.append("button").classed("edit-test", true)

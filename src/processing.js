@@ -44,7 +44,7 @@ exports.load = function(config) {
 
   // TODO: use webworkers or something so we don't need an upper limit
   var trueRows = rows.length;
-  rows = rows.slice(0, 1024);
+  rows = _.sampleSize(rows, 10000);
 
   return {
     rows: rows,

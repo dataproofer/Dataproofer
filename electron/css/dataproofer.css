@@ -698,11 +698,21 @@ STEP  2
   font-size: 2em;
   text-align: center;
 }
-.step-2-select .suite {
+
+.step-2-select .suite.active {
+  opacity: 1;
+}
+
+.suite-btn {
+  float: left;
+}
+
+.step-2-select .suite:not(.active) .suite-hed-title,
+.step-2-select .suite:not(.active) .test {
   opacity: 0.2;
 }
 
-.step-2-select .suite.active {
+.step-2-select .suite:not(.active) label {
   opacity: 1;
 }
 
