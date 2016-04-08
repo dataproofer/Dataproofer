@@ -43,7 +43,9 @@ exports.load = function(config) {
 
   // TODO: use webworkers or something so we don't need an upper limit
   var trueRows = rows.length;
-  rows = _.sampleSize(rows, 1000);
+  if (trueRows > 1000) {
+    rows = _.sampleSize(rows, 1000);
+  }
 
   return {
     rows: rows,
