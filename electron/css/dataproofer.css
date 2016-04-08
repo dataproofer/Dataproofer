@@ -72,7 +72,7 @@
 #filetypes-accepted {
   text-align: center;
   display: block;
-  margin: 1em;
+  margin-top: 1em;
 }
 
 span.reload {
@@ -612,9 +612,12 @@ STEP  1
 }
 
 .step-1-data #file-loader {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
   position: absolute;
-  margin-left: -9999px;
-  visibility: hidden
+  z-index: -1;
 }
 
 .step-1-data .title {
@@ -623,47 +626,50 @@ STEP  1
 }
 
 .step-1-data #file-loader-button {
+  display: block;
   text-align: center;
   background-color: #48C2C5;
-  width: 170px;
-  height: 24px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
   color: white;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: bold;
-  padding: 0.3em;
+  padding: 1em;
   cursor: pointer;
-  display: inline-block;
 }
 
 #spreadsheet-input {
+  width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  font-size: 24px;
+  padding: 1em;
   outline: none;
   background-color: #F3F1ED;
-  width: 40%;
-  height: 29px;
-  display: inline-block;
 }
-
 #spreadsheet-input:active, #spreadsheet-input:focus {
   background-color: white;
 }
 
-#spreadsheet-button {
+#spreadsheet-input::-webkit-input-placeholder {
   text-align: center;
-  background-color: #48C2C5;
-  width: 170px;
-  height: 24px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 0.3em;
-  cursor: pointer;
-  display: inline-block;
 }
+#spreadsheet-button {
+  width: 25%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  font-size: 24px;
+  margin-top: 5px;
+  padding: 1em;
+  background-color: #48C2C5;
+  color: white;
+  border: 0;
 
-#file-loader-button:hover,
-#spreadsheet-button:hover {
-  -webkit-filter: brightness(1.1);
-  filter: brightness(1.1);
 }
 
 #gsheets-response {
@@ -686,7 +692,7 @@ STEP  2
   margin-bottom: 72px;
 }
 .step-2-select-content {
-  padding: 1.5em 3.5em;
+  padding: 1.5em;
 }
 .step-2-select .title {
   font-size: 2em;
