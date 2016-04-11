@@ -93,8 +93,6 @@ button.reload {
   position: fixed;
   top: 0;
   z-index: 2;
-
-  display: none;
 }
 
 #info-top-bar #current-file-name{
@@ -158,11 +156,6 @@ Grid
   bottom: 0;
   background-color: #EEE;
   overflow: hidden;
-  display: none;
-}
-
-.filtered-cells .ht_clone_left th .rowHeader {
-  display: none;
 }
 
 .filtered-cells table td {
@@ -285,24 +278,6 @@ Grid
   font-size: 12px;
   margin: 10px 25px;
 }
-
-/*.column .test .description {
-  padding-left: 1em;
-  padding-top: 0.5em;
-  font-size: 14px;
-  line-height: 1.2em;
-}
-.column .test .conclusion {
-  display: none;
-
-  font-size: 14px;
-  background-color: #ECE9E3;
-  padding: 8px;
-}
-.column .test .visualization {
-  display: none;
-}*/
-
 
 .column .test.active .description {
   display: block;
@@ -567,7 +542,6 @@ FINGERPRINT
   width: 200px;
   float: right;
   height: 100%;
-  display: none;
 }
 
 #fingerprint {
@@ -688,7 +662,6 @@ STEP  2
   /*padding: 5px;*/
   width: 100%;
   /*opacity: 0.2; */
-  display: none;
   margin-bottom: 72px;
 }
 .step-2-select-content {
@@ -836,7 +809,6 @@ STEP  3
 ============================================================================= */
 .step-3-results {
   width: calc(50% - 220px);
-  display: none;
   word-wrap: break-word;
   overflow-x: hidden;
 }
@@ -854,13 +826,6 @@ STEP  3
   margin-right: auto;
   min-height: 1em;
   padding: 4px 1em;
-}
-
-/*
-TODO: Make this hide/unhide with click
-*/
-.step-3-results .fingerprint {
-  display: none;
 }
 
 .handsontable td:hover {

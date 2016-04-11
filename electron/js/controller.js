@@ -168,21 +168,21 @@ function renderNav() {
   var grid = d3.select("#grid");
   switch (currentStep) {
     case 1:
-      back.style("display", "none");
-      forward.style("display", "none");
-      grid.style("display", "none");
+      // back.style("display", "none");
+      // forward.style("display", "none");
+      // grid.style("display", "none");
       break;
     case 2:
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
         .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
-      grid.style("display", "none");
+      // grid.style("display", "none");
       break;
     case 3:
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
-      forward.style("display", "none");
+      // forward.style("display", "none");
       grid.style("display", "inline-block");
       break;
   }
@@ -226,7 +226,7 @@ function renderStep1(processorConfig) {
   clear();
   step1.style("display", "block");
   step1.select("#file-loader-button").text("Choose a dataset");
-  d3.select("#info-top-bar").style("display", "none");
+  // d3.select("#info-top-bar").style("display", "none");
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
@@ -445,17 +445,17 @@ function renderStep3(processorConfig) {
       var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
       return resultsStr;
     });
-  d3.select(".step-2-select").style("display", "none");
+  // d3.select(".step-2-select").style("display", "none");
   d3.select("#info-top-bar").style("display", "block");
   d3.select("#fingerprint-wrapper").style("display", "block");
 }
 
 function clear() {
   d3.select("#current-file-name").text("");
-  d3.select(".step-1-data").style("display", "none");
-  d3.select(".step-2-select").style("display", "none");
-  d3.select(".step-3-results").style("display", "none");
-  d3.select("#fingerprint-wrapper").style("display", "none");
+  // d3.select(".step-1-data").style("display", "none");
+  // d3.select(".step-2-select").style("display", "none");
+  // d3.select(".step-3-results").style("display", "none");
+  // d3.select("#fingerprint-wrapper").style("display", "none");
   d3.select("#info-top-bar").style({
     "background-color": "#fff"
   });
