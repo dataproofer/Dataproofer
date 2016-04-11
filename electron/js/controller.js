@@ -315,7 +315,7 @@ function renderStep2(processorConfig) {
 
   // render the tests
   var tests = suitesEnter.append("div")
-    .attr("class", "tests-wrapper collapsed")
+    .attr("class", "tests-wrapper")
     .selectAll(".test")
     .data(function(d) {
       return d.tests;
