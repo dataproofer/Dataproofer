@@ -49,6 +49,10 @@
   display: none;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .pass-icon {
   color: #29A03B;
 }
@@ -62,17 +66,53 @@
   color: #D43833;
 }
 
-.nav-group-row {
-  margin: 5px 10px;
-  display: block;
+div[class="^column-"] {
+  position: relative;
+  display: inline-block;
 }
+
+.column-1 {
+  width: 200px;
+}
+
+.column-1-wrapper {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  max-width: 300px;
+  background: #ffffff;
+}
+
+.column-3 {
+  width: 300px;
+}
+
+.column-3-wrapper  {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #ffffff;
+}
+
+.file-info-wrapper {
+  background-color: #fff;
+  box-shadow: 0 5px 8px -5px #333333;
+  position: relative;
+  height: 400px; /* todo: set dynamically */
+}
+
+.file-info {
+  position: fixed;
+}
+
+.test-sets-wrapper {
+  position: relative;
+  max-height: 350px; /* todo: set dynamically */
+  overflow-y: scroll;
+}
+
 #file-loader {
   font-size: 12px;
-}
-#filetypes-accepted {
-  text-align: center;
-  display: block;
-  margin-top: 1em;
 }
 
 span.reload {
@@ -105,6 +145,7 @@ button.reload {
 #file-size-warning {
   color: #ED4224;
 }
+
 /* =============================================================================
 Navigation buttons
 ============================================================================= */
@@ -134,29 +175,9 @@ Navigation buttons
 
 }
 
-
 /* =============================================================================
 Grid
-  NOTE: I had to remove box-sizing:border-box from photon.css in order to not mess up slickgrid
 ============================================================================= */
-
-#grid-wrapper {
-  float: left;
-  position: relative;
-  width: 55%;
-}
-
-#grid,
-#fingerprint {
-  font-size: 12px;
-  box-sizing: content-box !important;
-  width: 50%;
-  position: fixed;
-  top: 86px;
-  bottom: 0;
-  background-color: #EEE;
-  overflow: hidden;
-}
 
 .filtered-cells table td {
   /*
@@ -169,23 +190,6 @@ Grid
 
 .changed {
   background: pink;
-}
-
-.steps {
-  /* temp styling
-  position: absolute;
-  top: 30;
-  height: calc(100% - 230px); */
-  /*padding: 1.5em;*/
-  padding-top: 82px;
-}
-
-.step {
-  float:left;
-  clear:left;
-  width: 100%;
-  overflow-y: scroll;
-  /*margin-bottom: 200px;*/
 }
 
 .info {
@@ -560,19 +564,15 @@ FINGERPRINT
 
 
 /* =============================================================================
-STEP  1
+Left Column (1)
 ============================================================================= */
-.step-1-data {
-  text-align: center;
-  /*padding: 1.5em;*/
-}
 
-.step-1-data h1 {
-  margin: 0;
+.file-info p {
+  text-align: center;
 }
 
 #intro-logo {
-  max-width: 400px;
+  max-width: 300px;
   height: auto;
 }
 
@@ -585,7 +585,7 @@ STEP  1
   text-align: left;
 }
 
-.step-1-data #file-loader {
+#file-loader {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -594,36 +594,36 @@ STEP  1
   z-index: -1;
 }
 
-.step-1-data .title {
+.title {
   font-size: 2em;
   text-align: center;
 }
 
-.step-1-data #file-loader-button {
+#file-loader-button {
   display: block;
   text-align: center;
   background-color: #48C2C5;
-  width: 80%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
   color: white;
-  font-size: 24px;
+  font-size: 12px;
+  text-transform: uppercase;
   font-weight: bold;
   padding: 1em;
   cursor: pointer;
 }
 
 #spreadsheet-input {
-  width: 80%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  width: 50%;
+  display: inline-block;
   height: auto;
-  font-size: 24px;
-  padding: 1em;
+  font-size: 10px;
+  padding: 0.9em;
   outline: none;
   background-color: #F3F1ED;
 }
+
 #spreadsheet-input:active, #spreadsheet-input:focus {
   background-color: white;
 }
@@ -632,18 +632,15 @@ STEP  1
   text-align: center;
 }
 #spreadsheet-button {
-  width: 25%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  font-size: 24px;
+  width: 40%;
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
   margin-top: 5px;
-  padding: 1em;
+  padding: 0.8em;
   background-color: #48C2C5;
   color: white;
   border: 0;
-
 }
 
 #gsheets-response {
@@ -656,23 +653,15 @@ STEP  1
 }
 
 /* =============================================================================
-STEP  2
+Middle Column (2)
 ============================================================================= */
-.step-2-select {
-  /*padding: 5px;*/
-  width: 100%;
-  /*opacity: 0.2; */
-  margin-bottom: 72px;
-}
-.step-2-select-content {
-  padding: 1.5em;
-}
-.step-2-select .title {
+
+.title {
   font-size: 2em;
   text-align: center;
 }
 
-.step-2-select .suite.active {
+.suite.active {
   opacity: 1;
 }
 
@@ -682,16 +671,16 @@ STEP  2
   cursor: pointer;
 }
 
-.step-2-select .suite:not(.active) .suite-hed-title,
-.step-2-select .suite:not(.active) .test {
+.suite:not(.active) .suite-hed-title,
+.suite:not(.active) .test {
   opacity: 0.2;
 }
 
-.step-2-select .suite:not(.active) label {
+.suite:not(.active) label {
   opacity: 1;
 }
 
-.step-2-select .suite:not(.active) .onoff {
+.suite:not(.active) .onoff {
   pointer-events: none;
 }
 
@@ -805,19 +794,15 @@ button.run-tests {
 }
 
 /* =============================================================================
-STEP  3
+Right Column (3)
 ============================================================================= */
-.step-3-results {
-  width: calc(50% - 220px);
-  word-wrap: break-word;
-  overflow-x: hidden;
-}
-.step-3-results .title {
+
+.title {
   font-size: 2em;
   text-align: center;
 }
 
-.step-3-results .test {
+.test {
   line-height: 1.2em;
   /*width: 88%;*/
   width: 80%;
