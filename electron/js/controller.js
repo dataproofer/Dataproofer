@@ -177,13 +177,11 @@ function renderNav() {
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
         .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
-      // grid.style("display", "none");
+      grid.style("display", "inline-block");
       break;
     case 3:
-      // back.style("display", "inline-block")
-        // .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
-      // forward.style("display", "none");
-      // grid.style("display", "inline-block");
+      back.html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
+      forward.style("display", "none");
       break;
   }
 }
@@ -232,17 +230,9 @@ function renderStep1(processorConfig) {
 // This function renders step 2, the UI for selecting which tests to activate
 
 function renderStep2(processorConfig) {
-  var container = d3.select(".step-2-select-content");
+  var container = d3.select(".test-sets");
   clear();
-  d3.select(".step-2-select").style("display", "block");
-
-  d3.select("#info-top-bar").style("display", "block");
-  //console.log("STEP 2", processorConfig)
   var loaded = processorConfig.loaded;
-  if (loaded.trueRows > loaded.rows.length) {
-    d3.select("#file-size-warning")
-      .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Sampled " + d3.format(",")(loaded.rows.length) + " rows randomly out of " + d3.format(",")(loaded.trueRows));
-  }
 
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
@@ -262,18 +252,6 @@ function renderStep2(processorConfig) {
       class: function(d) {
         return "suite " + (d.active ? "active" : "");
       }
-    });
-
-  suitesEnter.append("div")
-    .attr("class", "suite-btn")
-    .html("<i class='fa fa-bars'></i>")
-    .on("click", function() {
-      var testWrapper = d3.select(this.parentNode).select(".tests-wrapper");
-      var isCollapsed = testWrapper.classed("collapsed");
-      var iconStr = isCollapsed ? "times" : "bars";
-      var iconHtml = "<i class='fa fa-" + iconStr + "'></i>";
-      testWrapper.classed("collapsed", !isCollapsed);
-      d3.select(this).html(iconHtml);
     });
 
   var suitesHeds = suitesEnter.append("div")

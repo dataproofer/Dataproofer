@@ -7,11 +7,10 @@ module.exports = Renderer;
  * @return {undefined}
  */
 function Renderer(config) {
-  var results = this.results = {}
+  var results = this.results = {};
   config.suites.forEach(function(suite) {
     results[suite.name] = {};
-  })
-
+  });
 }
 
 /**
@@ -20,9 +19,9 @@ function Renderer(config) {
  * @return {undefined}
  */
 Renderer.prototype.error = function(error) {
-  console.log("MAY DAY")
+  console.log("MAY DAY");
   console.error(error);
-}
+};
 
 /**
  * The renderer can render results as they come so we can show progress to the user as tests complete.
@@ -31,10 +30,10 @@ Renderer.prototype.error = function(error) {
  * @param {Object} the result object.
  */
 Renderer.prototype.addResult = function(suite, test, result) {
-  console.log("add result", suite, test, result)
+  console.log("add result", suite, test, result);
   this.results[suite][test] = result;
   // TODO: update rendering
-}
+};
 
 /**
  * Notify that an error occurred while running a specific test
@@ -43,9 +42,9 @@ Renderer.prototype.addResult = function(suite, test, result) {
  * @param {Object} the error object. should contain a `message` property
  */
 Renderer.prototype.addError = function(suite, test, error) {
-  console.log("Test error:\n", suite, "\n", test.name())
-  console.error(error.stack || error)
-}
+  console.log("Test error:\n", suite, "\n", test.name());
+  console.error(error.stack || error);
+};
 
 /**
  * Indicate that we are finished rendering
@@ -53,5 +52,5 @@ Renderer.prototype.addError = function(suite, test, error) {
  */
 Renderer.prototype.done = function() {
   // finish up
-  console.log("proofed.")
-}
+  console.log("proofed.");
+};

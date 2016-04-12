@@ -79,7 +79,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   var resultList = this.resultList;
 
   // setup/update the comments in our Hands On Table
-  //renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
+  // renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
 
   var container = d3.select(".step-3-results");
   // rerender all the columns
