@@ -10,7 +10,7 @@
   line-height: 1.4;
   color: #333;
   opacity: 1;
-  background-color: #F7F6F5;
+  background-color: #000000;
   box-sizing: border-box;
  }
 
@@ -68,7 +68,7 @@
 
 .top-bar {
   width: 100%;
-  height: 5vh;
+  height: 3vh;
   background-color: #000;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .column {
-  height: 95vh;
+  height: 97vh;
   display: flex;
   flex-direction: column;
 }
@@ -159,7 +159,7 @@ button.reload {
 }
 
 #spreadsheet-input {
-  width: 50%;
+  width: 49%;
   display: inline-block;
   height: auto;
   font-size: 10px;
@@ -196,6 +196,7 @@ button.reload {
 
 .column-2 {
   flex: 1 1 auto;
+  background-color: #F7F6F5;
 }
 
 #grid {
@@ -392,11 +393,6 @@ General Suites and test
   margin: 0;
 }
 
-.suite .test.active {
-  /*border: 1px solid black;*/
-  opacity: 1;
-}
-
 .suite .test {
   margin: 4px;
   padding: 0.8em;
@@ -410,7 +406,7 @@ General Suites and test
   background-color: white;
   border: 1px solid transparent;
   border-radius: 3px;
-  opacity: 0.2;
+  opacity: 1;
   position: relative;
   padding-bottom: 42px;
 }
@@ -566,23 +562,10 @@ Middle Column (2)
   text-align: center;
 }
 
-.suite.active {
-  opacity: 1;
-}
-
 .suite-btn {
   margin-top: 5px;
   float: left;
   cursor: pointer;
-}
-
-.suite:not(.active) .suite-hed-title,
-.suite:not(.active) .test {
-  opacity: 0.2;
-}
-
-.suite:not(.active) label {
-  opacity: 1;
 }
 
 .suite:not(.active) .onoff {
