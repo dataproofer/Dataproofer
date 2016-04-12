@@ -165,25 +165,21 @@ renderNav();
 function renderNav() {
   var back = d3.select("#back-button");
   var forward = d3.select("#forward-button");
-  var grid = d3.select("#grid");
   switch (currentStep) {
     case 1:
-      back.style("display", "none");
-      forward.style("display", "none");
-      grid.style("display", "none");
+      // back.style("display", "none");
+      // forward.style("display", "none");
+      // grid.style("display", "none");
       break;
     case 2:
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
         .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
-      grid.style("display", "none");
       break;
     case 3:
-      back.style("display", "inline-block")
-        .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
+      back.html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
       forward.style("display", "none");
-      grid.style("display", "inline-block");
       break;
   }
 }
@@ -226,23 +222,15 @@ function renderStep1(processorConfig) {
   clear();
   step1.style("display", "block");
   step1.select("#file-loader-button").text("Choose a dataset");
-  d3.select("#info-top-bar").style("display", "none");
+  // d3.select("#info-top-bar").style("display", "none");
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
 
 function renderStep2(processorConfig) {
-  var container = d3.select(".step-2-select-content");
+  var container = d3.select(".test-sets");
   clear();
-  d3.select(".step-2-select").style("display", "block");
-
-  d3.select("#info-top-bar").style("display", "block");
-  //console.log("STEP 2", processorConfig)
   var loaded = processorConfig.loaded;
-  if (loaded.trueRows > loaded.rows.length) {
-    d3.select("#file-size-warning")
-      .html("<i class='fa fa-exclamation-triangle'></i> Large file detected. Sampled " + d3.format(",")(loaded.rows.length) + " rows randomly out of " + d3.format(",")(loaded.trueRows));
-  }
 
   // we just remove everything rather than get into update pattern
   container.selectAll(".suite").remove();
@@ -250,7 +238,6 @@ function renderStep2(processorConfig) {
   var filteredSuites = _.filter(processorConfig.suites, function(suite) {
     return suite.tests.length > 0;
   });
-  console.log("suites", processorConfig.suites);
   var suites = container.selectAll(".suite")
     .data(filteredSuites);
 
@@ -262,18 +249,6 @@ function renderStep2(processorConfig) {
       class: function(d) {
         return "suite " + (d.active ? "active" : "");
       }
-    });
-
-  suitesEnter.append("div")
-    .attr("class", "suite-btn")
-    .html("<i class='fa fa-bars'></i>")
-    .on("click", function() {
-      var testWrapper = d3.select(this.parentNode).select(".tests-wrapper");
-      var isCollapsed = testWrapper.classed("collapsed");
-      var iconStr = isCollapsed ? "times" : "bars";
-      var iconHtml = "<i class='fa fa-" + iconStr + "'></i>";
-      testWrapper.classed("collapsed", !isCollapsed);
-      d3.select(this).html(iconHtml);
     });
 
   var suitesHeds = suitesEnter.append("div")
@@ -315,7 +290,7 @@ function renderStep2(processorConfig) {
 
   // render the tests
   var tests = suitesEnter.append("div")
-    .attr("class", "tests-wrapper collapsed")
+    .attr("class", "tests-wrapper")
     .selectAll(".test")
     .data(function(d) {
       return d.tests;
@@ -411,14 +386,12 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
-  console.log("renderer", renderer);
   d3.select(".step-3-results").style("display", "block")
     .insert("div", ":first-child")
     .html(function() {
       var headersCheck = renderer.resultList[0];
       var missingHeadersStr = "";
       if (!headersCheck.result.passed) {
-        console.log("headers check", headersCheck);
         missingHeadersStr += "<div class='info'>";
         missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
         missingHeadersStr += " Ignored ";
@@ -445,25 +418,10 @@ function renderStep3(processorConfig) {
       var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
       return resultsStr;
     });
-  d3.select(".step-2-select").style("display", "none");
-  d3.select("#info-top-bar").style("display", "block");
-  d3.select("#fingerprint-wrapper").style("display", "block");
 }
 
 function clear() {
   d3.select("#current-file-name").text("");
-  d3.select(".step-1-data").style("display", "none");
-  d3.select(".step-2-select").style("display", "none");
-  d3.select(".step-3-results").style("display", "none");
-  d3.select("#fingerprint-wrapper").style("display", "none");
-  d3.select("#info-top-bar").style({
-    "background-color": "#fff"
-  });
-  d3.select("#file-size-warning").text("");
-
-  d3.select(".step-2-select").selectAll(".suite").remove();
-  d3.select(".step-3-results").selectAll(".suite").remove();
-  d3.select("#grid").selectAll("*").remove();
 }
 
 // This handles file selection via the button
@@ -513,6 +471,9 @@ function handleFileSelect(evt) {
           loaded: loaded
         };
         lastProcessorConfig = processorConfig;
+        d3.select("#file-loader-button")
+          .classed("loaded", true)
+          .text("Loaded");
         renderStep1(processorConfig);
         currentStep = 2;
         renderNav();
@@ -595,18 +556,31 @@ function handleSpreadsheet() {
     // console.log(sheet);
     if (err) {
       handleGsheetsError(err);
-      alert(err);
+      console.log(err);
     } else if (sheet) {
       //console.log("sheet", sheet);
-      var column_names = Object.keys(sheet.data[0]);
+      var columnHeads = Object.keys(sheet.data[0]);
+      console.log("sheet", sheet);
+      var rows = sheet.data;
+      var trueRows = rows.length;
       var config = {
+        title: sheet.title,
+        updated: sheet.updated
+      }
+      var loaded = {
+        rows: rows,
+        columnHeads: columnHeads,
+        trueRows: trueRows,
+        config: config
+      };
+      var processorConfig = {
         filename: sheet.title,
-        columnsHeads: column_names,
-        rows: sheet.data,
         suites: SUITES,
         renderer: HTMLRenderer,
+        loaded: loaded,
         input: {}
       };
+      lastProcessorConfig = processorConfig;
       renderStep1(config);
       currentStep = 2;
       renderCurrentStep();

@@ -20,21 +20,21 @@ function HTMLRenderer(config) {
   _.forEach( rows, function(row) {
     data.push( _.values(row) );
   });
-  var topBarHeight = document.getElementById("info-top-bar").getBoundingClientRect().height;
-  var containerWidth = (window.innerWidth / 2) + 20;
-  var containerHeight = window.innerHeight - topBarHeight;
+  var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
+  var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
+  var containerHeight = window.innerHeight - gridFooterHeight - d3.select(".top-bar").node().getBoundingClientRect();
+  d3.select("#grid").selectAll("*").remove();
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
-      strechH: "all",
       autoWrapRow: true,
       autoWrapCol: true,
       wordWrap: false,
       width: containerWidth,
       height: containerHeight,
       colWidths: 100,
-      fixedColumnsLeft: 1,
       colHeaders: headers,
+      rowHeaders: true,
       readOnly: true,
       manualRowResize: true,
       manualColumnResize: true,
@@ -42,13 +42,26 @@ function HTMLRenderer(config) {
       autoColumnSize: {
         "samplingRatio": 23
       },
-      currentRowClassName: "currentRow",
-      currentColClassName: "currentCol"
+      search: {
+        callback: searchResultSelect
+      }
     });
 
   this.handsOnTable = handsOnTable;
   window.handsOnTable = handsOnTable; // for debugging
 
+  function searchResultSelect(instance, row, col, value, result) {
+    Handsontable.Search.DEFAULT_CALLBACK.apply(this, arguments);
+    if (result) {
+      handsOnTable.selectCell(row, col);
+    }
+  }
+
+  var searchFiled = document.getElementById("search-field");
+  Handsontable.Dom.addEvent(searchFiled, 'keyup', function (event) {
+    handsOnTable.search.query(this.value);
+    handsOnTable.render();
+  });
   var resultsHeight = containerHeight + "px";
   // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll("*").remove();
@@ -79,7 +92,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   var resultList = this.resultList;
 
   // setup/update the comments in our Hands On Table
-  //renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
+  // renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
 
   var container = d3.select(".step-3-results");
   // rerender all the columns
@@ -254,13 +267,13 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   });
   d3.selectAll("div.summary")
     .each(function() {
-      d3.select(this.parentNode)
-        .classed("hidden", false);
+      // d3.select(this.parentNode)
+      //   .classed("hidden", false);
     });
   d3.selectAll("div.summary:not(.interesting)")
     .each(function() {
-      d3.select(this.parentNode)
-        .classed("hidden", true);
+      // d3.select(this.parentNode)
+      //   .classed("hidden", true);
     });
 
   d3.selectAll("div.column")
@@ -268,9 +281,9 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       var totalTests = d3.select(this).selectAll(".test")[0].length;
       var hiddenTests = d3.select(this).selectAll(".test.hidden")[0].length;
       if (totalTests === hiddenTests) {
-        d3.select(this).classed("hidden", true);
+        // d3.select(this).classed("hidden", true);
       } else {
-        d3.select(this).classed("hidden", false);
+        // d3.select(this).classed("hidden", false);
       }
     });
 
@@ -364,7 +377,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   var clearFilteredResults = this.clearFilteredResults;
 
   var width = 200;
-  var resultsBBOX = d3.select(".step-3-results").node().getBoundingClientRect();
+  var resultsBBOX = d3.select(".column-3").node().getBoundingClientRect();
   var height = resultsBBOX.height;
   var cellWidth = 2;
   var cellHeight = 1;

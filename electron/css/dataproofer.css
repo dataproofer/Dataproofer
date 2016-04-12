@@ -10,7 +10,6 @@
   line-height: 1.4;
   color: #333;
   opacity: 1;
-  /* background-color: transparent; */
   background-color: #F7F6F5;
   box-sizing: border-box;
  }
@@ -18,7 +17,6 @@
  button {
   font-size: 16px;
   padding: 0.5em 1em;
-  /*margin: 0.25em;*/
   margin-top: 2px;
   border: 0;
   background-color: #CFCFCF;
@@ -49,6 +47,10 @@
   display: none;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .pass-icon {
   color: #29A03B;
 }
@@ -62,17 +64,64 @@
   color: #D43833;
 }
 
-.nav-group-row {
-  margin: 5px 10px;
-  display: block;
+/*** NEW CSS ***/
+
+.top-bar {
+  width: 100%;
+  height: 5vh;
+  background-color: #000;
 }
-#file-loader {
-  font-size: 12px;
+
+.window-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
-#filetypes-accepted {
-  text-align: center;
+
+.column {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-1 {
+  width: 300px;
+  z-index: 2;
+  flex: 0 0 auto;
+  background: #ffffff;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.column-1 p {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.column-1-wrapper {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  max-width: 300px;
+  background: #ffffff;
+}
+
+#intro-logo {
+  max-width: 200px;
   display: block;
-  margin-top: 1em;
+  margin: 0 auto;
+}
+
+.file-info-wrapper {
+  padding-top: 24px;
+  background-color: #fff;
+  position: relative;
+  height: 33vh;
+}
+
+.file-info {
+  padding-top: 32px;
 }
 
 span.reload {
@@ -85,18 +134,6 @@ button.reload {
   padding-right: 10px;
 }
 
-#info-top-bar {
-  padding: 1em;
-  padding-top: 32px;
-  width: 100%;
-  background-color: rgba(255,255,255,0.9);
-  position: fixed;
-  top: 0;
-  z-index: 2;
-
-  display: none;
-}
-
 #info-top-bar #current-file-name{
   display: inline-block;
   font-size: 16px;
@@ -107,6 +144,93 @@ button.reload {
 #file-size-warning {
   color: #ED4224;
 }
+
+#file-loader-button {
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.spreadsheet-input-wrapper {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#spreadsheet-input {
+  width: 50%;
+  display: inline-block;
+  height: auto;
+  font-size: 10px;
+  outline: none;
+  background-color: #F3F1ED;
+  padding: 1.2em 0.5em;
+}
+
+#spreadsheet-input:active, #spreadsheet-input:focus {
+  background-color: white;
+}
+
+#spreadsheet-input::-webkit-input-placeholder {
+  text-align: center;
+}
+
+#spreadsheet-button {
+  display: inline-block;
+  width: 35%;
+}
+
+#file-loader-button,
+#spreadsheet-button {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 5px;
+  background-color: #48C2C5;
+  color: white;
+  border: 0;
+  padding: 1em 0.5em;
+}
+
+.column-2 {
+  flex: 1 1 auto;
+}
+
+#grid {
+  flex: 1 1 auto;
+  height: 90vh;
+  overflow-y: auto;
+}
+
+.grid-footer {
+  z-index: 3;
+  background-color: #ECEBE9;
+  padding: 1em;
+  flex: 0 0 auto;
+}
+
+.column-3 {
+  width: 200px;
+  z-index: 2;
+  background: #ffffff;
+  flex: 0 0 auto;
+}
+
+.overview-title {
+  text-align: center;
+  min-height: 3vh;
+  box-shadow: 1px 5px 5px -5px #333;
+}
+
+#fingerprint {
+  height: 97vh;
+  overflow-y: scroll;
+}
+
+/*** OLD CSS ***/
+
 /* =============================================================================
 Navigation buttons
 ============================================================================= */
@@ -126,44 +250,17 @@ Navigation buttons
 }
 
 #back-button {
-  /*background-color: #46CC69;*/
   background-color: #48C2C5;
-  /*color: black !important;*/
 }
+
 #forward-button {
-  /*background-color: #ED4224;*/
   background-color: #4A66B0;
 
 }
 
-
 /* =============================================================================
 Grid
-  NOTE: I had to remove box-sizing:border-box from photon.css in order to not mess up slickgrid
 ============================================================================= */
-
-#grid-wrapper {
-  float: left;
-  position: relative;
-  width: 55%;
-}
-
-#grid,
-#fingerprint {
-  font-size: 12px;
-  box-sizing: content-box !important;
-  width: 50%;
-  position: fixed;
-  top: 86px;
-  bottom: 0;
-  background-color: #EEE;
-  overflow: hidden;
-  display: none;
-}
-
-.filtered-cells .ht_clone_left th .rowHeader {
-  display: none;
-}
 
 .filtered-cells table td {
   /*
@@ -178,23 +275,6 @@ Grid
   background: pink;
 }
 
-.steps {
-  /* temp styling
-  position: absolute;
-  top: 30;
-  height: calc(100% - 230px); */
-  /*padding: 1.5em;*/
-  padding-top: 82px;
-}
-
-.step {
-  float:left;
-  clear:left;
-  width: 100%;
-  overflow-y: scroll;
-  /*margin-bottom: 200px;*/
-}
-
 .info {
   line-height: 1.3;
   text-align: center;
@@ -202,7 +282,6 @@ Grid
   padding: 0.8em;
 }
 
-.column,
 .summary-results {
   padding: 4px;
   margin: 8px;
@@ -213,10 +292,6 @@ Grid
 .summary-results {
   font-weight: bold;
   text-align: center;
-}
-
-.column:last-of-type {
-  border-bottom: none;
 }
 
 .column-header {
@@ -236,21 +311,21 @@ Grid
 }
 */
 
-.column .test {
+.test {
   position: relative;
   margin: 3px;
 }
-.column .test .summary {
+.test .summary {
   font-size: 10px;
   line-height: 1.2em;
   opacity: 0.8;
 }
-.column .test .summary.interesting {
+.test .summary.interesting {
   font-size: 14px;
   /*font-weight: bold;*/
   opacity: 1;
 }
-.column .test.filtered .summary {
+.test.filtered .summary {
   color: black;
   font-weight: bold;
 }
@@ -265,7 +340,7 @@ Grid
   top: 4px;
 }
 
-.column .test .summary {
+.test .summary {
   cursor: pointer;
 }
 
@@ -286,31 +361,13 @@ Grid
   margin: 10px 25px;
 }
 
-/*.column .test .description {
-  padding-left: 1em;
-  padding-top: 0.5em;
-  font-size: 14px;
-  line-height: 1.2em;
-}
-.column .test .conclusion {
-  display: none;
-
-  font-size: 14px;
-  background-color: #ECE9E3;
-  padding: 8px;
-}
-.column .test .visualization {
-  display: none;
-}*/
-
-
-.column .test.active .description {
+.test.active .description {
   display: block;
 }
-.column .test.active .conclusion {
+.test.active .conclusion {
   display: block;
 }
-.column .test.active .visualization {
+.test.active .visualization {
   display: block;
 }
 
@@ -335,129 +392,17 @@ General Suites and test
   margin: 0;
 }
 
-.suite-hed input.toggle+label {
-  left: 1em;
-}
-
-.suite-hed-title {
-  margin-left: 32px;
-  padding-top: 4px;
-  color: #21267F;
-}
-
-.suite input.toggle {
-  position: absolute;
-  margin-left: -9999px;
-  visibility: hidden
-}
-
-.suite input.toggle+label {
-  padding: 2px;
-  width: 30px;
-  height: 15px;
-  /*top: 0.4em;*/
-  background-color: #bebebe;
-  -webkit-border-radius: 30px;
-  border-radius: 30px;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  outline: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none
-}
-
-.suite input.toggle+label:after,
-.suite input.toggle+label:before {
-  display: block;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  bottom: 1px;
-  content: ""
-}
-
-.suite input.toggle+label:before {
-  right: 1px;
-  background-color: #F5F4F2;
-  -webkit-border-radius: 30px;
-  border-radius: 30px;
-  -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  transition: all .2s cubic-bezier(.4, 0, .2, 1)
-}
-
-.suite input.toggle+label:after {
-  width: 18px;
-  background-color: #fff;
-  -webkit-border-radius: 100%;
-  border-radius: 100%;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-  -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  -moz-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  -o-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  -ms-transition: all .2s cubic-bezier(.4, 0, .2, 1);
-  transition: all .2s cubic-bezier(.4, 0, .2, 1)
-}
-
-.suite input.toggle:checked+label:before {
-  background-color: #EFEEEC;
-}
-
-.suite input.toggle:checked+label {
-  background-color: #21267F;
-
-}
-
-.suite input.toggle:checked+label:after {
-  margin-left: 15px;
-  background-color: #2B3992;
-}
-
-.suite input.toggle.disabled+label {
-    cursor: not-allowed;
-    opacity: .25;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
-    filter: alpha(opacity=25);
-    -webkit-box-shadow: none;
-    box-shadow: none
-}
-
-.suite .test .onoff {
-  margin-top: 4px;
-  opacity: 0;
-  -webkit-transition: all .1s cubic-bezier(.4, 0, .2, 1);
-  -moz-transition: all .1s cubic-bezier(.4, 0, .2, 1);
-  -o-transition: all .1s cubic-bezier(.4, 0, .2, 1);
-  -ms-transition: all .1s cubic-bezier(.4, 0, .2, 1);
-  transition: all .1s cubic-bezier(.4, 0, .2, 1)
-}
-
-.suite.active .test:hover .onoff {
-  opacity: 1;
-}
-
 .suite .test.active {
   /*border: 1px solid black;*/
   opacity: 1;
 }
 
 .suite .test {
-  /*
-  min-width: 100px;
-  max-width: 100%;
-  */
   margin: 4px;
   padding: 0.8em;
   margin-top: 1em;
-  width: 20%;
-  min-width: 110px;
-  min-height: 190px;
+  /*min-width: 110px;*/
+  /*min-height: 190px;*/
   /*max-height: 400px;*/
   /*overflow-y: auto;*/
   display: inline-block;
@@ -467,7 +412,6 @@ General Suites and test
   border-radius: 3px;
   opacity: 0.2;
   position: relative;
-  overflow: hidden;
   padding-bottom: 42px;
 }
 
@@ -563,43 +507,22 @@ General Suites and test
 /* =============================================================================
 FINGERPRINT
 ============================================================================= */
-#fingerprint-wrapper {
-  width: 200px;
-  float: right;
-  height: 100%;
-  display: none;
-}
 
 #fingerprint {
-  width: 200px;
   cursor: pointer;
-  right: 0px;
-  display: block;
 }
-#fingerprint-overlay {
-  width: 202px;
-  margin-left: -1px;
-  position:fixed;
-  pointer-events: none;
-}
-
 
 
 /* =============================================================================
-STEP  1
+Left Column (1)
 ============================================================================= */
-.step-1-data {
+
+.file-info p {
   text-align: center;
-  /*padding: 1.5em;*/
 }
 
-.step-1-data h1 {
-  margin: 0;
-}
-
-#intro-logo {
-  max-width: 400px;
-  height: auto;
+.file-info hr {
+  margin: 4px 0;
 }
 
 #dataproofer-intro-description {
@@ -611,7 +534,7 @@ STEP  1
   text-align: left;
 }
 
-.step-1-data #file-loader {
+#file-loader {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -620,56 +543,9 @@ STEP  1
   z-index: -1;
 }
 
-.step-1-data .title {
+.title {
   font-size: 2em;
   text-align: center;
-}
-
-.step-1-data #file-loader-button {
-  display: block;
-  text-align: center;
-  background-color: #48C2C5;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  padding: 1em;
-  cursor: pointer;
-}
-
-#spreadsheet-input {
-  width: 80%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  font-size: 24px;
-  padding: 1em;
-  outline: none;
-  background-color: #F3F1ED;
-}
-#spreadsheet-input:active, #spreadsheet-input:focus {
-  background-color: white;
-}
-
-#spreadsheet-input::-webkit-input-placeholder {
-  text-align: center;
-}
-#spreadsheet-button {
-  width: 25%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  font-size: 24px;
-  margin-top: 5px;
-  padding: 1em;
-  background-color: #48C2C5;
-  color: white;
-  border: 0;
-
 }
 
 #gsheets-response {
@@ -682,24 +558,15 @@ STEP  1
 }
 
 /* =============================================================================
-STEP  2
+Middle Column (2)
 ============================================================================= */
-.step-2-select {
-  /*padding: 5px;*/
-  width: 100%;
-  /*opacity: 0.2; */
-  display: none;
-  margin-bottom: 72px;
-}
-.step-2-select-content {
-  padding: 1.5em;
-}
-.step-2-select .title {
+
+.title {
   font-size: 2em;
   text-align: center;
 }
 
-.step-2-select .suite.active {
+.suite.active {
   opacity: 1;
 }
 
@@ -709,16 +576,16 @@ STEP  2
   cursor: pointer;
 }
 
-.step-2-select .suite:not(.active) .suite-hed-title,
-.step-2-select .suite:not(.active) .test {
+.suite:not(.active) .suite-hed-title,
+.suite:not(.active) .test {
   opacity: 0.2;
 }
 
-.step-2-select .suite:not(.active) label {
+.suite:not(.active) label {
   opacity: 1;
 }
 
-.step-2-select .suite:not(.active) .onoff {
+.suite:not(.active) .onoff {
   pointer-events: none;
 }
 
@@ -758,6 +625,7 @@ button.run-tests {
   right: 0px;
   background-color: rgba(255, 255, 255, 0.95);
   padding-top: 24px;
+  z-index: 999;
 }
 .test-editor h3 {
   margin: 8px;
@@ -832,20 +700,15 @@ button.run-tests {
 }
 
 /* =============================================================================
-STEP  3
+Right Column (3)
 ============================================================================= */
-.step-3-results {
-  width: calc(50% - 220px);
-  display: none;
-  word-wrap: break-word;
-  overflow-x: hidden;
-}
-.step-3-results .title {
+
+.title {
   font-size: 2em;
   text-align: center;
 }
 
-.step-3-results .test {
+.test {
   line-height: 1.2em;
   /*width: 88%;*/
   width: 80%;
@@ -854,13 +717,6 @@ STEP  3
   margin-right: auto;
   min-height: 1em;
   padding: 4px 1em;
-}
-
-/*
-TODO: Make this hide/unhide with click
-*/
-.step-3-results .fingerprint {
-  display: none;
 }
 
 .handsontable td:hover {
