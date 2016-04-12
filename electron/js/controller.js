@@ -238,7 +238,6 @@ function renderStep2(processorConfig) {
   var filteredSuites = _.filter(processorConfig.suites, function(suite) {
     return suite.tests.length > 0;
   });
-  console.log("suites", processorConfig.suites);
   var suites = container.selectAll(".suite")
     .data(filteredSuites);
 
@@ -387,14 +386,12 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
-  console.log("renderer", renderer);
   d3.select(".step-3-results").style("display", "block")
     .insert("div", ":first-child")
     .html(function() {
       var headersCheck = renderer.resultList[0];
       var missingHeadersStr = "";
       if (!headersCheck.result.passed) {
-        console.log("headers check", headersCheck);
         missingHeadersStr += "<div class='info'>";
         missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
         missingHeadersStr += " Ignored ";
@@ -559,18 +556,31 @@ function handleSpreadsheet() {
     // console.log(sheet);
     if (err) {
       handleGsheetsError(err);
-      alert(err);
+      console.log(err);
     } else if (sheet) {
       //console.log("sheet", sheet);
-      var column_names = Object.keys(sheet.data[0]);
+      var columnHeads = Object.keys(sheet.data[0]);
+      console.log("sheet", sheet);
+      var rows = sheet.data;
+      var trueRows = rows.length;
       var config = {
+        title: sheet.title,
+        updated: sheet.updated
+      }
+      var loaded = {
+        rows: rows,
+        columnHeads: columnHeads,
+        trueRows: trueRows,
+        config: config
+      };
+      var processorConfig = {
         filename: sheet.title,
-        columnsHeads: column_names,
-        rows: sheet.data,
         suites: SUITES,
         renderer: HTMLRenderer,
+        loaded: loaded,
         input: {}
       };
+      lastProcessorConfig = processorConfig;
       renderStep1(config);
       currentStep = 2;
       renderCurrentStep();
