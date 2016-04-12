@@ -392,16 +392,11 @@ General Suites and test
 }
 
 .suite .test {
-  /*
-  min-width: 100px;
-  max-width: 100%;
-  */
   margin: 4px;
   padding: 0.8em;
   margin-top: 1em;
-  width: 20%;
-  min-width: 110px;
-  min-height: 190px;
+  /*min-width: 110px;*/
+  /*min-height: 190px;*/
   /*max-height: 400px;*/
   /*overflow-y: auto;*/
   display: inline-block;
@@ -411,7 +406,6 @@ General Suites and test
   border-radius: 3px;
   opacity: 0.2;
   position: relative;
-  overflow: hidden;
   padding-bottom: 42px;
 }
 

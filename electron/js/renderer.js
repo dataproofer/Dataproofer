@@ -20,9 +20,9 @@ function HTMLRenderer(config) {
   _.forEach( rows, function(row) {
     data.push( _.values(row) );
   });
-  var topBarHeight = document.getElementById("info-top-bar").getBoundingClientRect().height;
-  var containerWidth = (window.innerWidth / 2) + 20;
-  var containerHeight = window.innerHeight - topBarHeight;
+  var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
+  var containerWidth = d3.select(".grid-footer").node().getBoundingClientRect().width;
+  var containerHeight = window.innerHeight - gridFooterHeight;
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
@@ -254,13 +254,13 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   });
   d3.selectAll("div.summary")
     .each(function() {
-      d3.select(this.parentNode)
-        .classed("hidden", false);
+      // d3.select(this.parentNode)
+      //   .classed("hidden", false);
     });
   d3.selectAll("div.summary:not(.interesting)")
     .each(function() {
-      d3.select(this.parentNode)
-        .classed("hidden", true);
+      // d3.select(this.parentNode)
+      //   .classed("hidden", true);
     });
 
   d3.selectAll("div.column")
@@ -268,9 +268,9 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       var totalTests = d3.select(this).selectAll(".test")[0].length;
       var hiddenTests = d3.select(this).selectAll(".test.hidden")[0].length;
       if (totalTests === hiddenTests) {
-        d3.select(this).classed("hidden", true);
+        // d3.select(this).classed("hidden", true);
       } else {
-        d3.select(this).classed("hidden", false);
+        // d3.select(this).classed("hidden", false);
       }
     });
 
@@ -364,7 +364,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   var clearFilteredResults = this.clearFilteredResults;
 
   var width = 200;
-  var resultsBBOX = d3.select(".step-3-results").node().getBoundingClientRect();
+  var resultsBBOX = d3.select(".column-3").node().getBoundingClientRect();
   var height = resultsBBOX.height;
   var cellWidth = 2;
   var cellHeight = 1;

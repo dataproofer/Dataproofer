@@ -165,7 +165,6 @@ renderNav();
 function renderNav() {
   var back = d3.select("#back-button");
   var forward = d3.select("#forward-button");
-  var grid = d3.select("#grid");
   switch (currentStep) {
     case 1:
       // back.style("display", "none");
@@ -177,7 +176,6 @@ function renderNav() {
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
         .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
-      grid.style("display", "inline-block");
       break;
     case 3:
       back.html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
@@ -423,25 +421,10 @@ function renderStep3(processorConfig) {
       var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
       return resultsStr;
     });
-  // d3.select(".step-2-select").style("display", "none");
-  d3.select("#info-top-bar").style("display", "block");
-  d3.select("#fingerprint-wrapper").style("display", "block");
 }
 
 function clear() {
   d3.select("#current-file-name").text("");
-  // d3.select(".step-1-data").style("display", "none");
-  // d3.select(".step-2-select").style("display", "none");
-  // d3.select(".step-3-results").style("display", "none");
-  // d3.select("#fingerprint-wrapper").style("display", "none");
-  d3.select("#info-top-bar").style({
-    "background-color": "#fff"
-  });
-  d3.select("#file-size-warning").text("");
-
-  d3.select(".step-2-select").selectAll(".suite").remove();
-  d3.select(".step-3-results").selectAll(".suite").remove();
-  d3.select("#grid").selectAll("*").remove();
 }
 
 // This handles file selection via the button
