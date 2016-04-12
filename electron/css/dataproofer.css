@@ -10,7 +10,6 @@
   line-height: 1.4;
   color: #333;
   opacity: 1;
-  /* background-color: transparent; */
   background-color: #F7F6F5;
   box-sizing: border-box;
  }
@@ -18,7 +17,6 @@
  button {
   font-size: 16px;
   padding: 0.5em 1em;
-  /*margin: 0.25em;*/
   margin-top: 2px;
   border: 0;
   background-color: #CFCFCF;
@@ -66,6 +64,8 @@
   color: #D43833;
 }
 
+/*** NEW CSS ***/
+
 .window-content {
   display: flex;
   align-items: center;
@@ -73,7 +73,7 @@
 }
 
 .column {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -85,7 +85,6 @@
   background: #ffffff;
   max-height: 100vh;
   overflow-y: auto;
-  /*box-shadow: 5px 0 5px -5px #333;*/
 }
 
 .column-1 p {
@@ -99,7 +98,6 @@
   bottom: 0;
   max-width: 300px;
   background: #ffffff;
-  /*box-shadow: 5px 0 5px -5px #333;*/
 }
 
 #intro-logo {
@@ -111,7 +109,6 @@
 .file-info-wrapper {
   padding-top: 24px;
   background-color: #fff;
-  /*box-shadow: 1px 5px 5px -5px #333;*/
   position: relative;
   height: 33vh;
 }
@@ -190,16 +187,6 @@ button.reload {
   padding: 1em 0.5em;
 }
 
-.test-sets-wrapper {
-  /*
-  position: relative;
-  max-height: 64vh;
-  overflow-y: scroll;
-  padding: 0 1em;
-  background-color: #F9F8F6;
-  */
-}
-
 .column-2 {
   flex: 1 1 auto;
 }
@@ -212,31 +199,31 @@ button.reload {
 }
 
 .grid-footer {
-  /*text-align: right;*/
   z-index: 3;
   background-color: #ECEBE9;
   padding: 1em;
-  /*box-shadow: 0 -5px 5px -5px #333;*/
   flex: 0 0 auto;
-  /*height: 12vh;*/
-  /*
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
-  */
 }
 
 .column-3 {
   width: 200px;
   z-index: 2;
   background: #ffffff;
-  /*box-shadow: -5px 0 5px -5px #333;*/
   flex: 0 0 auto;
 }
 
 .overview-title {
   text-align: center;
-  border-bottom: 1px solid #000;
+  min-height: 3vh;
+  box-shadow: 1px 5px 5px -5px #333;
 }
+
+#fingerprint {
+  height: 97vh;
+  overflow-y: scroll;
+}
+
+/*** OLD CSS ***/
 
 /* =============================================================================
 Navigation buttons
@@ -257,12 +244,10 @@ Navigation buttons
 }
 
 #back-button {
-  /*background-color: #46CC69;*/
   background-color: #48C2C5;
-  /*color: black !important;*/
 }
+
 #forward-button {
-  /*background-color: #ED4224;*/
   background-color: #4A66B0;
 
 }
