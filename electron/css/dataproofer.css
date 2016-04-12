@@ -83,7 +83,14 @@
   z-index: 2;
   flex: 0 0 auto;
   background: #ffffff;
-  box-shadow: 5px 0 5px -5px #333;
+  max-height: 100vh;
+  overflow-y: auto;
+  /*box-shadow: 5px 0 5px -5px #333;*/
+}
+
+.column-1 p {
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 .column-1-wrapper {
@@ -92,7 +99,7 @@
   bottom: 0;
   max-width: 300px;
   background: #ffffff;
-  box-shadow: 5px 0 5px -5px #333;
+  /*box-shadow: 5px 0 5px -5px #333;*/
 }
 
 #intro-logo {
@@ -102,10 +109,15 @@
 }
 
 .file-info-wrapper {
+  padding-top: 24px;
   background-color: #fff;
-  box-shadow: 1px 5px 5px -5px #333;
+  /*box-shadow: 1px 5px 5px -5px #333;*/
   position: relative;
-  height: 55vh;
+  height: 33vh;
+}
+
+.file-info {
+  padding-top: 32px;
 }
 
 span.reload {
@@ -179,10 +191,13 @@ button.reload {
 }
 
 .test-sets-wrapper {
+  /*
   position: relative;
-  max-height: 45vh;
+  max-height: 64vh;
   overflow-y: scroll;
   padding: 0 1em;
+  background-color: #F9F8F6;
+  */
 }
 
 .column-2 {
@@ -197,21 +212,24 @@ button.reload {
 }
 
 .grid-footer {
-  text-align: right;
+  /*text-align: right;*/
   z-index: 3;
-  background-color: #fff;
-  box-shadow: 0 -5px 5px -5px #333;
+  background-color: #ECEBE9;
+  padding: 1em;
+  /*box-shadow: 0 -5px 5px -5px #333;*/
   flex: 0 0 auto;
-  height: 5vh;
+  /*height: 12vh;*/
+  /*
   border-left: 1px solid #000;
   border-right: 1px solid #000;
+  */
 }
 
 .column-3 {
   width: 200px;
   z-index: 2;
   background: #ffffff;
-  box-shadow: -5px 0 5px -5px #333;
+  /*box-shadow: -5px 0 5px -5px #333;*/
   flex: 0 0 auto;
 }
 
@@ -516,6 +534,10 @@ Left Column (1)
 
 .file-info p {
   text-align: center;
+}
+
+.file-info hr {
+  margin: 4px 0;
 }
 
 #dataproofer-intro-description {
