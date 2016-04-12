@@ -196,7 +196,6 @@ button.reload {
   flex: 1 1 auto;
   height: 90vh;
   overflow-y: auto;
-  padding: 0 1em;
 }
 
 .grid-footer {
