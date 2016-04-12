@@ -274,6 +274,7 @@ function renderStep2(processorConfig) {
     .attr("for", function(d, i) {
       return "suite-" + i;
     })
+  suiteHedAndToggle.select("input")
     .on("click", function(d) {
       d.active = !d.active;
       d3.select(this.parentNode.parentNode.parentNode).classed("active", d.active);
@@ -338,7 +339,7 @@ function renderStep2(processorConfig) {
     return html;
   });
 
-  tests.select("label")
+  tests.select("input")
     .on("click", function(d) {
       d.active = !d.active;
       d3.select(this.parentNode.parentNode).classed("active", d.active);

@@ -59,7 +59,7 @@ function HTMLRenderer(config) {
   }
 
   var searchFiled = document.getElementById("search-field");
-  Handsontable.Dom.addEvent(searchFiled, 'keyup', function (event) {
+  Handsontable.Dom.addEvent(searchFiled, "keyup", function (event) {
     handsOnTable.search.query(this.value);
     handsOnTable.render();
   });
@@ -67,16 +67,14 @@ function HTMLRenderer(config) {
   // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll("*").remove();
   d3.select(".step-3-results")
-    .style("height", resultsHeight);
-    /*
+    .style("height", resultsHeight)
     .selectAll(".suite")
     .data(config.suites)
     .enter().append("div")
     .attr({
-      class: function(d) { return "suite " + d.name + (d.active ? " active" : "" )}
+      class: function(d) { return "suite " + d.name + ((d.active) ? " active" : "" );}
     })
-    .append("h2").text(function(d) { return d.fullName })
-    */
+    .append("h2").text(function(d) { return d.fullName; });
   //d3.select(".test-results").selectAll(".test").remove();
 }
 
@@ -149,7 +147,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
   var testsEnter = tests.enter().append("div")
     .attr("class", function(d) {
-      return "test";// + (d.test.active ? " active" : "" )
+      return "test" + (d.test.active ? " active" : "" );
     });
 
   testsEnter.append("div").classed("passfail", true);
