@@ -474,6 +474,9 @@ function handleFileSelect(evt) {
           loaded: loaded
         };
         lastProcessorConfig = processorConfig;
+        d3.select("#file-loader-button")
+          .classed("loaded", true)
+          .text("Loaded");
         renderStep1(processorConfig);
         currentStep = 2;
         renderNav();
