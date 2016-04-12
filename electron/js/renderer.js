@@ -22,7 +22,7 @@ function HTMLRenderer(config) {
   });
   var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
   var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
-  var containerHeight = window.innerHeight - gridFooterHeight;
+  var containerHeight = window.innerHeight - gridFooterHeight - d3.select(".top-bar").node().getBoundingClientRect();
   d3.select("#grid").selectAll("*").remove();
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
@@ -42,13 +42,26 @@ function HTMLRenderer(config) {
       autoColumnSize: {
         "samplingRatio": 23
       },
-      currentRowClassName: "currentRow",
-      currentColClassName: "currentCol"
+      search: {
+        callback: searchResultSelect
+      }
     });
 
   this.handsOnTable = handsOnTable;
   window.handsOnTable = handsOnTable; // for debugging
 
+  function searchResultSelect(instance, row, col, value, result) {
+    Handsontable.Search.DEFAULT_CALLBACK.apply(this, arguments);
+    if (result) {
+      handsOnTable.selectCell(row, col);
+    }
+  }
+
+  var searchFiled = document.getElementById("search-field");
+  Handsontable.Dom.addEvent(searchFiled, 'keyup', function (event) {
+    handsOnTable.search.query(this.value);
+    handsOnTable.render();
+  });
   var resultsHeight = containerHeight + "px";
   // we just remove everything rather than get into update pattern
   d3.select(".step-3-results").selectAll("*").remove();
