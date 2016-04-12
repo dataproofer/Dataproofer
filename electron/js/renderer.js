@@ -23,6 +23,7 @@ function HTMLRenderer(config) {
   var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
   var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
   var containerHeight = window.innerHeight - gridFooterHeight;
+  d3.select("#grid").selectAll("*").remove();
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
