@@ -180,10 +180,10 @@ function renderNav() {
       // grid.style("display", "none");
       break;
     case 3:
-      back.style("display", "inline-block")
-        .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
+      // back.style("display", "inline-block")
+        // .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
       // forward.style("display", "none");
-      grid.style("display", "inline-block");
+      // grid.style("display", "inline-block");
       break;
   }
 }

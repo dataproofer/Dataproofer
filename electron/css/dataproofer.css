@@ -72,6 +72,12 @@
   justify-content: center;
 }
 
+.column {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .column-1 {
   width: 300px;
   z-index: 2;
@@ -99,7 +105,7 @@
   background-color: #fff;
   box-shadow: 1px 5px 5px -5px #333;
   position: relative;
-  height: 400px; /* todo: set dynamically */
+  height: 55vh;
 }
 
 span.reload {
@@ -174,7 +180,7 @@ button.reload {
 
 .test-sets-wrapper {
   position: relative;
-  max-height: 350px; /* todo: set dynamically */
+  max-height: 45vh;
   overflow-y: scroll;
   padding: 0 1em;
 }
@@ -183,19 +189,22 @@ button.reload {
   flex: 1 1 auto;
 }
 
-.column-2 .grid-wrapper,
-.column-2 .grid-footer-wrapper {
-  width: 100%;
+#grid {
+  flex: 1 1 auto;
+  height: 90vh;
+  overflow-y: auto;
+  padding: 0 1em;
 }
 
-.grid-footer-wrapper {
-  height: 20px;
+.grid-footer {
+  text-align: right;
+  z-index: 3;
   background-color: #fff;
-  height: 20px;
-  background-color: #fff;
-  align-self: flex-end;
-  /* flex: 1 1 auto; */
-  box-shadow: 0 -5px 5px -5px #333
+  box-shadow: 0 -5px 5px -5px #333;
+  flex: 0 0 auto;
+  height: 5vh;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
 }
 
 .column-3 {
@@ -204,6 +213,11 @@ button.reload {
   background: #ffffff;
   box-shadow: -5px 0 5px -5px #333;
   flex: 0 0 auto;
+}
+
+.overview-title {
+  text-align: center;
+  border-bottom: 1px solid #000;
 }
 
 /* =============================================================================
@@ -490,25 +504,10 @@ General Suites and test
 /* =============================================================================
 FINGERPRINT
 ============================================================================= */
-#fingerprint-wrapper {
-  width: 200px;
-  float: right;
-  height: 100%;
-}
 
 #fingerprint {
-  width: 200px;
   cursor: pointer;
-  right: 0px;
-  display: block;
 }
-#fingerprint-overlay {
-  width: 202px;
-  margin-left: -1px;
-  position:fixed;
-  pointer-events: none;
-}
-
 
 
 /* =============================================================================
