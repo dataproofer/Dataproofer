@@ -36,6 +36,7 @@ function HTMLRenderer(config) {
       colHeaders: headers,
       rowHeaders: true,
       readOnly: true,
+      columnSorting: true,
       manualRowResize: true,
       manualColumnResize: true,
       comments: true,

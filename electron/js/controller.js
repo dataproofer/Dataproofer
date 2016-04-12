@@ -167,9 +167,8 @@ function renderNav() {
   var forward = d3.select("#forward-button");
   switch (currentStep) {
     case 1:
-      // back.style("display", "none");
-      // forward.style("display", "none");
-      // grid.style("display", "none");
+      back.style("display", "none");
+      forward.style("display", "none");
       break;
     case 2:
       back.style("display", "inline-block")
