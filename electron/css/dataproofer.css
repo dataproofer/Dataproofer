@@ -790,8 +790,13 @@ Right Column (3)
   padding: 4px 1em;
 }
 */
-.handsontable td:hover {
+.handsontable td:not(.htCommentCell):hover {
   background-color: aliceblue;
+}
+
+.handsontable td.htCommentCell:hover {
+  -webkit-filter: brightness(1.2);
+  filter: brightness(1.2);
 }
 
 /* =============================================================================
