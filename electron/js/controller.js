@@ -373,7 +373,6 @@ function renderStep2(processorConfig) {
     .attr("class", "fa fa-info-circle")
     .attr("aria-hidden", "true")
     .each(function(d) {
-      console.log("this", this);
       jQ(this).tipsy({
         html: true,
         gravity: jQ.fn.tipsy.autoNS
@@ -401,7 +400,7 @@ function renderStep2(processorConfig) {
     suites.select("input").each(suiteState)
   }
 
-  testsEnter.append("div").classed("message", true);
+  // testsEnter.append("div").classed("message", true);
 
   testsEnter.append("button").classed("edit-test", true)
     .html(function(d) {

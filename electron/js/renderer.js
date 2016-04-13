@@ -182,7 +182,14 @@ var columnHeads = this.columnHeads;
   var tests = d3.selectAll(".test")
     .data(resultList, function(d) { return d.suite + "-" + d.test.name() })
 
-  tests.append("div").classed("passfail", true);
+  tests.classed("pass", function(d) {
+    return d.result.passed;
+  })
+  .classed("fail", function(d) {
+    return !d.result.passed;
+  });
+
+  // tests.append("div").classed("passfail", true);
   // tests.append("div").classed("summary", true)
   //   .on("mouseover", function(d) {
   //     var infoBtn = d3.select(this.parentNode).select(".info-btn");
@@ -240,22 +247,6 @@ var columnHeads = this.columnHeads;
   // .on("mouseout", function(d) {
   //   var isFiltered = d3.selectAll(".filtered")[0].length > 0;
   //   if (!isFiltered) that.renderFingerPrint();
-  // });
-
-  // tests.select("div.passfail").html(function(d) {
-  //   var passFailIconHtml = "";
-  //   var currentResultsColumn = d.column;
-  //   var columnWise = d.result.columnWise;
-  //   if (columnWise) {
-  //     if (columnWise[currentResultsColumn] === 0) {
-  //       passFailIconHtml += "<i class=\"fa fa-check-circle-o pass-icon\"></i>";
-  //     } else if (columnWise[currentResultsColumn] > 0) {
-  //       passFailIconHtml += "<i class=\"fa fa-flag-o fail-icon\"></i>";
-  //     } else {
-  //       passFailIconHtml += "<div class='icon icon-neutral'></div>";
-  //     }
-  //   }
-  //   return passFailIconHtml;
   // });
 
   /*
