@@ -387,8 +387,8 @@ function renderStep2(processorConfig) {
 
   testsEnter.append("button").classed("edit-test", true)
     .html(function(d) {
-      if (d.local) return "<i class='fa fa-file-code-o'></i> Customize test";
-      return "<i class='fa fa-file-code-o'></i> Customize test";
+      if (d.local) return "<i class='fa fa-file-code-o'></i>";
+      return "<i class='fa fa-file-code-o'></i>";
     })
     .on("click", function(d) {
       renderTestEditor(d);
