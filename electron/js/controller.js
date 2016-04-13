@@ -281,6 +281,7 @@ function renderStep2(processorConfig) {
     });
 
 
+
   // render the tests
   var tests = suitesEnter.append("ul")
     .attr("class", "tests-wrapper")
@@ -323,6 +324,13 @@ function renderStep2(processorConfig) {
       }
     })
     .on("change", toggleTests);
+
+
+  // <i class="fa fa-info-circle" aria-hidden="true"></i>
+
+  testsEnter.append("i")
+  .attr("class", "fa fa-info-circle")
+  .attr("aria-hidden", "true")
 
     d3.select(".column-1")
       .transition()
