@@ -235,6 +235,9 @@ function renderStep2(processorConfig) {
     .classed("loaded", true)
     .text("Loaded");
 
+  // Remove 'all tests passed' indicator if going back to tests from step 3
+  d3.select(".column-1").classed("all-passed", false);
+
   // we just remove everything rather than get into update pattern
   container.selectAll("*").remove();
   // create the containers for each suite
