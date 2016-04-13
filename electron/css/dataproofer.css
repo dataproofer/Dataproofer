@@ -223,11 +223,11 @@ button.reload {
 }
 
 td.htCommentCell {
-  background-color: rgba(230, 192, 0, 0.5);
+  background-color: rgba(230, 192, 0, 0.15);
 }
 
 td.htCommentCell.filtered {
-  background-color: rgba(224, 62, 34, 0.5);
+  background-color: rgba(224, 62, 34, 0.15);
 }
 
 .grid-footer {
