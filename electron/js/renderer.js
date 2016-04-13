@@ -85,14 +85,41 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log("add result", suite, test.name(), result)
   //this.resultList[suite].push({ suite: suite, test: test, result: result || {} })
   this.resultList.push({ suite: suite, test: test, result: result || {} });
+  console.log("add result!", test.name(), result)
+};
 
+HTMLRenderer.prototype.done = function() {
   var columnHeads = this.columnHeads;
+  var rows = this.rows;
+  var resultList = this.resultList;
+  var handsOnTable = this.handsOnTable;
+  this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable);
+  var that = this;
+  setTimeout(function() {
+    that.renderFingerPrint();
+  }, 100);
+
+  handsOnTable.addHook("afterColumnSort", function(columnIndex) {
+    that.renderFingerPrint({col: columnIndex });
+  });
+  handsOnTable.addHook("afterOnCellMouseDown", function(evt, coords) {
+    console.log("clicked", coords);
+    that.renderFingerPrint({col: coords.col, row: coords.row });
+  });
+
+  d3.selectAll("#grid .ht_clone_top th")
+    .on("click", function(e) {
+      d3.select(this).select(".colHeader");
+    });
+
+var columnHeads = this.columnHeads;
   var rows = this.rows;
   var resultList = this.resultList;
 
   // setup/update the comments in our Hands On Table
   // renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
 
+  /*
   var container = d3.select(".step-3-results");
   // rerender all the columns
   var columns = container.selectAll(".column")
@@ -115,6 +142,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       return "Column " + i;
     })
     .attr("id", function(d) { return slugifyColumnHeader(d); });
+  */
 
   // Want to separate out tests that failed and tests that passed here
 
@@ -135,30 +163,27 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     d3.select(".column-1").classed("all-passed", false);
     d3.select(".test-sets ul").style("display", "block");
   }
-
   //console.log("Passed list", passedResults)
   //console.log("Failed list", failedResults)
-
   /*
   var testsPassed = columnsEnter.append("h4")
-
   testsPassed.html("<div class='icon icon-check'></div> " + passedResults.length + " tests passed ")
   */
 
+  /*
   var tests = columns.selectAll(".test")
     .data(function(column) {
       return failedResults.map(function(d) {
         return { test: d.test, result: d.result, suite: d.suite, column: column};
       });
     });
+  */
+  console.log("resultList", resultList)
+  var tests = d3.selectAll(".test")
+  .data(resultList, function(d) { return d.suite + "-" + d.test.name() })
 
-  var testsEnter = tests.enter().append("div")
-    .attr("class", function(d) {
-      return "test" + (d.test.active ? " active" : "" );
-    });
-
-  testsEnter.append("div").classed("passfail", true);
-  testsEnter.append("div").classed("summary", true)
+  tests.append("div").classed("passfail", true);
+  tests.append("div").classed("summary", true)
     .on("mouseover", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
       infoBtn.classed("opaque", false);
@@ -172,7 +197,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       var isCollapsed = infoWrapper.classed("collapsed");
       infoWrapper.classed("collapsed", !isCollapsed);
     });
-  testsEnter.append("div")
+  tests.append("div")
     .attr("class", "info-btn fa fa-info-circle")
     .on("mouseover", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
@@ -182,9 +207,10 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
       if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
     });
-  testsEnter.append("button").classed("filter-btn", true)
+  tests.append("button").classed("filter-btn", true)
     .html("<i class='fa fa-filter'></i> Filter");
-  var infoWrapper = testsEnter.append("div").classed("info-wrapper collapsed", true);
+
+  var infoWrapper = tests.append("div").classed("info-wrapper collapsed", true);
   infoWrapper.append("div").classed("description", true)
     .html(function(d) { return d.test.description();});
   infoWrapper.append("div").classed("conclusion", true)
@@ -245,6 +271,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     return passFailIconHtml;
   });
 
+  /*
   tests.sort(function(a,b) {
     var aColumn = a.column;
     var aColumnWise = a.result.columnWise || {}; // not gauranteed to exist
@@ -254,6 +281,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
     var bNum = bColumnWise[bColumn] || 0;
     return bNum - aNum;
   });
+  */
 
   tests.select("div.summary").html(function(d) {
     var column = d.column;
@@ -282,6 +310,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       //   .classed("hidden", true);
     });
 
+  /*
   d3.selectAll("div.column")
     .each(function() {
       var totalTests = d3.select(this).selectAll(".test")[0].length;
@@ -292,44 +321,55 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
         // d3.select(this).classed("hidden", false);
       }
     });
+    */
 
   tests.select("div.conclusion").html(function(d) {
     return d.test.conclusion ? d.test.conclusion(d.result) : "";
   });
 
+
+
+
   /*
-  var handsOnTable = this.handsOnTable
-  tests.select("div.fingerprint").each(function(d) {
-    if(!d.result.highlightCells || !d.result.highlightCells.length) return;
-    var that = this;
-    drawFingerPrint(d, handsOnTable, that);
-  })
-  */
-};
+  d3.select(".search-wrapper").classed("hidden", false);
+  d3.select("#file-loader-button")
+    .classed("loaded", true)
+    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load local file");
 
-HTMLRenderer.prototype.done = function() {
-  var columnHeads = this.columnHeads;
-  var rows = this.rows;
-  var resultList = this.resultList;
-  var handsOnTable = this.handsOnTable;
-  this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable);
-  var that = this;
-  setTimeout(function() {
-    that.renderFingerPrint();
-  }, 100);
-
-  handsOnTable.addHook("afterColumnSort", function(columnIndex) {
-    that.renderFingerPrint({col: columnIndex });
-  });
-  handsOnTable.addHook("afterOnCellMouseDown", function(evt, coords) {
-    console.log("clicked", coords);
-    that.renderFingerPrint({col: coords.col, row: coords.row });
-  });
-
-  d3.selectAll("#grid .ht_clone_top th")
-    .on("click", function(e) {
-      d3.select(this).select(".colHeader");
+  d3.select(".step-3-results").style("display", "block")
+    .insert("div", ":first-child")
+    .html(function() {
+      var headersCheck = renderer.resultList[0];
+      var missingHeadersStr = "";
+      if (!headersCheck.result.passed) {
+        missingHeadersStr += "<div class='info'>";
+        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
+        missingHeadersStr += " Ignored ";
+        missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
+        missingHeadersStr += " because of missing or duplicate column headers";
+        missingHeadersStr += "</div>";
+      }
+      return missingHeadersStr;
     });
+
+  d3.select(".step-3-results").insert("div", ":first-child")
+    .attr("class", "summary-results")
+    .html(function() {
+      var totalTests = renderer.resultList.length;
+      var failedTests = 0;
+      var passedTests = 0;
+      renderer.resultList.forEach(function(test) {
+        if (!test.result.passed) {
+          failedTests += 1;
+        } else {
+          passedTests += 1;
+        }
+      });
+      //var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";
+      var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
+      return resultsStr;
+    });
+    */
 };
 
 HTMLRenderer.prototype.destroy = function() {

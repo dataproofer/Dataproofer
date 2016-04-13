@@ -26,10 +26,12 @@ var SUITES = [
 
 // turn on all tests by default
 SUITES.forEach(function(suite) {
+  /*
   if (suite.active !== false) {
     // only set it to active if the property doesn't exist or is already true
     suite.active = true;
   }
+  */
   suite.tests.forEach(function(test) {
     if (test.active === false) return; // don't overwrite a test's default setting if it's set to false
     test.active = true;
@@ -114,7 +116,7 @@ function loadTestConfig(config) {
   SUITES.forEach(function(suite) {
     var configSuite = config[suite.name];
     if (configSuite) {
-      suite.active = configSuite.active;
+      //suite.active = configSuite.active;
       suite.tests.forEach(function(test) {
         var configTest = configSuite.tests[test.name()];
         if (configTest) test.active = configTest.active;
@@ -126,14 +128,12 @@ function loadTestConfig(config) {
 }
 
 function saveTestConfig() {
-
-
   // We save the test config (whether each test/suite is active) whenever
   // the active state of any test changes
   var testConfig = {};
   SUITES.forEach(function(suite) {
     testConfig[suite.name] = {
-      active: suite.active,
+      //active: suite.active,
       tests: {}
     };
     suite.tests.forEach(function(test) {
@@ -142,9 +142,7 @@ function saveTestConfig() {
       };
     });
   });
-
   //console.log("Saving check configuration.", testConfig)
-
   // TODO: people may want to save various configurations under different names
   // like workspaces in illustrator/IDE
   ipc.send("test-config", {
@@ -163,7 +161,6 @@ var currentStep = 1;
 renderNav();
 
 // update the navigation depending on what step we are on
-
 function renderNav() {
   var back = d3.select("#back-button");
   var forward = d3.select("#forward-button");
@@ -186,7 +183,6 @@ function renderNav() {
 }
 
 // convenience function to render whatever step we are currently on
-
 function renderCurrentStep() {
   switch (currentStep) {
     case 1:
@@ -241,6 +237,7 @@ function renderStep2(processorConfig) {
 
   // we just remove everything rather than get into update pattern
   container.selectAll("*").remove();
+
   // create the containers for each suite
   var filteredSuites = _.filter(processorConfig.suites, function(suite) {
     return suite.tests.length > 0;
@@ -255,7 +252,7 @@ function renderStep2(processorConfig) {
         return d.name;
       },
       class: function(d) {
-        return "suite " + (d.active ? "active" : "");
+        return "suite"
       }
     });
 
@@ -266,14 +263,17 @@ function renderStep2(processorConfig) {
       "id": function(d, i) {
         return "suite-" + i;
       }
-    }).each(function(d) {
-      if (d.active) {
-        d3.select(this).attr("checked", true);
-      } else {
-        d3.select(this).attr("checked", null);
-      }
     })
-    .on("change", toggleTests);
+    .each(suiteState)
+    .on("change", function(d) {
+      var dis = d3.select(this);
+      var active = dis.property("checked")
+      d.tests.forEach(function(test) {
+        test.active = active
+      })
+      updateTestsActiveState();
+      saveTestConfig();
+    });
 
   suitesEnter.append("label")
     .attr("class", "suite-hed")
@@ -284,33 +284,61 @@ function renderStep2(processorConfig) {
       return d.fullName; //+ " – " + d.active;
     });
 
-
+  function suiteState(d) {
+    var activeCount = 0;
+    d.tests.forEach(function(test) {
+      if(test.active) activeCount++;
+    })
+    if (activeCount === 0) {
+      d3.select(this).property({
+        checked: false,
+        indeterminate: false
+      })
+    } else if (activeCount === d.tests.length) {
+      d3.select(this).property({
+        checked: true,
+        indeterminate: false
+      })
+    } else {
+      // we have some active tests
+      d3.select(this).property({
+        checked: null,
+        indeterminate: true
+      })
+    }
+  }
 
   // render the tests
-  var tests = suitesEnter.append("ul")
+  var testWrapper = suitesEnter.append("ul")
     .attr("class", "tests-wrapper")
+
+  var tests = testWrapper
     .selectAll(".test")
     .data(function(d) {
-      return d.tests;
+      // we format the data to match closer to what it will look like when we
+      // get results
+      var results = d.tests.map(function(t) {return { test: t, suite: d.name }})
+      return results;
+    }, function(d) {
+      // key function so we can uniquely update this later
+      return d.suite + "-" + d.test.name()
     });
 
   var testsEnter = tests.enter().append("li")
-    .attr("class", function(d) {
-      return d.active ? "test active" : "test";
-    })
+    .classed("test", true)
+    .classed("onoff", true)
     .attr("id", function(d) {
-      return d.name().replace(/\s+/g, "-").toLowerCase();
+      return d.test.name().replace(/\s+/g, "-").toLowerCase();
     })
-    .classed("onoff", true);
 
   testsEnter.append("button").classed("delete-test", true)
     .html("<span class=\"icon icon-cancel-squared\"></span>")
     .style("display", function(d) {
-      if (d.filename) return "block";
+      if (d.test.filename) return "block";
       return "none";
     })
     .on("click", function(d) {
-      deleteTest(d);
+      deleteTest(d.test);
     });
 
   testsEnter.append("input")
@@ -320,20 +348,25 @@ function renderStep2(processorConfig) {
       "id": function(d, i) {
         return d3.select(this.parentNode).attr("id") + "-test-" + i;
       }
-    }).each(function(d) {
-      if (d.active) {
-        d3.select(this).attr("checked", true);
-      } else {
-        d3.select(this).attr("checked", null);
-      }
     })
     .on("change", toggleTests);
+
+  updateTestsActiveState();
+  function updateTestsActiveState() {
+    tests
+    .classed("active", function(d) {
+      return d.test.active
+    })
+    tests.select("input").property("checked", function(d) {
+      return d.test.active
+    })
+  }
 
   testsEnter.append("label")
     .attr("for", function(d, i) {
       return d3.select(this.parentNode).attr("id") + "-test-" + i;
     })
-    .text(function(d) { return d.name(); });
+    .text(function(d) { return d.test.name(); });
 
   testsEnter.append("i")
     .attr("original-title", function(d) { return d.description() })
@@ -360,47 +393,12 @@ function renderStep2(processorConfig) {
     };
   }
 
-
   function toggleTests(d) {
-    d.active = !d.active;
-    d3.select(this.parentNode).classed("active", d.active);
+    console.log("toggle tests", d)
+    d.test.active = !d.test.active;
     saveTestConfig();
-
-    var checked = jQ(this).prop("checked");
-    var container = jQ(this).parent();
-
-    container.find('input[type="checkbox"]').prop({
-      indeterminate: false,
-      checked: checked
-    });
-
-    function checkSiblings(el) {
-      var parent = el.parent();
-      var all = true;
-
-      el.siblings().each(function() {
-        return all = (jQ(this).children('input[type="checkbox"]').prop("checked") === checked);
-      });
-
-      if (all && checked) {
-        parent.children('input[type="checkbox"]').prop({
-          indeterminate: false,
-          checked: checked
-        });
-        checkSiblings(parent);
-      } else if (all && !checked) {
-        parent.children('input[type="checkbox"]').prop("checked", checked);
-        parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
-        checkSiblings(parent);
-      } else {
-        container.find("li.test").toggleClass("active", checked);
-        el.parents("li").children("input[type='checkbox']").prop({
-          indeterminate: true,
-          checked: false
-        });
-      }
-    }
-    checkSiblings(container);
+    updateTestsActiveState();
+    suites.select("input").each(suiteState)
   }
 
   testsEnter.append("div").classed("message", true);
@@ -411,12 +409,14 @@ function renderStep2(processorConfig) {
       return "<i class='fa fa-file-code-o'></i>";
     })
     .on("click", function(d) {
-      renderTestEditor(d);
+      renderTestEditor(d.test);
     });
 
   testsEnter.on("click", function(d) {
     if (d3.event.shiftKey) {
-      renderTestEditor(d);
+      renderTestEditor(d.test);
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
     }
   });
 
@@ -445,42 +445,8 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
-  d3.select(".search-wrapper").classed("hidden", false);
-  d3.select("#file-loader-button")
-    .classed("loaded", true)
-    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load local file");
-  d3.select(".step-3-results").style("display", "block")
-    .insert("div", ":first-child")
-    .html(function() {
-      var headersCheck = renderer.resultList[0];
-      var missingHeadersStr = "";
-      if (!headersCheck.result.passed) {
-        missingHeadersStr += "<div class='info'>";
-        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
-        missingHeadersStr += " Ignored ";
-        missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
-        missingHeadersStr += " because of missing or duplicate column headers";
-        missingHeadersStr += "</div>";
-      }
-      return missingHeadersStr;
-    });
-  d3.select(".step-3-results").insert("div", ":first-child")
-    .attr("class", "summary-results")
-    .html(function() {
-      var totalTests = renderer.resultList.length;
-      var failedTests = 0;
-      var passedTests = 0;
-      renderer.resultList.forEach(function(test) {
-        if (!test.result.passed) {
-          failedTests += 1;
-        } else {
-          passedTests += 1;
-        }
-      });
-      /*var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";*/
-      var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
-      return resultsStr;
-    });
+  // renderer is asynchronous, you can't put any logic here around results.
+  // for that modify renderer.js and do things in addResult() or done()
 }
 
 function clear() {
