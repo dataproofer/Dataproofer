@@ -89,9 +89,13 @@
   width: 300px;
   z-index: 2;
   flex: 0 0 auto;
-  background: #ffffff;
+  /*background: #ffffff;*/
+  /*background-color: #F7F6F5;*/
+  background-color: #E6E4E3;
+
   max-height: 100vh;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .column-1 p {
@@ -194,11 +198,6 @@ button.reload {
   padding: 1em 0.5em;
 }
 
-.test-sets ul {
-  list-style: none;
-  padding: 0.5em;
-}
-
 .column-2 {
   flex: 1 1 auto;
   background-color: #F7F6F5;
@@ -226,8 +225,8 @@ button.reload {
 
 .overview-title {
   text-align: center;
-  min-height: 3vh;
-  box-shadow: 1px 5px 5px -5px #333;
+  /*min-height: 3vh;*/
+  /*box-shadow: 1px 5px 5px -5px #333; */
 }
 
 #fingerprint {
@@ -317,10 +316,6 @@ Grid
 }
 */
 
-.test {
-  position: relative;
-  margin: 3px;
-}
 .test .summary {
   font-size: 10px;
   line-height: 1.2em;
@@ -380,9 +375,12 @@ Grid
 /* =============================================================================
 General Suites and test
 ============================================================================= */
+
 .suite {
   /*border-top: 2px solid #CCC;*/
-  margin: 8px 0;
+  /*margin: 8px 0;*/
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #local-tests .test {
@@ -396,36 +394,95 @@ General Suites and test
 
 .suite-hed h2 {
   margin: 0;
+  text-align: center;
 }
 
 .suite .test {
+  /*
   margin: 4px;
   padding: 0.8em;
   margin-top: 1em;
+  vertical-align: top;
+  */
   /*min-width: 110px;*/
   /*min-height: 190px;*/
   /*max-height: 400px;*/
   /*overflow-y: auto;*/
-  display: inline-block;
-  vertical-align: top;
-  background-color: white;
-  border: 1px solid transparent;
-  border-radius: 3px;
+
+  /* Hiding highlight color */
+   -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+
+
+  font-weight: normal;
+  font-size: 14px;
+  width: 294px;
+  display: block;
+  
+  /*background-color: #FFFEFC;*/
+  background-color: transparent;
+  border-left: 6px solid #CCC;
+  border-left-width: 0;
   opacity: 1;
   position: relative;
-  padding-bottom: 42px;
+  padding-top: 8px;
+  padding-bottom: 2px;
+
+  margin-bottom: 8px;
+  /*box-shadow: 0px 2px 1px #CCC;*/
+  transition: all 0.15s ease
+
 }
 
-.suite .test button {
-  width: 100%;
+.suite .active {
+  background-color: #FFFEFC;
+  border-left-width: 6px;
+}
+
+.suite .test .toggle {
+  margin-left: 8px;
+}
+
+.suite label {
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.test-sets {
+
+}
+
+.tests-wrapper .test {
+  width: 282px;
+  margin-left: 12px;
+
+}
+
+.test-sets ul {
+  list-style-type: none;
+  padding-left: 0;
 }
 .suite .test .edit-test {
+  display: none;
+  font-size: 14px;
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  padding: 0;
+  background-color: transparent;
+  /*
   font-size: 12px;
   color: #58595B;
   position: absolute;
   bottom: 0px;
   left: 0px;
   opacity: 0.25;
+  */
 }
 
 .suite .test .edit-test:hover {
@@ -479,6 +536,7 @@ General Suites and test
 
 .suite .test .message {
   font-size: 14px;
+  margin-top: 0.5em;
   /*float:left;*/
   /*width: calc(100% - 245px);*/
 }
@@ -571,6 +629,10 @@ Middle Column (2)
   margin-top: 5px;
   float: left;
   cursor: pointer;
+}
+
+.suite:not(.active) .onoff {
+  pointer-events: none;
 }
 
 button.run-tests {
@@ -691,10 +753,9 @@ Right Column (3)
   font-size: 2em;
   text-align: center;
 }
-
+/*
 .test {
   line-height: 1.2em;
-  /*width: 88%;*/
   width: 80%;
   display: block;
   margin-left: auto;
@@ -702,7 +763,7 @@ Right Column (3)
   min-height: 1em;
   padding: 4px 1em;
 }
-
+*/
 .handsontable td:hover {
   background-color: aliceblue;
 }
