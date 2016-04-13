@@ -236,6 +236,7 @@ function renderStep2(processorConfig) {
 
   // we just remove everything rather than get into update pattern
   container.selectAll("*").remove();
+
   // create the containers for each suite
   var filteredSuites = _.filter(processorConfig.suites, function(suite) {
     return suite.tests.length > 0;
@@ -313,24 +314,30 @@ function renderStep2(processorConfig) {
   var tests = testWrapper
     .selectAll(".test")
     .data(function(d) {
-      return d.tests;
+      // we format the data to match closer to what it will look like when we
+      // get results
+      var results = d.tests.map(function(t) {return { test: t, suite: d.name }})
+      return results;
+    }, function(d) {
+      // key function so we can uniquely update this later
+      return d.suite + "-" + d.test.name()
     });
 
   var testsEnter = tests.enter().append("li")
     .classed("test", true)
     .classed("onoff", true)
     .attr("id", function(d) {
-      return d.name().replace(/\s+/g, "-").toLowerCase();
+      return d.test.name().replace(/\s+/g, "-").toLowerCase();
     })
 
   testsEnter.append("button").classed("delete-test", true)
     .html("<span class=\"icon icon-cancel-squared\"></span>")
     .style("display", function(d) {
-      if (d.filename) return "block";
+      if (d.test.filename) return "block";
       return "none";
     })
     .on("click", function(d) {
-      deleteTest(d);
+      deleteTest(d.test);
     });
 
   testsEnter.append("input")
@@ -347,10 +354,10 @@ function renderStep2(processorConfig) {
   function updateTestsActiveState() {
     tests
     .classed("active", function(d) {
-      return d.active
+      return d.test.active
     })
     tests.select("input").property("checked", function(d) {
-      return d.active
+      return d.test.active
     })
   }
 
@@ -358,7 +365,7 @@ function renderStep2(processorConfig) {
     .attr("for", function(d, i) {
       return d3.select(this.parentNode).attr("id") + "-test-" + i;
     })
-    .text(function(d) { return d.name(); });
+    .text(function(d) { return d.test.name(); });
 
   testsEnter.append("i")
     .attr("class", "fa fa-info-circle")
@@ -379,7 +386,7 @@ function renderStep2(processorConfig) {
 
   function toggleTests(d) {
     console.log("toggle tests", d)
-    d.active = !d.active;
+    d.test.active = !d.test.active;
     saveTestConfig();
     updateTestsActiveState();
     suites.select("input").each(suiteState)
@@ -393,12 +400,12 @@ function renderStep2(processorConfig) {
       return "<i class='fa fa-file-code-o'></i>";
     })
     .on("click", function(d) {
-      renderTestEditor(d);
+      renderTestEditor(d.test);
     });
 
   testsEnter.on("click", function(d) {
     if (d3.event.shiftKey) {
-      renderTestEditor(d);
+      renderTestEditor(d.test);
       d3.event.preventDefault()
       d3.event.stopPropagation()
     }
@@ -429,42 +436,8 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
-  d3.select(".search-wrapper").classed("hidden", false);
-  d3.select("#file-loader-button")
-    .classed("loaded", true)
-    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load local file");
-  d3.select(".step-3-results").style("display", "block")
-    .insert("div", ":first-child")
-    .html(function() {
-      var headersCheck = renderer.resultList[0];
-      var missingHeadersStr = "";
-      if (!headersCheck.result.passed) {
-        missingHeadersStr += "<div class='info'>";
-        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
-        missingHeadersStr += " Ignored ";
-        missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
-        missingHeadersStr += " because of missing or duplicate column headers";
-        missingHeadersStr += "</div>";
-      }
-      return missingHeadersStr;
-    });
-  d3.select(".step-3-results").insert("div", ":first-child")
-    .attr("class", "summary-results")
-    .html(function() {
-      var totalTests = renderer.resultList.length;
-      var failedTests = 0;
-      var passedTests = 0;
-      renderer.resultList.forEach(function(test) {
-        if (!test.result.passed) {
-          failedTests += 1;
-        } else {
-          passedTests += 1;
-        }
-      });
-      /*var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";*/
-      var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
-      return resultsStr;
-    });
+  // renderer is asynchronous, you can't put any logic here around results.
+  // for that modify renderer.js and do things in addResult() or done()
 }
 
 function clear() {

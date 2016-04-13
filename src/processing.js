@@ -122,7 +122,6 @@ exports.run = function(config) {
   suites.forEach(function(suite) {
     //console.log("running suite", suite)
     // TODO: use async module to run asynchronously?
-    if(!suite.active) return;
     suite.tests.forEach(function(test) {
       if(!test.active) return;
       try {
