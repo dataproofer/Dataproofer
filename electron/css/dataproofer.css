@@ -423,7 +423,7 @@ General Suites and test
   font-size: 14px;
   width: 294px;
   display: block;
-  
+
   /*background-color: #FFFEFC;*/
   background-color: transparent;
   border-left: 6px solid #CCC;
@@ -629,10 +629,6 @@ Middle Column (2)
   margin-top: 5px;
   float: left;
   cursor: pointer;
-}
-
-.suite:not(.active) .onoff {
-  pointer-events: none;
 }
 
 button.run-tests {
