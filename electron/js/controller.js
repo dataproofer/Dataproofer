@@ -1,4 +1,5 @@
 var d3 = require("d3");
+var $ = require("jquery");
 var _ = require("lodash");
 var Processor = require("dataproofer").Processing;
 var gsheets = require("gsheets");
@@ -232,15 +233,16 @@ function renderStep2(processorConfig) {
   var loaded = processorConfig.loaded;
 
   // we just remove everything rather than get into update pattern
-  container.selectAll(".suite").remove();
+  container.selectAll("*").remove();
   // create the containers for each suite
   var filteredSuites = _.filter(processorConfig.suites, function(suite) {
     return suite.tests.length > 0;
   });
-  var suites = container.selectAll(".suite")
+  var suites = container.append("ul")
+    .selectAll(".suite")
     .data(filteredSuites);
 
-  var suitesEnter = suites.enter().append("div")
+  var suitesEnter = suites.enter().append("li")
     .attr({
       id: function(d) {
         return d.name;
@@ -250,12 +252,7 @@ function renderStep2(processorConfig) {
       }
     });
 
-  var suitesHeds = suitesEnter.append("div")
-    .attr("class", "suite-hed");
-
-  var suiteHedAndToggle = suitesHeds.append("h2");
-
-  suiteHedAndToggle.append("input")
+  suitesEnter.append("input")
     .attr({
       "class": "toggle",
       "type": "checkbox",
@@ -268,38 +265,32 @@ function renderStep2(processorConfig) {
       } else {
         d3.select(this).attr("checked", null);
       }
-    });
+    })
+    .on("change", toggleTests);
 
-  suiteHedAndToggle.append("label")
+  suitesEnter.append("label")
+    .attr("class", "suite-hed")
     .attr("for", function(d, i) {
       return "suite-" + i;
     })
-  suiteHedAndToggle.select("input")
-    .on("click", function(d) {
-      d.active = !d.active;
-      d3.select(this.parentNode.parentNode.parentNode).classed("active", d.active);
-      //console.log("suite", d);
-      saveTestConfig();
-    });
-
-  suiteHedAndToggle.append("span")
-    .attr("class", "suite-hed-title")
     .text(function(d) {
       return d.fullName; //+ " – " + d.active;
     });
 
+
   // render the tests
-  var tests = suitesEnter.append("div")
+  var tests = suitesEnter.append("ul")
     .attr("class", "tests-wrapper")
     .selectAll(".test")
     .data(function(d) {
       return d.tests;
     });
 
-  var testsEnter = tests.enter().append("div")
+  var testsEnter = tests.enter().append("li")
     .attr("class", function(d) {
       return d.active ? "test active" : "test";
-    });
+    })
+    .classed("onoff", true);
 
   testsEnter.append("button").classed("delete-test", true)
     .html("<span class=\"icon icon-cancel-squared\"></span>")
@@ -311,8 +302,7 @@ function renderStep2(processorConfig) {
       deleteTest(d);
     });
 
-  var onOff = testsEnter.append("div").classed("onoff", true);
-  onOff.append("input")
+  testsEnter.append("input")
     .attr({
       "class": "toggle",
       "type": "checkbox",
@@ -325,26 +315,59 @@ function renderStep2(processorConfig) {
       } else {
         d3.select(this).attr("checked", null);
       }
+    })
+    .on("change", toggleTests);
+
+  function toggleTests(d) {
+    d.active = !d.active;
+    d3.select(this.parentNode).classed("active", d.active);
+    saveTestConfig();
+
+    var checked = $(this).prop("checked"),
+        container = $(this).parent(),
+        siblings = container.siblings();
+
+    container.find('input[type="checkbox"]').prop({
+      indeterminate: false,
+      checked: checked
     });
-  onOff.append("label")
+
+    function checkSiblings(el) {
+      var parent = el.parent().parent(),
+          all = true;
+
+      el.siblings().each(function() {
+        return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+      });
+
+      if (all && checked) {
+        parent.children('input[type="checkbox"]').prop({
+          indeterminate: false,
+          checked: checked
+        });
+        checkSiblings(parent);
+
+      } else if (all && !checked) {
+        parent.children('input[type="checkbox"]').prop("checked", checked);
+        parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+        checkSiblings(parent);
+      } else {
+        el.parents("li").children('input[type="checkbox"]').prop({
+          indeterminate: true,
+          checked: false
+        });
+      }
+    }
+    checkSiblings(container);
+  }
+
+  testsEnter.append("label")
     .attr("for", function(d, i) {
       return d3.select(this.parentNode.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;
-    });
+    })
+    .text(function(d) { return d.name(); });
 
   testsEnter.append("div").classed("message", true);
-
-  tests.select("div.message").html(function(d) {
-    var html = '<h3 class="test-header">' + (d.name() || "") + "</h3>";
-    html += d.description() || "";
-    return html;
-  });
-
-  tests.select("input")
-    .on("click", function(d) {
-      d.active = !d.active;
-      d3.select(this.parentNode.parentNode).classed("active", d.active);
-      saveTestConfig();
-    });
 
   testsEnter.append("button").classed("edit-test", true)
     .html(function(d) {

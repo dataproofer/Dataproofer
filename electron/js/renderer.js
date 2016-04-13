@@ -144,7 +144,6 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       });
     });
 
-
   var testsEnter = tests.enter().append("div")
     .attr("class", function(d) {
       return "test" + (d.test.active ? " active" : "" );
