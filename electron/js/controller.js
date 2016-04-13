@@ -176,7 +176,8 @@ function renderNav() {
         .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
       break;
     case 3:
-      back.html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
+      back.style("display", "inline-block")
+        .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
       forward.style("display", "none");
       break;
   }

@@ -40,6 +40,7 @@ function HTMLRenderer(config) {
       manualRowResize: true,
       manualColumnResize: true,
       comments: true,
+      commentedCellClassName: "htCommentCell",
       autoColumnSize: {
         "samplingRatio": 23
       },
@@ -50,7 +51,7 @@ function HTMLRenderer(config) {
 
   this.handsOnTable = handsOnTable;
   window.handsOnTable = handsOnTable; // for debugging
-
+  d3.select(".search-wrapper").classed("hidden", false);
   function searchResultSelect(instance, row, col, value, result) {
     Handsontable.Search.DEFAULT_CALLBACK.apply(this, arguments);
     if (result) {
@@ -85,7 +86,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
   //console.log("add result", suite, test.name(), result)
   //this.resultList[suite].push({ suite: suite, test: test, result: result || {} })
   this.resultList.push({ suite: suite, test: test, result: result || {} });
-  console.log("add result!", test.name(), result)
+  // console.log("add result!", test.name(), result)
 };
 
 HTMLRenderer.prototype.done = function() {
@@ -182,12 +183,33 @@ var columnHeads = this.columnHeads;
   var tests = d3.selectAll(".test")
     .data(resultList, function(d) { return d.suite + "-" + d.test.name() })
 
+  var infoWrapper = tests.select("i.fa-info-circle")
+    .each(function(d) {
+      d3.select(this)
+        .attr("original-title", function(d) {
+          return d.test.conclusion();
+        })
+    });
+
+  var that = this;
+  var filterResults = function (d) {
+    that.renderFingerPrint({ test: d.test.name(), column: d.column });
+    that.highlightGrid({ highlightCells: d.result.highlightCells, testName: d.test.name() });
+  };
+  var clearFilteredResults = function(d) {
+    that.renderFingerPrint();
+    that.highlightGrid();
+  };
+  that.clearFilteredResults = clearFilteredResults;
+
   tests.classed("pass", function(d) {
     return d.result.passed;
   })
   .classed("fail", function(d) {
     return !d.result.passed;
-  });
+  })
+  .on("mouseover", filterResults)
+  .on("mouseout", clearFilteredResults);
 
   // tests.append("div").classed("passfail", true);
   // tests.append("div").classed("summary", true)
@@ -202,25 +224,6 @@ var columnHeads = this.columnHeads;
 
   // tests.append("button").classed("filter-btn", true)
   //   .html("<i class='fa fa-filter'></i> Filter");
-
-  var infoWrapper = tests.select("i.fa-info-circle")
-    .each(function(d) {
-      d3.select(this)
-        .attr("original-title", function(d) {
-          return d.test.conclusion();
-        })
-    });
-
-  var that = this;
-  var filterResults = function (d) {
-    that.renderFingerPrint({ test: d.test.name(), column: d.column });
-    that.filterGrid({ highlightCells: d.result.highlightCells, column: d.column });
-  };
-  var clearFilteredResults = function(d) {
-    that.renderFingerPrint();
-    that.filterGrid();
-  };
-  that.clearFilteredResults = clearFilteredResults;
 
   // tests.select(".filter-btn").on("click", function(d) {
   //   var isFiltered = d3.select(this.parentNode).classed("filtered");
@@ -352,34 +355,39 @@ HTMLRenderer.prototype.destroy = function() {
   d3.select("#grid").selectAll("*").remove();
 };
 
-HTMLRenderer.prototype.filterGrid = function(options) {
+HTMLRenderer.prototype.highlightGrid = function(options) {
   if(!options) options = {};
   var highlightCells = options.highlightCells;
-  var column = options.column;
+  var testName = options.testName;
 
-  var rows = this.rows;
   var comments = this.comments;
   var handsOnTable = this.handsOnTable;
 
-  var rowsToShow = [];
-  if (highlightCells && column) {
-    var headers = _.keys(highlightCells[0]);
-    var colIdx = headers.indexOf(column);
-    highlightCells.forEach(function(highlightRow, idx) {
-      if (highlightRow[column] > 0) {
-        rowsToShow.push(_.values(rows[idx]));
-      }
-    });
-    handsOnTable.updateSettings({ data: rowsToShow });
-    handsOnTable.selectCell(0, colIdx, 0, colIdx, true);
-  } else {
-    _.forEach( rows, function(row) {
-      rowsToShow.push( _.values(row) );
+  // var rowsToShow = [];
+  if (highlightCells && testName) {
+    var currentComments = _.filter(comments, function(comment) {
+      return comment.array.indexOf(testName) > -1;
     });
     handsOnTable.updateSettings({
-      data: rowsToShow,
-      cell: comments
+      cell: currentComments,
+      commentedCellClassName: "htCommentCell filtered"
     });
+    if (currentComments[0]) {
+      // console.log(currentComments[0]);
+      handsOnTable.selectCell(
+        currentComments[0].row,
+        currentComments[0].col,
+        currentComments[0].row,
+        currentComments[0].col,
+        true
+      );
+    }
+  } else {
+    handsOnTable.updateSettings({
+      cell: comments,
+      commentedCellClassName: "htCommentCell"
+    });
+    handsOnTable.deselectCell();
   }
 };
 

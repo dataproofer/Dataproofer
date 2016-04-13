@@ -222,6 +222,14 @@ button.reload {
   overflow-y: auto;
 }
 
+td.htCommentCell {
+  background-color: rgba(230, 192, 0, 0.5);
+}
+
+td.htCommentCell.filtered {
+  background-color: rgba(224, 62, 34, 0.5);
+}
+
 .grid-footer {
   z-index: 3;
   background-color: #ECEBE9;
