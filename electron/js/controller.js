@@ -369,7 +369,7 @@ function renderStep2(processorConfig) {
     .text(function(d) { return d.test.name(); });
 
   testsEnter.append("i")
-    .attr("original-title", function(d) { return d.description() })
+    .attr("original-title", function(d) { return d.test.description() })
     .attr("class", "fa fa-info-circle")
     .attr("aria-hidden", "true")
     .each(function(d) {
