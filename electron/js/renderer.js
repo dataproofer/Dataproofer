@@ -120,13 +120,19 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
   // Summarize testsPassed.length, and then append all failed tests like normal
 
-  // var passedResults = _.filter(resultList, function(d){
-  //   return d.result.passed;
-  // });
+  var passedResults = _.filter(resultList, function(d){
+    return d.result.passed;
+  });
 
   var failedResults = _.filter(resultList, function(d) {
     return !d.result.passed;
   });
+
+  if (passedResults.length === resultList.length) {
+    d3.select(".test-sets").classed("all-passed", true);
+  } else {
+    d3.select(".test-sets").classed("all-passed", false);
+  }
 
   //console.log("Passed list", passedResults)
   //console.log("Failed list", failedResults)
