@@ -298,7 +298,7 @@ function renderStep2(processorConfig) {
       return d.active ? "test active" : "test";
     })
     .attr("id", function(d) {
-      return d.name().replace(/\s+/g, '-').toLowerCase();
+      return d.name().replace(/\s+/g, "-").toLowerCase();
     })
     .classed("onoff", true);
 
@@ -332,21 +332,21 @@ function renderStep2(processorConfig) {
   // <i class="fa fa-info-circle" aria-hidden="true"></i>
 
   testsEnter.append("i")
-  .attr("class", "fa fa-info-circle")
-  .attr("aria-hidden", "true")
+    .attr("class", "fa fa-info-circle")
+    .attr("aria-hidden", "true");
 
-    d3.select(".column-1")
-      .transition()
-      .duration(1000)
-      .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
+  d3.select(".column-1")
+    .transition()
+    .duration(1000)
+    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
 
-      function scrollTween(offset) {
-        return function() {
-          offset -= d3.select(".top-bar").property("scrollHeight");
-          var i = d3.interpolateNumber(this.scrollTop, offset);
-          return function(t) { this.scrollTop = i(t); };
-        };
-      }
+  function scrollTween(offset) {
+    return function() {
+      offset -= d3.select(".top-bar").property("scrollHeight");
+      var i = d3.interpolateNumber(this.scrollTop, offset);
+      return function(t) { this.scrollTop = i(t); };
+    };
+  }
 
 
   function toggleTests(d) {
@@ -354,9 +354,8 @@ function renderStep2(processorConfig) {
     d3.select(this.parentNode).classed("active", d.active);
     saveTestConfig();
 
-    var checked = $(this).prop("checked"),
-        container = $(this).parent(),
-        siblings = container.siblings();
+    var checked = $(this).prop("checked");
+    var container = $(this).parent();
 
     container.find('input[type="checkbox"]').prop({
       indeterminate: false,
@@ -364,8 +363,8 @@ function renderStep2(processorConfig) {
     });
 
     function checkSiblings(el) {
-      var parent = el.parent(),
-          all = true;
+      var parent = el.parent();
+      var all = true;
 
       el.siblings().each(function() {
         return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
@@ -384,7 +383,7 @@ function renderStep2(processorConfig) {
       } else {
         console.log("checked", checked);
         console.log("container", container);
-        container.find('li.test').toggleClass("active", checked);
+        container.find("li.test").toggleClass("active", checked);
         el.parents("li").children("input[type='checkbox']").prop({
           indeterminate: true,
           checked: false
@@ -442,6 +441,7 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
+  d3.select(".search-wrapper").classed("hidden", false);
   d3.select("#file-loader-button")
     .classed("loaded", true)
     .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load local file");
@@ -481,6 +481,7 @@ function renderStep3(processorConfig) {
 
 function clear() {
   d3.select("#current-file-name").text("");
+  d3.select(".search-wrapper").classed("hidden", true);
 }
 
 // This handles file selection via the button
@@ -622,7 +623,7 @@ function handleSpreadsheet() {
       var config = {
         title: sheet.title,
         updated: sheet.updated
-      }
+      };
       var loaded = {
         rows: rows,
         columnHeads: columnHeads,
