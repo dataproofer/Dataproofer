@@ -455,6 +455,14 @@ General Suites and test
   margin-left: 4px;
 }
 
+.all-passed {
+    height: 400px;
+    background-image: url("../img/all-good.png");
+    background-size: 300px;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
 .test-sets {
 
 }

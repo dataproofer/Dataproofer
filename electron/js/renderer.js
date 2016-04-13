@@ -130,8 +130,10 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
   if (passedResults.length === resultList.length) {
     d3.select(".test-sets").classed("all-passed", true);
+    d3.select(".test-sets ul").style("display", "none");
   } else {
     d3.select(".test-sets").classed("all-passed", false);
+    d3.select(".test-sets ul").style("display", "block");
   }
 
   //console.log("Passed list", passedResults)
