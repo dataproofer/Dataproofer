@@ -23,12 +23,12 @@
             </div> -->
             <small id="filetypes-accepted">
               <p>Currently supported filetypes:<br/>XLSX, XLS, CSV, TSV, PSV</p>
-              <p>LARGE FILE ALERT: Dataproofer relies on your computer's processing power. The higher the spec of your machine, the lower the risk the app may crash when processing large datasets. If your dataset is extremely large, we suggest loading samples of 1000 rows.</p>
+              <p style="display: none;">LARGE FILE ALERT: Dataproofer relies on your computer's processing power. The higher the spec of your machine, the lower the risk the app may crash when processing large datasets. If your dataset is extremely large, we suggest loading samples of 1000 rows.</p>
             </small>
             <input id="file-loader" type="file" /><label id="file-loader-button" for="file-loader"><i class="fa fa-arrow-up" aria-hidden="true"></i> Load local file</label>
             <hr />
             <div class="spreadsheet-input-wrapper">
-              <input id="spreadsheet-input" placeholder="Paste Google Spreadsheet URL or ID">
+              <input id="spreadsheet-input" placeholder="Google Spreadsheet URL or ID">
               <div id="spreadsheet-button"><i class="fa fa-cloud-download"></i> Load sheet</div>
             </div>
             <div id="gsheets-response">
