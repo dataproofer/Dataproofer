@@ -231,6 +231,22 @@ function renderStep2(processorConfig) {
   var container = d3.select(".test-sets");
   clear();
   var loaded = processorConfig.loaded;
+  d3.select("#file-loader-button")
+    .classed("loaded", true)
+    .text("Loaded");
+
+  d3.select(".column-1")
+    .transition()
+    .duration(1000)
+    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
+
+    function scrollTween(offset) {
+      return function() {
+        offset -= d3.select(".top-bar").property("scrollHeight");
+        var i = d3.interpolateNumber(this.scrollTop, offset);
+        return function(t) { this.scrollTop = i(t); };
+      };
+    }
 
   // we just remove everything rather than get into update pattern
   container.selectAll("*").remove();
@@ -409,6 +425,9 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
+  d3.select("#file-loader-button")
+    .classed("loaded", true)
+    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load local file");
   d3.select(".step-3-results").style("display", "block")
     .insert("div", ":first-child")
     .html(function() {
@@ -494,9 +513,6 @@ function handleFileSelect(evt) {
           loaded: loaded
         };
         lastProcessorConfig = processorConfig;
-        d3.select("#file-loader-button")
-          .classed("loaded", true)
-          .text("Loaded");
         renderStep1(processorConfig);
         currentStep = 2;
         renderNav();
