@@ -180,42 +180,29 @@ var columnHeads = this.columnHeads;
   */
   console.log("resultList", resultList)
   var tests = d3.selectAll(".test")
-  .data(resultList, function(d) { return d.suite + "-" + d.test.name() })
+    .data(resultList, function(d) { return d.suite + "-" + d.test.name() })
 
   tests.append("div").classed("passfail", true);
-  tests.append("div").classed("summary", true)
-    .on("mouseover", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      infoBtn.classed("opaque", false);
-    })
-    .on("mouseout", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
-    })
-    .on("click", function(d) {
-      var infoWrapper = d3.select(this.parentNode).select(".info-wrapper");
-      var isCollapsed = infoWrapper.classed("collapsed");
-      infoWrapper.classed("collapsed", !isCollapsed);
-    });
-  tests.append("div")
-    .attr("class", "info-btn fa fa-info-circle")
-    .on("mouseover", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      infoBtn.classed("opaque", false);
-    })
-    .on("mouseout", function(d) {
-      var infoBtn = d3.select(this.parentNode).select(".info-btn");
-      if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
-    });
-  tests.append("button").classed("filter-btn", true)
-    .html("<i class='fa fa-filter'></i> Filter");
+  // tests.append("div").classed("summary", true)
+  //   .on("mouseover", function(d) {
+  //     var infoBtn = d3.select(this.parentNode).select(".info-btn");
+  //     infoBtn.classed("opaque", false);
+  //   })
+  //   .on("mouseout", function(d) {
+  //     var infoBtn = d3.select(this.parentNode).select(".info-btn");
+  //     if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
+  //   })
 
-  var infoWrapper = tests.append("div").classed("info-wrapper collapsed", true);
-  infoWrapper.append("div").classed("description", true)
-    .html(function(d) { return d.test.description();});
-  infoWrapper.append("div").classed("conclusion", true)
-    .text(function(d) { return d.test.conclusion();});
-  infoWrapper.append("div").classed("visualization", true);
+  // tests.append("button").classed("filter-btn", true)
+  //   .html("<i class='fa fa-filter'></i> Filter");
+
+  var infoWrapper = tests.select("i.fa-info-circle")
+    .each(function(d) {
+      d3.select(this)
+        .attr("original-title", function(d) {
+          return d.test.conclusion();
+        })
+    });
 
   var that = this;
   var filterResults = function (d) {
@@ -228,48 +215,48 @@ var columnHeads = this.columnHeads;
   };
   that.clearFilteredResults = clearFilteredResults;
 
-  tests.select(".filter-btn").on("click", function(d) {
-    var isFiltered = d3.select(this.parentNode).classed("filtered");
-    if (isFiltered) {
-      d3.selectAll(".test").classed("filtered", false);
-      d3.selectAll(".filter-btn").classed("nonopaque", false);
-      clearFilteredResults(d);
-      that.renderFingerPrint();
-      d3.selectAll("#grid").classed("filtered-cells", false);
-    } else {
-      d3.selectAll(".test").classed("filtered", false);
-      d3.selectAll(".filter-btn").classed("nonopaque", false);
-      d3.select(this.parentNode).classed("filtered", true);
-      d3.select(this).classed("nonopaque", true);
-      filterResults(d);
-      that.renderFingerPrint({ test: d.test.name(), column: d.column });
-      d3.selectAll("#grid").classed("filtered-cells", true);
-    }
-  })
-  .on("mouseover", function (d) {
-    var isFiltered = d3.selectAll(".filtered")[0].length > 0;
-    if (!isFiltered) that.renderFingerPrint({ test: d.test.name(), column: d.column });
-  })
-  .on("mouseout", function(d) {
-    var isFiltered = d3.selectAll(".filtered")[0].length > 0;
-    if (!isFiltered) that.renderFingerPrint();
-  });
+  // tests.select(".filter-btn").on("click", function(d) {
+  //   var isFiltered = d3.select(this.parentNode).classed("filtered");
+  //   if (isFiltered) {
+  //     d3.selectAll(".test").classed("filtered", false);
+  //     d3.selectAll(".filter-btn").classed("nonopaque", false);
+  //     clearFilteredResults(d);
+  //     that.renderFingerPrint();
+  //     d3.selectAll("#grid").classed("filtered-cells", false);
+  //   } else {
+  //     d3.selectAll(".test").classed("filtered", false);
+  //     d3.selectAll(".filter-btn").classed("nonopaque", false);
+  //     d3.select(this.parentNode).classed("filtered", true);
+  //     d3.select(this).classed("nonopaque", true);
+  //     filterResults(d);
+  //     that.renderFingerPrint({ test: d.test.name(), column: d.column });
+  //     d3.selectAll("#grid").classed("filtered-cells", true);
+  //   }
+  // })
+  // .on("mouseover", function (d) {
+  //   var isFiltered = d3.selectAll(".filtered")[0].length > 0;
+  //   if (!isFiltered) that.renderFingerPrint({ test: d.test.name(), column: d.column });
+  // })
+  // .on("mouseout", function(d) {
+  //   var isFiltered = d3.selectAll(".filtered")[0].length > 0;
+  //   if (!isFiltered) that.renderFingerPrint();
+  // });
 
-  tests.select("div.passfail").html(function(d) {
-    var passFailIconHtml = "";
-    var currentResultsColumn = d.column;
-    var columnWise = d.result.columnWise;
-    if (columnWise) {
-      if (columnWise[currentResultsColumn] === 0) {
-        passFailIconHtml += "<i class=\"fa fa-check-circle-o pass-icon\"></i>";
-      } else if (columnWise[currentResultsColumn] > 0) {
-        passFailIconHtml += "<i class=\"fa fa-flag-o fail-icon\"></i>";
-      } else {
-        passFailIconHtml += "<div class='icon icon-neutral'></div>";
-      }
-    }
-    return passFailIconHtml;
-  });
+  // tests.select("div.passfail").html(function(d) {
+  //   var passFailIconHtml = "";
+  //   var currentResultsColumn = d.column;
+  //   var columnWise = d.result.columnWise;
+  //   if (columnWise) {
+  //     if (columnWise[currentResultsColumn] === 0) {
+  //       passFailIconHtml += "<i class=\"fa fa-check-circle-o pass-icon\"></i>";
+  //     } else if (columnWise[currentResultsColumn] > 0) {
+  //       passFailIconHtml += "<i class=\"fa fa-flag-o fail-icon\"></i>";
+  //     } else {
+  //       passFailIconHtml += "<div class='icon icon-neutral'></div>";
+  //     }
+  //   }
+  //   return passFailIconHtml;
+  // });
 
   /*
   tests.sort(function(a,b) {
@@ -283,32 +270,32 @@ var columnHeads = this.columnHeads;
   });
   */
 
-  tests.select("div.summary").html(function(d) {
-    var column = d.column;
-    var name = d.test.name();
-    var columnWise = d.result.columnWise || {}; // not gauranteed to exist
-    var num = columnWise[column] || 0;
-    var string = name + ": " + util.percent(num / rows.length);
-    return string;
-  }).classed("interesting", function(d) {
-    var column = d.column;
-    var columnWise = d.result.columnWise || {}; // not gauranteed to exist
-    var num = columnWise[column] || 0;
-    return !!num;
-  })
-  .attr("title", function(d){
-    return d.test.description();
-  });
-  d3.selectAll("div.summary")
-    .each(function() {
-      // d3.select(this.parentNode)
-      //   .classed("hidden", false);
-    });
-  d3.selectAll("div.summary:not(.interesting)")
-    .each(function() {
-      // d3.select(this.parentNode)
-      //   .classed("hidden", true);
-    });
+  // tests.select("div.summary").html(function(d) {
+  //   var column = d.column;
+  //   var name = d.test.name();
+  //   var columnWise = d.result.columnWise || {}; // not gauranteed to exist
+  //   var num = columnWise[column] || 0;
+  //   var string = name + ": " + util.percent(num / rows.length);
+  //   return string;
+  // }).classed("interesting", function(d) {
+  //   var column = d.column;
+  //   var columnWise = d.result.columnWise || {}; // not gauranteed to exist
+  //   var num = columnWise[column] || 0;
+  //   return !!num;
+  // })
+  // .attr("title", function(d){
+  //   return d.test.description();
+  // });
+  // d3.selectAll("div.summary")
+  //   .each(function() {
+  //     // d3.select(this.parentNode)
+  //     //   .classed("hidden", false);
+  //   });
+  // d3.selectAll("div.summary:not(.interesting)")
+  //   .each(function() {
+  //     // d3.select(this.parentNode)
+  //     //   .classed("hidden", true);
+  //   });
 
   /*
   d3.selectAll("div.column")
@@ -323,12 +310,9 @@ var columnHeads = this.columnHeads;
     });
     */
 
-  tests.select("div.conclusion").html(function(d) {
-    return d.test.conclusion ? d.test.conclusion(d.result) : "";
-  });
-
-
-
+  // tests.select("div.conclusion").html(function(d) {
+  //   return d.test.conclusion ? d.test.conclusion(d.result) : "";
+  // });
 
   /*
   d3.select(".search-wrapper").classed("hidden", false);

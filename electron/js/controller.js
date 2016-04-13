@@ -1,5 +1,6 @@
+var jQ = require("jquery");
+require("tipsy-browserify")(jQ);
 var d3 = require("d3");
-var $ = require("jquery");
 var _ = require("lodash");
 var Processor = require("dataproofer").Processing;
 var gsheets = require("gsheets");
@@ -368,8 +369,16 @@ function renderStep2(processorConfig) {
     .text(function(d) { return d.test.name(); });
 
   testsEnter.append("i")
+    .attr("original-title", function(d) { return d.test.description() })
     .attr("class", "fa fa-info-circle")
-    .attr("aria-hidden", "true");
+    .attr("aria-hidden", "true")
+    .each(function(d) {
+      console.log("this", this);
+      jQ(this).tipsy({
+        html: true,
+        gravity: jQ.fn.tipsy.autoNS
+      });
+    });
 
   d3.select(".column-1")
     .transition()
