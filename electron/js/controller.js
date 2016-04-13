@@ -1,5 +1,6 @@
+var jQ = require("jquery");
+require("tipsy-browserify")(jQ);
 var d3 = require("d3");
-var $ = require("jquery");
 var _ = require("lodash");
 var Processor = require("dataproofer").Processing;
 var gsheets = require("gsheets");
@@ -335,8 +336,16 @@ function renderStep2(processorConfig) {
     .text(function(d) { return d.name(); });
 
   testsEnter.append("i")
+    .attr("original-title", function(d) { return d.description() })
     .attr("class", "fa fa-info-circle")
-    .attr("aria-hidden", "true");
+    .attr("aria-hidden", "true")
+    .each(function(d) {
+      console.log("this", this);
+      jQ(this).tipsy({
+        html: true,
+        gravity: jQ.fn.tipsy.autoNS
+      });
+    });
 
   d3.select(".column-1")
     .transition()
@@ -357,8 +366,8 @@ function renderStep2(processorConfig) {
     d3.select(this.parentNode).classed("active", d.active);
     saveTestConfig();
 
-    var checked = $(this).prop("checked");
-    var container = $(this).parent();
+    var checked = jQ(this).prop("checked");
+    var container = jQ(this).parent();
 
     container.find('input[type="checkbox"]').prop({
       indeterminate: false,
@@ -370,7 +379,7 @@ function renderStep2(processorConfig) {
       var all = true;
 
       el.siblings().each(function() {
-        return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+        return all = (jQ(this).children('input[type="checkbox"]').prop("checked") === checked);
       });
 
       if (all && checked) {

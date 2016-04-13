@@ -203,7 +203,8 @@ button.reload {
 .test i.fa {
   margin: 0 5px;
   float: right;
-  transition: all 0.15s ease
+  transition: all 0.15s ease;
+  cursor: pointer;
 }
 
 .test.active i.fa {
