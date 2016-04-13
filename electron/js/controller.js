@@ -293,6 +293,9 @@ function renderStep2(processorConfig) {
     .attr("class", function(d) {
       return d.active ? "test active" : "test";
     })
+    .attr("id", function(d) {
+      return d.name().replace(/\s+/g, '-').toLowerCase();
+    })
     .classed("onoff", true);
 
   testsEnter.append("button").classed("delete-test", true)
@@ -310,7 +313,7 @@ function renderStep2(processorConfig) {
       "class": "toggle",
       "type": "checkbox",
       "id": function(d, i) {
-        return d3.select(this.parentNode.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;
+        return d3.select(this.parentNode).attr("id") + "-test-" + i;
       }
     }).each(function(d) {
       if (d.active) {
@@ -382,7 +385,7 @@ function renderStep2(processorConfig) {
 
   testsEnter.append("label")
     .attr("for", function(d, i) {
-      return d3.select(this.parentNode.parentNode.parentNode.parentNode).attr("id") + "-test-" + i;
+      return d3.select(this.parentNode).attr("id") + "-test-" + i;
     })
     .text(function(d) { return d.name(); });
 
