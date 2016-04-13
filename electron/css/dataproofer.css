@@ -92,6 +92,7 @@
   /*background: #ffffff;*/
   /*background-color: #F7F6F5;*/
   background-color: #E6E4E3;
+  padding-bottom: 200px;
 
   max-height: 100vh;
   overflow-y: auto;
@@ -139,6 +140,7 @@ button.reload {
 }
 
 #info-top-bar #current-file-name{
+  text-align: center;
   display: inline-block;
   font-size: 16px;
   border: 0;
@@ -421,7 +423,7 @@ General Suites and test
 
   font-weight: normal;
   font-size: 14px;
-  width: 294px;
+  width: 282px;
   display: block;
 
   /*background-color: #FFFEFC;*/
@@ -458,7 +460,7 @@ General Suites and test
 }
 
 .tests-wrapper .test {
-  width: 282px;
+  width: 270px;
   margin-left: 12px;
 
 }

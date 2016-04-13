@@ -235,19 +235,6 @@ function renderStep2(processorConfig) {
     .classed("loaded", true)
     .text("Loaded");
 
-  d3.select(".column-1")
-    .transition()
-    .duration(1000)
-    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
-
-    function scrollTween(offset) {
-      return function() {
-        offset -= d3.select(".top-bar").property("scrollHeight");
-        var i = d3.interpolateNumber(this.scrollTop, offset);
-        return function(t) { this.scrollTop = i(t); };
-      };
-    }
-
   // we just remove everything rather than get into update pattern
   container.selectAll("*").remove();
   // create the containers for each suite
@@ -333,6 +320,20 @@ function renderStep2(processorConfig) {
       }
     })
     .on("change", toggleTests);
+
+    d3.select(".column-1")
+      .transition()
+      .duration(1000)
+      .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
+
+      function scrollTween(offset) {
+        return function() {
+          offset -= d3.select(".top-bar").property("scrollHeight");
+          var i = d3.interpolateNumber(this.scrollTop, offset);
+          return function(t) { this.scrollTop = i(t); };
+        };
+      }
+
 
   function toggleTests(d) {
     d.active = !d.active;
