@@ -200,6 +200,16 @@ button.reload {
   padding: 1em 0.5em;
 }
 
+.test i.fa {
+  margin: 0 5px;
+  float: right;
+  transition: all 0.15s ease
+}
+
+.test.active i.fa {
+  margin: 0 10px;
+}
+
 .column-2 {
   flex: 1 1 auto;
   background-color: #F7F6F5;
@@ -453,6 +463,8 @@ General Suites and test
 .suite label {
   font-size: 14px;
   margin-left: 4px;
+  display: inline-block;
+  width: 200px;
 }
 
 .all-passed {

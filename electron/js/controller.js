@@ -328,8 +328,11 @@ function renderStep2(processorConfig) {
     })
     .on("change", toggleTests);
 
-
-  // <i class="fa fa-info-circle" aria-hidden="true"></i>
+  testsEnter.append("label")
+    .attr("for", function(d, i) {
+      return d3.select(this.parentNode).attr("id") + "-test-" + i;
+    })
+    .text(function(d) { return d.name(); });
 
   testsEnter.append("i")
     .attr("class", "fa fa-info-circle")
@@ -381,8 +384,6 @@ function renderStep2(processorConfig) {
         parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
         checkSiblings(parent);
       } else {
-        console.log("checked", checked);
-        console.log("container", container);
         container.find("li.test").toggleClass("active", checked);
         el.parents("li").children("input[type='checkbox']").prop({
           indeterminate: true,
@@ -392,12 +393,6 @@ function renderStep2(processorConfig) {
     }
     checkSiblings(container);
   }
-
-  testsEnter.append("label")
-    .attr("for", function(d, i) {
-      return d3.select(this.parentNode).attr("id") + "-test-" + i;
-    })
-    .text(function(d) { return d.name(); });
 
   testsEnter.append("div").classed("message", true);
 

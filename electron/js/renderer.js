@@ -173,7 +173,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
       infoWrapper.classed("collapsed", !isCollapsed);
     });
   testsEnter.append("div")
-    .attr("class", "info-btn fa fa-info-circle nonopaque")
+    .attr("class", "info-btn fa fa-info-circle")
     .on("mouseover", function(d) {
       var infoBtn = d3.select(this.parentNode).select(".info-btn");
       infoBtn.classed("opaque", false);
