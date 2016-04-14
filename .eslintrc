@@ -21,7 +21,7 @@
         "indent": [2, 2, { "SwitchCase": 1 }],
 
         // Require single quotes for strings.
-        "quotes": [2, "double", "avoid-escape"],
+        "quotes": [1],
 
         // Allow 'while (true), do something, break' pattern.
         "no-constant-condition": 0,

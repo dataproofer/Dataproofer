@@ -1,4 +1,5 @@
 var _ = require("lodash");
+var d3 = require("d3");
 var xlsx = require("xlsx");
 var indianOcean = require("indian-ocean");
 var DataprooferTest = require("dataproofertest-js");
@@ -31,7 +32,8 @@ exports.load = function(config) {
     } else if (excelExtensions.indexOf(ext) > -1) {
       var sheets = xlsx.readFile(filepath).Sheets;
       var firstSheetName = _.keys(sheets)[0];
-      rows = xlsx.utils.sheet_to_json(sheets[firstSheetName]);
+      var excelCsvRows = xlsx.utils.sheet_to_csv(sheets[firstSheetName]);
+      rows = d3.csv.parse(excelCsvRows);
     } else {
       rows = [];
     }
@@ -71,7 +73,7 @@ exports.run = function(config) {
     filename: loaded. filename,
     suites: suites,
     columnHeads: columnHeads,
-    rows: rows,
+    rows: rows
     //trueRows: loaded.trueRows
   });
 
