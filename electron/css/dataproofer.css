@@ -201,15 +201,24 @@ button.reload {
   padding: 1em 0.5em;
 }
 
-.test i.fa {
-  margin: 0 5px;
+.test .info-wrapper {
   float: right;
-  transition: all 0.15s ease;
-  cursor: pointer;
 }
 
-.test.active i.fa {
+.test .info-wrapper .filter-btn,
+.test .info-wrapper .fa-info-circle {
+  display: inline-block;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: all 0.15s ease;
+}
+
+.test.active .info-wrapper .fa-info-circle {
   margin: 0 10px;
+}
+
+.filter-btn {
+  color: #48C2C5;
 }
 
 .column-2 {
@@ -338,7 +347,7 @@ Grid
   font-weight: normal;
 }
 */
-
+/*
 .test .summary {
   font-size: 10px;
   line-height: 1.2em;
@@ -368,22 +377,7 @@ Grid
   cursor: pointer;
 }
 
-.filter-btn {
-  cursor: pointer;
-  opacity: 0.25;
-  font-size: 12px;
-  color: #58595B;
-  width: 100%;
-}
 
-.filter-btn:hover {
-  opacity: 1;
-}
-
-.info-wrapper div {
-  font-size: 12px;
-  margin: 10px 25px;
-}
 
 .test.active .description {
   display: block;
@@ -393,7 +387,7 @@ Grid
 }
 .test.active .visualization {
   display: block;
-}
+}*/
 
 /* =============================================================================
 General Suites and test
@@ -471,7 +465,7 @@ General Suites and test
 }
 
 .test.fail {
-  border-left-color: #E03E22 !important;  
+  border-left-color: #E03E22 !important;
 }
 
 .test.fail .toggle {
@@ -490,7 +484,7 @@ General Suites and test
   font-size: 14px;
   margin-left: 4px;
   display: inline-block;
-  width: 200px;
+  width: 125px;
 }
 
 .all-passed {

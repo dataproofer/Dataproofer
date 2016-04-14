@@ -179,7 +179,7 @@ function renderNav() {
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Select checks");
 
-      forward.style("display", "inline-block")
+      forward.style("display", "none")
         .html("Re-run checks <i class='fa fa-chevron-circle-right'></i>");
       //forward.style("display", "none");
       break;
@@ -242,8 +242,6 @@ function renderStep2(processorConfig) {
     // });
 
   // Remove 'all tests passed' indicator if going back to tests from step 3
-  d3.select(".column-1").classed("all-passed", false);
-
   // we just remove everything rather than get into update pattern
   container.selectAll("*").remove();
 
@@ -377,7 +375,9 @@ function renderStep2(processorConfig) {
     })
     .text(function(d) { return d.test.name(); });
 
-  testsEnter.append("i")
+  testsEnter.append("div")
+    .attr("class", "info-wrapper")
+    .append("i")
     .attr("original-title", function(d) { return d.test.description() })
     .attr("class", "fa fa-info-circle")
     .attr("aria-hidden", "true")
@@ -461,6 +461,10 @@ function clear() {
   d3.select("#current-file-name").text("");
   d3.select(".column-3").classed("hidden", true);
   d3.select(".grid-footer").classed("hidden", true);
+  d3.select(".column-1").classed("all-passed", false);
+  d3.selectAll(".test").classed("hidden", false);
+  d3.selectAll(".toggle").classed("hidden", false);
+  d3.selectAll(".suite-hed").classed("hidden", false);
 }
 
 // This handles file selection via the button

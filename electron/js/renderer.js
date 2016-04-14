@@ -21,6 +21,10 @@ function HTMLRenderer(config) {
     data.push( _.values(row) );
   });
   d3.select(".grid-footer").classed("hidden", false);
+  d3.selectAll(".test:not(.active)")
+    .classed("hidden", true);
+  d3.selectAll(".toggle").classed("hidden", true);
+  d3.selectAll(".suite-hed").classed("hidden", true);
   d3.select(".column-3")
     .classed("hidden", false)
     .select("#grid")
@@ -129,9 +133,9 @@ HTMLRenderer.prototype.done = function() {
     return d.result.passed;
   });
 
-  var failedResults = _.filter(resultList, function(d) {
-    return !d.result.passed;
-  });
+  // var failedResults = _.filter(resultList, function(d) {
+  //   return !d.result.passed;
+  // });
 
   if (passedResults.length === resultList.length) {
     d3.select(".column-1").classed("all-passed", true);
@@ -167,11 +171,9 @@ HTMLRenderer.prototype.done = function() {
         });
     });
 
-  var that = this;
-
   var timeout;
   var filterResults = function (d) {
-    console.log("filter, clearing", timeout, d.result.highlightCells)
+    console.log("filter, clearing", timeout, d.result.highlightCells);
     clearTimeout(timeout);
     that.renderFingerPrint({ test: d.test.name(), column: d.column });
     that.highlightGrid({ highlightCells: d.result.highlightCells || [], testName: d.test.name() });
@@ -180,10 +182,10 @@ HTMLRenderer.prototype.done = function() {
   var clearFilteredResults = function(d) {
     // debounce
     timeout = setTimeout(function() {
-      console.log("cleared!")
+      console.log("cleared!");
       that.renderFingerPrint();
       that.highlightGrid();
-    }, 300)
+    }, 300);
   };
   that.clearFilteredResults = clearFilteredResults;
 
@@ -352,10 +354,10 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   var columnIndex = options.col;
   var rowIndex = options.row;
   var test = options.test;
-  var column = options.column;
+  // var column = options.column;
 
   var rows = this.rows;
-  var columnHeads = this.columnHeads;
+  // var columnHeads = this.columnHeads;
   var comments = this.comments;
   var handsOnTable = this.handsOnTable;
   var clearFilteredResults = this.clearFilteredResults;
@@ -375,9 +377,9 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   canvas.width = width;
   canvas.height = height;
 
-  var colorScale = d3.scale.ordinal()
-    .domain([1, 2, 3])
-    .range(["#ed8282","#da8282", "#d88282"]);
+  // var colorScale = d3.scale.ordinal()
+  //   .domain([1, 2, 3])
+  //   .range(["#ed8282","#da8282", "#d88282"]);
 
   function renderPrint() {
     context.fillStyle = "#fff";
@@ -394,7 +396,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
       if(!array.length && comment.array.length) { //} || (columnHeads.indexOf(column) !== comment.col)) {
         context.fillStyle = "#ddd";
       } else {
-        context.fillStyle = "#e6c000" //"#e03e22" //colorScale(array.length); //"#d88282"
+        context.fillStyle = "#e6c000"; //"#e03e22" //colorScale(array.length); //"#d88282"
       }
 
       //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)
@@ -431,7 +433,6 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
 
     if (isFiltered) {
       d3.selectAll(".test").classed("filtered", false);
-      d3.selectAll(".filter-btn").classed("nonopaque", false);
       clearFilteredResults();
     }
     var mouse = d3.mouse(canvas);
