@@ -34,11 +34,11 @@ function HTMLRenderer(config) {
   .style({
     width: containerWidth + "px",
     height: containerHeight + "px"
-  })
+  });
   d3.select("#grid").style({
     width: containerWidth + "px",
     height: containerHeight + "px"
-  })
+  });
 
   var data = [];
   var headers = _.map(_.keys(rows[0]), function(header, idx) {
@@ -215,7 +215,14 @@ HTMLRenderer.prototype.done = function() {
     .each(function(d) {
       d3.select(this)
         .attr("original-title", function(d) {
-          return d.test.conclusion();
+          var tooltipStr = "";
+          if (!d.result.passed) {
+            tooltipStr += d.test.conclusion();
+          } else {
+            tooltipStr += d.test.description();
+          }
+
+          return tooltipStr;
         });
     });
 
@@ -407,7 +414,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
         context.fillStyle = "#ddd";
       } else {
         if(test) {
-          context.fillStyle = "#e03e22"
+          context.fillStyle = "#e03e22";
         } else {
           context.fillStyle = "#EFE7B8"; //"#e03e22" //colorScale(array.length); //"#d88282"
         }

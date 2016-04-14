@@ -140,8 +140,11 @@ button.reload {
   padding-right: 10px;
 }
 
-#info-top-bar #current-file-name{
+#info-top-bar {
   text-align: center;
+}
+
+#info-top-bar #current-file-name{
   display: inline-block;
   font-size: 16px;
   border: 0;
@@ -149,11 +152,9 @@ button.reload {
 }
 
 #file-size-warning {
-  color: #ED4224;
-  display: inline-block;
-  font-size: 16px;
-  border: 0;
-  padding: 0.5em;
+  font-size: 14px;
+  color: rgba(230, 192, 0, 1);
+  padding: 1em;
 }
 
 #file-loader-button {

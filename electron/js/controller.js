@@ -242,17 +242,12 @@ function renderStep2(processorConfig) {
 
   // Handle large file sizes with a warning
   var loaded = processorConfig.loaded;
-  var largeFileWarning = `
-    <b>LARGE FILE ALERT</b>:
-    Dataproofer relies on your computer's processing power.
-    The higher the spec of your machine, the lower the risk the app may crash when processing large datasets.
-    If your dataset is extremely large, we suggest loading samples of 10,000 rows.`
   // arbitrary number, for loops will get more expensive from here...
   var ncolumns = Object.keys(loaded.rows[0]).length
   var nrows = loaded.rows.length
   console.log("cols", ncolumns, "rows", nrows, "cells", nrows * ncolumns)
   if(nrows * ncolumns > 100000) {
-    d3.select("#file-size-warning").html(largeFileWarning)
+    d3.select("#file-size-warning").classed("hidden", false)
   }
 
   // Remove 'all tests passed' indicator if going back to tests from step 3
@@ -473,7 +468,7 @@ function renderStep3(processorConfig) {
 
 function clear() {
   d3.select("#current-file-name").text("");
-  d3.select("#file-size-warning").text("");
+  d3.select("#file-size-warning").classed("hidden", true);
   d3.select("#grid").classed("hidden", true);
   d3.select(".column-3").classed("hidden", true);
   d3.select(".grid-footer").classed("hidden", true);
