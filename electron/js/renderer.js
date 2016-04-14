@@ -148,6 +148,24 @@ HTMLRenderer.prototype.done = function() {
 
   // Summarize testsPassed.length, and then append all failed tests like normal
 
+  d3.select(".test-sets")
+    .insert("div", ":first-child")
+    .html(function() {
+      var headersCheck = resultList[0];
+      var missingHeadersStr = "<div class='info'>";
+      if (!headersCheck.result.passed) {
+        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
+        missingHeadersStr += " Ignored ";
+        missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
+        missingHeadersStr += " because it had a missing or duplicate column header. Dataproofer requires unique column header names.";
+        missingHeadersStr += "</div>";
+      } else {
+        missingHeadersStr += "<i class='fa fa-check-circle'></i>";
+        missingHeadersStr += " No missing or duplicate column headers";
+      }
+      return missingHeadersStr;
+    });
+
   var passedResults = _.filter(resultList, function(d){
     return d.result.passed;
   });
@@ -158,12 +176,13 @@ HTMLRenderer.prototype.done = function() {
 
   var numPassed = passedResults.length;
   var numFailed = failedResults.length;
+  var numTests = resultList.length; //missing headers counted but not shown
 
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .attr("class", "summary")
     .html(function() {
-      return numPassed + " passed & " + numFailed + " failed out of " + resultList.length + " total";
+      return numPassed + " passed & " + numFailed + " failed out of " + numTests + " total";
     });
 
   if (passedResults.length === resultList.length) {
@@ -296,42 +315,6 @@ HTMLRenderer.prototype.done = function() {
   // tests.select("div.conclusion").html(function(d) {
   //   return d.test.conclusion ? d.test.conclusion(d.result) : "";
   // });
-
-
-  /*d3.select(".step-3-results").style("display", "block")
-    .insert("div", ":first-child")
-    .html(function() {
-      var headersCheck = renderer.resultList[0];
-      var missingHeadersStr = "";
-      if (!headersCheck.result.passed) {
-        missingHeadersStr += "<div class='info'>";
-        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
-        missingHeadersStr += " Ignored ";
-        missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
-        missingHeadersStr += " because of missing or duplicate column headers";
-        missingHeadersStr += "</div>";
-      }
-      return missingHeadersStr;
-    });
-
-  d3.select(".step-3-results").insert("div", ":first-child")
-    .attr("class", "summary-results")
-    .html(function() {
-      var totalTests = renderer.resultList.length;
-      var failedTests = 0;
-      var passedTests = 0;
-      renderer.resultList.forEach(function(test) {
-        if (!test.result.passed) {
-          failedTests += 1;
-        } else {
-          passedTests += 1;
-        }
-      });
-      //var resultsStr = "<span>" + failedTests + " / " + totalTests + " checks failed</span><br>";
-      var resultsStr = "<span>" + passedTests + " / " + totalTests + " checks passed</span>";
-      return resultsStr;
-    });
-    */
 };
 
 HTMLRenderer.prototype.destroy = function() {
