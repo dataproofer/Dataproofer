@@ -34,7 +34,6 @@ function HTMLRenderer(config) {
   var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
   var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
   var containerHeight = column2Height - gridFooterHeight; // heights of grid header and footer
-  console.log("containerHeight", containerHeight);
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
@@ -134,9 +133,19 @@ HTMLRenderer.prototype.done = function() {
     return d.result.passed;
   });
 
-  // var failedResults = _.filter(resultList, function(d) {
-  //   return !d.result.passed;
-  // });
+  var failedResults = _.filter(resultList, function(d) {
+    return !d.result.passed;
+  });
+
+  var numPassed = passedResults.length;
+  var numFailed = failedResults.length;
+
+  d3.select(".test-sets")
+    .insert("div", ":first-child")
+    .attr("class", "summary")
+    .html(function() {
+      return numPassed + " passed & " + numFailed + " failed out of " + resultList.length + " total";
+    });
 
   if (passedResults.length === resultList.length) {
     d3.select(".column-1").classed("all-passed", true);

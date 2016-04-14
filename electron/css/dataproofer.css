@@ -201,6 +201,11 @@ button.reload {
   padding: 1em 0.5em;
 }
 
+.summary {
+  text-align: center;
+  font-weight: bold;
+}
+
 .test .info-wrapper {
   float: right;
 }
@@ -272,8 +277,7 @@ td.htCommentCell.filtered {
 Navigation buttons
 ============================================================================= */
 #nav-buttons {
-  float: right;
-  margin-right: 2em;
+  text-align: center;
 }
 
 #nav-buttons button {
