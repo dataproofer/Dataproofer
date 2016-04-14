@@ -469,7 +469,7 @@ function renderStep3(processorConfig) {
 function clear() {
   d3.select("#current-file-name").text("");
   d3.select("#file-size-warning").classed("hidden", true);
-  d3.select("#grid").classed("hidden", true);
+  d3.select("#grid").selectAll("*").remove();
   d3.select(".column-3").classed("hidden", true);
   d3.select(".grid-footer").classed("hidden", true);
   d3.select(".column-1").classed("all-passed", false);
