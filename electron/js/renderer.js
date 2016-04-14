@@ -61,7 +61,8 @@ function HTMLRenderer(config) {
     });
 
   this.handsOnTable = handsOnTable;
-  window.handsOnTable = handsOnTable; // for debugging
+  window.handsOnTable = handsOnTable;
+  d3.select("#grid").classed("hidden", false);
   d3.select("#file-loader-button")
     .classed("loaded", true)
     .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File");
