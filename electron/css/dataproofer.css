@@ -459,7 +459,6 @@ General Suites and test
   margin-bottom: 8px;
   /*box-shadow: 0px 2px 1px #CCC;*/
   transition: all 0.15s ease
-
 }
 
 .suite .active {
@@ -467,6 +466,22 @@ General Suites and test
   border-left-width: 6px;
 }
 
+.test.pass {
+  border-left-color: #46CC69 !important;
+}
+
+.test.fail {
+  border-left-color: #E03E22 !important;  
+}
+
+.test.fail .toggle {
+  /*display:none;*/
+  opacity: 0;
+}
+.test.pass .toggle {
+  /*display:none;*/
+  opacity: 0;
+}
 .suite .test .toggle {
   margin-left: 8px;
 }
