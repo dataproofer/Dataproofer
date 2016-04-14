@@ -247,9 +247,11 @@ function renderStep2(processorConfig) {
     Dataproofer relies on your computer's processing power.
     The higher the spec of your machine, the lower the risk the app may crash when processing large datasets.
     If your dataset is extremely large, we suggest loading samples of 10,000 rows.`
-  console.log("loaded rows", loaded.rows.length)
   // arbitrary number, for loops will get more expensive from here...
-  if(loaded.rows.length > 10000) {
+  var ncolumns = Object.keys(loaded.rows[0]).length
+  var nrows = loaded.rows.length
+  console.log("cols", ncolumns, "rows", nrows, "cells", nrows * ncolumns)
+  if(nrows * ncolumns > 100000) {
     d3.select("#file-size-warning").html(largeFileWarning)
   }
 
