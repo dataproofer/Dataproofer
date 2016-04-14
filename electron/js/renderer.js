@@ -129,18 +129,20 @@ HTMLRenderer.prototype.done = function() {
 
   // Summarize testsPassed.length, and then append all failed tests like normal
 
-  d3.select(".test-sets").style("display", "block")
+  d3.select(".test-sets")
     .insert("div", ":first-child")
     .html(function() {
       var headersCheck = resultList[0];
-      var missingHeadersStr = "";
+      var missingHeadersStr = "<div class='info'>";
       if (!headersCheck.result.passed) {
-        missingHeadersStr += "<div class='info'>";
         missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
         missingHeadersStr += " Ignored ";
         missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
         missingHeadersStr += " because it had a missing or duplicate column header. Dataproofer requires unique column header names.";
         missingHeadersStr += "</div>";
+      } else {
+        missingHeadersStr += "<i class='fa fa-check-circle'></i>";
+        missingHeadersStr += " No missing or duplicate column headers";
       }
       return missingHeadersStr;
     });
