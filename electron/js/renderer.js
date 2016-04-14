@@ -396,7 +396,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
       if(!array.length && comment.array.length) { //} || (columnHeads.indexOf(column) !== comment.col)) {
         context.fillStyle = "#ddd";
       } else {
-        context.fillStyle = "#e6c000"; //"#e03e22" //colorScale(array.length); //"#d88282"
+        context.fillStyle = "#EFE7B8"; //"#e03e22" //colorScale(array.length); //"#d88282"
       }
 
       //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)
