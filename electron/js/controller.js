@@ -478,12 +478,28 @@ function clear() {
   d3.selectAll(".suite-hed").classed("hidden", false);
 }
 
+
+function handleDragOver(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  console.log("DRAG")
+}
+var dropZone = d3.select('.window-content').node();
+dropZone.addEventListener('dragover', handleDragOver, false);
+dropZone.addEventListener('drop', handleFileSelect, false);
+
+
 // This handles file selection via the button
 document.getElementById("file-loader").addEventListener("change", handleFileSelect, false);
 
 function handleFileSelect(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  console.log("EVT", evt)
   d3.select("#file-loader-button").text("Loading");
   var files = evt.target.files;
+  if(!files && evt.dataTransfer) files = evt.dataTransfer.files
   if (!files || !files.length) return;
   for (var i = 0, f; i < files.length; i++) {
     var file = files[i];
