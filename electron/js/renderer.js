@@ -139,12 +139,13 @@ HTMLRenderer.prototype.done = function() {
 
   var numPassed = passedResults.length;
   var numFailed = failedResults.length;
+  var numTests = resultList.length - 1; //missing headers counted but not shown
 
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .attr("class", "summary")
     .html(function() {
-      return numPassed + " passed & " + numFailed + " failed out of " + resultList.length + " total";
+      return numPassed + " passed & " + numFailed + " failed out of " + numTests + " total";
     });
 
   if (passedResults.length === resultList.length) {
