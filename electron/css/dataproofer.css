@@ -149,11 +149,8 @@ button.reload {
 }
 
 #file-size-warning {
-  color: #ED4224;
-  display: inline-block;
-  font-size: 16px;
-  border: 0;
-  padding: 0.5em;
+  color: rgba(230, 192, 0, 1);
+  padding: 1em;
 }
 
 #file-loader-button {
