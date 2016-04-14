@@ -129,35 +129,6 @@ HTMLRenderer.prototype.done = function() {
 var columnHeads = this.columnHeads;
   var rows = this.rows;
   var resultList = this.resultList;
-
-  // setup/update the comments in our Hands On Table
-  // renderCellComments(rows, columnHeads, this.resultList, this.handsOnTable);
-
-  /*
-  var container = d3.select(".step-3-results");
-  // rerender all the columns
-  var columns = container.selectAll(".column")
-    .data(columnHeads);
-
-  function slugifyColumnHeader(name) {
-    return name.toLowerCase().replace(/[^a-z0-9]/i, function(s) {
-      var c = s.charCodeAt(0);
-      if (c == 32) return "-";
-      if (c >= 65 && c <= 90) s.toLowerCase();
-      return c.toString(16).slice(-4);
-    });
-  }
-
-  var columnsEnter = columns.enter().append("div").classed("column", true);
-  // render the column header
-  columnsEnter.append("div").classed("column-header", true)
-    .text(function(d) { return d; } )
-    .attr("title", function(d,i){
-      return "Column " + i;
-    })
-    .attr("id", function(d) { return slugifyColumnHeader(d); });
-  */
-
   // Want to separate out tests that failed and tests that passed here
 
   // Summarize testsPassed.length, and then append all failed tests like normal
@@ -205,13 +176,22 @@ var columnHeads = this.columnHeads;
     });
 
   var that = this;
+
+  var timeout;
   var filterResults = function (d) {
+    console.log("filter, clearing", timeout, d.result.highlightCells)
+    clearTimeout(timeout);
     that.renderFingerPrint({ test: d.test.name(), column: d.column });
-    that.highlightGrid({ highlightCells: d.result.highlightCells, testName: d.test.name() });
+    that.highlightGrid({ highlightCells: d.result.highlightCells || [], testName: d.test.name() });
   };
+
   var clearFilteredResults = function(d) {
-    that.renderFingerPrint();
-    that.highlightGrid();
+    // debounce
+    timeout = setTimeout(function() {
+      console.log("cleared!")
+      that.renderFingerPrint();
+      that.highlightGrid();
+    }, 300)
   };
   that.clearFilteredResults = clearFilteredResults;
 
@@ -265,18 +245,6 @@ var columnHeads = this.columnHeads;
   //   if (!isFiltered) that.renderFingerPrint();
   // });
 
-  /*
-  tests.sort(function(a,b) {
-    var aColumn = a.column;
-    var aColumnWise = a.result.columnWise || {}; // not gauranteed to exist
-    var bColumn = b.column;
-    var bColumnWise = b.result.columnWise || {}; // not gauranteed to exist
-    var aNum = aColumnWise[aColumn] || 0;
-    var bNum = bColumnWise[bColumn] || 0;
-    return bNum - aNum;
-  });
-  */
-
   // tests.select("div.summary").html(function(d) {
   //   var column = d.column;
   //   var name = d.test.name();
@@ -303,19 +271,6 @@ var columnHeads = this.columnHeads;
   //     // d3.select(this.parentNode)
   //     //   .classed("hidden", true);
   //   });
-
-  /*
-  d3.selectAll("div.column")
-    .each(function() {
-      var totalTests = d3.select(this).selectAll(".test")[0].length;
-      var hiddenTests = d3.select(this).selectAll(".test.hidden")[0].length;
-      if (totalTests === hiddenTests) {
-        // d3.select(this).classed("hidden", true);
-      } else {
-        // d3.select(this).classed("hidden", false);
-      }
-    });
-    */
 
   // tests.select("div.conclusion").html(function(d) {
   //   return d.test.conclusion ? d.test.conclusion(d.result) : "";
@@ -444,10 +399,10 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
       }
       // only render this cell if its got items in the array
       if(!array.length && !comment.array.length) return;
-      if((!array.length && comment.array.length) || (columnHeads.indexOf(column) !== comment.col)) {
+      if(!array.length && comment.array.length) { //} || (columnHeads.indexOf(column) !== comment.col)) {
         context.fillStyle = "#ddd";
       } else {
-        context.fillStyle = colorScale(array.length); //"#d88282"
+        context.fillStyle = "#e6c000" //"#e03e22" //colorScale(array.length); //"#d88282"
       }
 
       //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)

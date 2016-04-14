@@ -173,12 +173,15 @@ function renderNav() {
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
-        .html("Run Checks <i class='fa fa-chevron-circle-right'></i>");
+        .html("Run checks <i class='fa fa-chevron-circle-right'></i>");
       break;
     case 3:
       back.style("display", "inline-block")
-        .html("<i class='fa fa-chevron-circle-left'></i> Select Checks");
-      forward.style("display", "none");
+        .html("<i class='fa fa-chevron-circle-left'></i> Select checks");
+
+      forward.style("display", "inline-block")
+        .html("Re-run checks <i class='fa fa-chevron-circle-right'></i>");
+      //forward.style("display", "none");
       break;
   }
 }
@@ -208,7 +211,9 @@ d3.select("#back-button").on("click", function() {
   }
 });
 d3.select("#forward-button").on("click", function() {
-  currentStep++;
+  if(currentStep < 3) {
+    currentStep++;
+  }
   renderNav();
   renderCurrentStep();
 });
