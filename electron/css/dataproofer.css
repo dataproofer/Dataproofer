@@ -150,6 +150,10 @@ button.reload {
 
 #file-size-warning {
   color: #ED4224;
+  display: inline-block;
+  font-size: 16px;
+  border: 0;
+  padding: 0.5em;
 }
 
 #file-loader-button {
@@ -232,9 +236,10 @@ button.reload {
 }
 
 #grid {
+  /*
   flex: 1 1 auto;
   height: 90vh;
-  overflow-y: auto;
+  */
 }
 
 td.htCommentCell {

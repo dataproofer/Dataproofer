@@ -7,19 +7,12 @@ function HTMLRenderer(config) {
   //console.log('config', config);
   Renderer.call(this, config);
   var rows = window.rows = config.rows;
-  this.rows = config.rows;
+  this.rows = rows;
   this.columnHeads = config.columnHeads;
   var resultList = [];
   this.resultList = resultList;
 
-  var data = [];
-  var headers = _.map(_.keys(rows[0]), function(header, idx) {
-    if (util.isEmpty(header)) return "Column " + idx;
-    return header;
-  });
-  _.forEach( rows, function(row) {
-    data.push( _.values(row) );
-  });
+
   d3.select(".grid-footer").classed("hidden", false);
   d3.selectAll(".test:not(.active)")
     .classed("hidden", true);
@@ -30,24 +23,47 @@ function HTMLRenderer(config) {
     .select("#grid")
     .selectAll("*")
     .remove();
+
   var column2Height = d3.select(".column-2").node().getBoundingClientRect().height;
   var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
   var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
   var containerHeight = column2Height - gridFooterHeight; // heights of grid header and footer
+
+  d3.select("#grid").classed("hidden", false);
+  d3.select("#grid-container")
+  .style({
+    width: containerWidth + "px",
+    height: containerHeight + "px"
+  })
+  d3.select("#grid").style({
+    width: containerWidth + "px",
+    height: containerHeight + "px"
+  })
+
+  var data = [];
+  var headers = _.map(_.keys(rows[0]), function(header, idx) {
+    if (util.isEmpty(header)) return "Column " + idx;
+    return header;
+  });
+  _.forEach( rows , function(row) {
+    data.push( _.values(row) );
+  });
+
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
+      readOnly: true,
       autoWrapRow: true,
       autoWrapCol: true,
       wordWrap: false,
       width: containerWidth,
       height: containerHeight,
       colWidths: 100,
+      rowHeight: 24,
       colHeaders: headers,
       rowHeaders: true,
-      readOnly: true,
-      columnSorting: true,
-      manualRowResize: true,
+      columnSorting: false,
+      manualRowResize: false,
       manualColumnResize: true,
       comments: true,
       commentedCellClassName: "htCommentCell",
@@ -61,7 +77,6 @@ function HTMLRenderer(config) {
 
   this.handsOnTable = handsOnTable;
   window.handsOnTable = handsOnTable;
-  d3.select("#grid").classed("hidden", false);
   d3.select("#file-loader-button")
     .classed("loaded", true)
     .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File");
@@ -76,11 +91,13 @@ function HTMLRenderer(config) {
     }
   }
 
+  /*
   var searchFiled = document.getElementById("search-field");
   Handsontable.Dom.addEvent(searchFiled, "keyup", function (event) {
     handsOnTable.search.query(this.value);
     handsOnTable.render();
   });
+  */
   // var resultsHeight = containerHeight + "px";
   // we just remove everything rather than get into update pattern
   // d3.select(".step-3-results").selectAll("*").remove();
@@ -111,7 +128,9 @@ HTMLRenderer.prototype.done = function() {
   var rows = this.rows;
   var resultList = this.resultList;
   var handsOnTable = this.handsOnTable;
+
   this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable);
+
   var that = this;
   setTimeout(function() {
     that.renderFingerPrint();
@@ -183,7 +202,6 @@ HTMLRenderer.prototype.done = function() {
 
   var timeout;
   var filterResults = function (d) {
-    console.log("filter, clearing", timeout, d.result.highlightCells);
     clearTimeout(timeout);
     that.renderFingerPrint({ test: d.test.name(), column: d.column });
     that.highlightGrid({ highlightCells: d.result.highlightCells || [], testName: d.test.name() });
@@ -192,7 +210,6 @@ HTMLRenderer.prototype.done = function() {
   var clearFilteredResults = function(d) {
     // debounce
     timeout = setTimeout(function() {
-      console.log("cleared!");
       that.renderFingerPrint();
       that.highlightGrid();
     }, 300);
@@ -406,7 +423,11 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
       if(!array.length && comment.array.length) { //} || (columnHeads.indexOf(column) !== comment.col)) {
         context.fillStyle = "#ddd";
       } else {
-        context.fillStyle = "#EFE7B8"; //"#e03e22" //colorScale(array.length); //"#d88282"
+        if(test) {
+          context.fillStyle = "#e03e22"
+        } else {
+          context.fillStyle = "#EFE7B8"; //"#e03e22" //colorScale(array.length); //"#d88282"
+        }
       }
 
       //transformRowIndex = Handsontable.hooks.run(handsOnTable, 'modifyRow', comment.row)

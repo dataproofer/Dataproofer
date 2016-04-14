@@ -233,13 +233,25 @@ function renderStep1(processorConfig) {
 function renderStep2(processorConfig) {
   var container = d3.select(".test-sets");
   clear();
-  var loaded = processorConfig.loaded;
   d3.select("#file-loader-button")
     .classed("loaded", true)
     .html("Load New File")
     // .on("click", function() {
     //   document.location.reload(true);
     // });
+
+  // Handle large file sizes with a warning
+  var loaded = processorConfig.loaded;
+  var largeFileWarning = `
+    <b>LARGE FILE ALERT</b>:
+    Dataproofer relies on your computer's processing power.
+    The higher the spec of your machine, the lower the risk the app may crash when processing large datasets.
+    If your dataset is extremely large, we suggest loading samples of 10,000 rows.`
+  console.log("loaded rows", loaded.rows.length)
+  // arbitrary number, for loops will get more expensive from here...
+  if(loaded.rows.length > 10000) {
+    d3.select("#file-size-warning").html(largeFileWarning)
+  }
 
   // Remove 'all tests passed' indicator if going back to tests from step 3
   // we just remove everything rather than get into update pattern
@@ -459,6 +471,7 @@ function renderStep3(processorConfig) {
 
 function clear() {
   d3.select("#current-file-name").text("");
+  d3.select("#file-size-warning").text("");
   d3.select("#grid").classed("hidden", true);
   d3.select(".column-3").classed("hidden", true);
   d3.select(".grid-footer").classed("hidden", true);
@@ -565,7 +578,7 @@ d3.select("#spreadsheet-input").on("keyup", function() {
 window.onerror = function(message) {
   console.log(arguments);
   console.log(message);
-  alert(message);
+  //alert(message);
 };
 
 function handleSpreadsheet() {

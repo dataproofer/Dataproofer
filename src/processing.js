@@ -42,12 +42,12 @@ exports.load = function(config) {
   }
 
   // TODO: use webworkers or something so we don't need an upper limit
-  var trueRows = rows.length;
+  //var trueRows = rows.length;
 
   return {
     rows: rows,
     columnHeads: columnHeads,
-    trueRows: trueRows,
+    //trueRows: trueRows,
     config: config
   };
 };
@@ -72,7 +72,7 @@ exports.run = function(config) {
     suites: suites,
     columnHeads: columnHeads,
     rows: rows,
-    trueRows: loaded.trueRows
+    //trueRows: loaded.trueRows
   });
 
   var badColumnHeadsTest = new DataprooferTest()
