@@ -231,7 +231,10 @@ function renderStep2(processorConfig) {
   var loaded = processorConfig.loaded;
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .text("Loaded");
+    .html("Load New File")
+    // .on("click", function() {
+    //   document.location.reload(true);
+    // });
 
   // Remove 'all tests passed' indicator if going back to tests from step 3
   d3.select(".column-1").classed("all-passed", false);
@@ -451,6 +454,7 @@ function renderStep3(processorConfig) {
 
 function clear() {
   d3.select("#current-file-name").text("");
+  d3.select(".column-3").classed("hidden", true);
   d3.select(".search-wrapper").classed("hidden", true);
 }
 

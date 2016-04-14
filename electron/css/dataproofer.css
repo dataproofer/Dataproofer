@@ -92,6 +92,7 @@
   /*background: #ffffff;*/
   /*background-color: #F7F6F5;*/
   background-color: #E6E4E3;
+  border-right: 1px solid #ccc;
   padding-bottom: 200px;
 
   max-height: 100vh;
@@ -241,6 +242,7 @@ td.htCommentCell.filtered {
   width: 200px;
   z-index: 2;
   background: #ffffff;
+  border-left: 1px solid #ccc;
   flex: 0 0 auto;
 }
 

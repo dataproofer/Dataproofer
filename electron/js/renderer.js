@@ -20,10 +20,16 @@ function HTMLRenderer(config) {
   _.forEach( rows, function(row) {
     data.push( _.values(row) );
   });
+  d3.select(".column-3")
+    .classed("hidden", false)
+    .select("#grid")
+    .selectAll("*")
+    .remove();
   var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
+  var column2Height = d3.select(".column-2").node().getBoundingClientRect().height;
+  // var gridHeaderHeight = d3.select(".ht_clone_top").node().getBoundingClientRect().height;
   var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
-  var containerHeight = window.innerHeight - gridFooterHeight - d3.select(".top-bar").node().getBoundingClientRect();
-  d3.select("#grid").selectAll("*").remove();
+  var containerHeight = column2Height - (1.7 * gridFooterHeight);
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
@@ -52,6 +58,13 @@ function HTMLRenderer(config) {
   this.handsOnTable = handsOnTable;
   window.handsOnTable = handsOnTable; // for debugging
   d3.select(".search-wrapper").classed("hidden", false);
+  d3.select("#file-loader-button")
+    .classed("loaded", true)
+    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File")
+    // .on("click", function() {
+    //   document.location.reload(true);
+    // });
+
   function searchResultSelect(instance, row, col, value, result) {
     Handsontable.Search.DEFAULT_CALLBACK.apply(this, arguments);
     if (result) {
@@ -308,13 +321,8 @@ var columnHeads = this.columnHeads;
   //   return d.test.conclusion ? d.test.conclusion(d.result) : "";
   // });
 
-  /*
-  d3.select(".search-wrapper").classed("hidden", false);
-  d3.select("#file-loader-button")
-    .classed("loaded", true)
-    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load local file");
 
-  d3.select(".step-3-results").style("display", "block")
+  /*d3.select(".step-3-results").style("display", "block")
     .insert("div", ":first-child")
     .html(function() {
       var headersCheck = renderer.resultList[0];
