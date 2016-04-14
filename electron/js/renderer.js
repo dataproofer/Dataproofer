@@ -20,16 +20,17 @@ function HTMLRenderer(config) {
   _.forEach( rows, function(row) {
     data.push( _.values(row) );
   });
+  d3.select(".grid-footer").classed("hidden", false);
   d3.select(".column-3")
     .classed("hidden", false)
     .select("#grid")
     .selectAll("*")
     .remove();
-  var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
   var column2Height = d3.select(".column-2").node().getBoundingClientRect().height;
-  // var gridHeaderHeight = d3.select(".ht_clone_top").node().getBoundingClientRect().height;
+  var gridFooterHeight = d3.select(".grid-footer").node().getBoundingClientRect().height;
   var containerWidth = window.innerWidth - d3.select(".column-1").node().getBoundingClientRect().width - d3.select(".column-3").node().getBoundingClientRect().width;
-  var containerHeight = column2Height - (1.7 * gridFooterHeight);
+  var containerHeight = column2Height - gridFooterHeight; // heights of grid header and footer
+  console.log("containerHeight", containerHeight);
   var handsOnTable = new Handsontable(document.getElementById("grid"),
     {
       data: data,
@@ -57,10 +58,9 @@ function HTMLRenderer(config) {
 
   this.handsOnTable = handsOnTable;
   window.handsOnTable = handsOnTable; // for debugging
-  d3.select(".search-wrapper").classed("hidden", false);
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File")
+    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File");
     // .on("click", function() {
     //   document.location.reload(true);
     // });
@@ -77,18 +77,18 @@ function HTMLRenderer(config) {
     handsOnTable.search.query(this.value);
     handsOnTable.render();
   });
-  var resultsHeight = containerHeight + "px";
+  // var resultsHeight = containerHeight + "px";
   // we just remove everything rather than get into update pattern
-  d3.select(".step-3-results").selectAll("*").remove();
-  d3.select(".step-3-results")
-    .style("height", resultsHeight)
-    .selectAll(".suite")
-    .data(config.suites)
-    .enter().append("div")
-    .attr({
-      class: function(d) { return "suite " + d.name + ((d.active) ? " active" : "" );}
-    })
-    .append("h2").text(function(d) { return d.fullName; });
+  // d3.select(".step-3-results").selectAll("*").remove();
+  // d3.select(".step-3-results")
+  //   .style("height", resultsHeight)
+  //   .selectAll(".suite")
+  //   .data(config.suites)
+  //   .enter().append("div")
+  //   .attr({
+  //     class: function(d) { return "suite " + d.name + ((d.active) ? " active" : "" );}
+  //   })
+  //   .append("h2").text(function(d) { return d.fullName; });
   //d3.select(".test-results").selectAll(".test").remove();
 }
 
@@ -121,14 +121,6 @@ HTMLRenderer.prototype.done = function() {
     that.renderFingerPrint({col: coords.col, row: coords.row });
   });
 
-  d3.selectAll("#grid .ht_clone_top th")
-    .on("click", function(e) {
-      d3.select(this).select(".colHeader");
-    });
-
-var columnHeads = this.columnHeads;
-  var rows = this.rows;
-  var resultList = this.resultList;
   // Want to separate out tests that failed and tests that passed here
 
   // Summarize testsPassed.length, and then append all failed tests like normal
@@ -163,16 +155,16 @@ var columnHeads = this.columnHeads;
       });
     });
   */
-  console.log("resultList", resultList)
+  console.log("resultList", resultList);
   var tests = d3.selectAll(".test")
-    .data(resultList, function(d) { return d.suite + "-" + d.test.name() })
+    .data(resultList, function(d) { return d.suite + "-" + d.test.name(); });
 
-  var infoWrapper = tests.select("i.fa-info-circle")
+  tests.select("i.fa-info-circle")
     .each(function(d) {
       d3.select(this)
         .attr("original-title", function(d) {
           return d.test.conclusion();
-        })
+        });
     });
 
   var that = this;
