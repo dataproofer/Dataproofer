@@ -455,7 +455,7 @@ function renderStep3(processorConfig) {
 function clear() {
   d3.select("#current-file-name").text("");
   d3.select(".column-3").classed("hidden", true);
-  d3.select(".search-wrapper").classed("hidden", true);
+  d3.select(".grid-footer").classed("hidden", true);
 }
 
 // This handles file selection via the button
