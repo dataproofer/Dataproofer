@@ -494,7 +494,7 @@ General Suites and test
 
 .all-passed {
     background-image: url("../img/all-good.png");
-    background-size: contain;
+    background-size: 25vh;
     background-repeat: no-repeat;
     background-position: bottom center;
 }
