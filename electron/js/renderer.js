@@ -90,19 +90,30 @@ function HTMLRenderer(config) {
     }
   }
 
-  var searchFiled = document.getElementById("search-field");
-  Handsontable.Dom.addEvent(searchFiled, "keydown", function (event) {
-    handsOnTable.search.query(this.value);
-    handsOnTable.render();
-  });
-}
-
+  var searchTimeout;
+  this.searchHandler = function (event) {
+    if(searchTimeout) clearTimeout(searchTimeout);
+    setTimeout(function() {
+      handsOnTable.search.query(event.target.value);
+      handsOnTable.render();
+    }, 500)
+  }
+  var searchField = document.getElementById("search-field");
+  Handsontable.Dom.addEvent(searchField, "keydown", this.searchHandler);
+};
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {});
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
   this.resultList.push({ suite: suite, test: test, result: result || {} });
 };
+
+HTMLRenderer.prototype.destroy = function() {
+  var searchField = document.getElementById("search-field");
+  Handsontable.Dom.removeEvent(searchField, "keydown", this.searchHandler)
+  this.handsOnTable.destroy();
+  d3.select("#grid").selectAll("*").remove();
+}
 
 HTMLRenderer.prototype.done = function() {
   var columnHeads = this.columnHeads;
@@ -218,82 +229,7 @@ HTMLRenderer.prototype.done = function() {
     })
     .classed("result-icon fa", true);
 
-  // tests.append("div").classed("passfail", true);
-  // tests.append("div").classed("summary", true)
-  //   .on("mouseover", function(d) {
-  //     var infoBtn = d3.select(this.parentNode).select(".info-btn");
-  //     infoBtn.classed("opaque", false);
-  //   })
-  //   .on("mouseout", function(d) {
-  //     var infoBtn = d3.select(this.parentNode).select(".info-btn");
-  //     if (!infoBtn.classed("nonopaque")) infoBtn.classed("opaque", true);
-  //   })
 
-  // tests.append("button").classed("filter-btn", true)
-  //   .html("<i class='fa fa-filter'></i> Filter");
-
-  // tests.select(".filter-btn").on("click", function(d) {
-  //   var isFiltered = d3.select(this.parentNode).classed("filtered");
-  //   if (isFiltered) {
-  //     d3.selectAll(".test").classed("filtered", false);
-  //     d3.selectAll(".filter-btn").classed("nonopaque", false);
-  //     clearFilteredResults(d);
-  //     that.renderFingerPrint();
-  //     d3.selectAll("#grid").classed("filtered-cells", false);
-  //   } else {
-  //     d3.selectAll(".test").classed("filtered", false);
-  //     d3.selectAll(".filter-btn").classed("nonopaque", false);
-  //     d3.select(this.parentNode).classed("filtered", true);
-  //     d3.select(this).classed("nonopaque", true);
-  //     filterResults(d);
-  //     that.renderFingerPrint({ test: d.test.name(), column: d.column });
-  //     d3.selectAll("#grid").classed("filtered-cells", true);
-  //   }
-  // })
-  // .on("mouseover", function (d) {
-  //   var isFiltered = d3.selectAll(".filtered")[0].length > 0;
-  //   if (!isFiltered) that.renderFingerPrint({ test: d.test.name(), column: d.column });
-  // })
-  // .on("mouseout", function(d) {
-  //   var isFiltered = d3.selectAll(".filtered")[0].length > 0;
-  //   if (!isFiltered) that.renderFingerPrint();
-  // });
-
-  // tests.select("div.summary").html(function(d) {
-  //   var column = d.column;
-  //   var name = d.test.name();
-  //   var columnWise = d.result.columnWise || {}; // not gauranteed to exist
-  //   var num = columnWise[column] || 0;
-  //   var string = name + ": " + util.percent(num / rows.length);
-  //   return string;
-  // }).classed("interesting", function(d) {
-  //   var column = d.column;
-  //   var columnWise = d.result.columnWise || {}; // not gauranteed to exist
-  //   var num = columnWise[column] || 0;
-  //   return !!num;
-  // })
-  // .attr("title", function(d){
-  //   return d.test.description();
-  // });
-  // d3.selectAll("div.summary")
-  //   .each(function() {
-  //     // d3.select(this.parentNode)
-  //     //   .classed("hidden", false);
-  //   });
-  // d3.selectAll("div.summary:not(.interesting)")
-  //   .each(function() {
-  //     // d3.select(this.parentNode)
-  //     //   .classed("hidden", true);
-  //   });
-
-  // tests.select("div.conclusion").html(function(d) {
-  //   return d.test.conclusion ? d.test.conclusion(d.result) : "";
-  // });
-};
-
-HTMLRenderer.prototype.destroy = function() {
-  this.handsOnTable.destroy();
-  d3.select("#grid").selectAll("*").remove();
 };
 
 HTMLRenderer.prototype.highlightGrid = function(options) {
@@ -307,7 +243,9 @@ HTMLRenderer.prototype.highlightGrid = function(options) {
   // var rowsToShow = [];
   if (highlightCells && testName) {
     var currentComments = _.filter(comments, function(comment) {
-      return comment.array.map(function(d) { return d.name }).indexOf(testName) > -1;
+      return comment.array
+        .map(function(d) { return d.name })
+        .indexOf(testName) > -1;
     });
     handsOnTable.updateSettings({
       cell: currentComments,
