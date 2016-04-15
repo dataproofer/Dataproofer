@@ -255,7 +255,7 @@ function renderStep2(processorConfig) {
   // arbitrary number, for loops will get more expensive from here...
   var ncolumns = Object.keys(loaded.rows[0]).length;
   var nrows = loaded.rows.length;
-  console.log("cols", ncolumns, "rows", nrows, "cells", nrows * ncolumns);
+  //console.log("cols", ncolumns, "rows", nrows, "cells", nrows * ncolumns);
   if(nrows * ncolumns > 100000) {
     d3.select("#file-size-warning").classed("hidden", false);
   }
@@ -433,17 +433,6 @@ function renderStep2(processorConfig) {
       d3.event.stopPropagation();
     }
   });
-
-  /*
-  testsEnter.append("button").classed("duplicate-test", true)
-  .text(function(d) {
-    if(d.local) return "Duplicate test";
-    return "Make a copy";
-  })
-  .on("click", function(d) {
-    duplicateTest(d);
-  });
-  */
 }
 
 function renderStep3(processorConfig) {
@@ -456,7 +445,6 @@ function renderStep3(processorConfig) {
   // make sure the tests ares still scrolled to the top
   var topBar = d3.select(".top-bar").property("scrollHeight");
   var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar;
-  console.log("offsetTop 3", offsetTop);
   var column1 = d3.select(".column-1");
   column1.node().scrollTop = offsetTop;
 }
@@ -499,7 +487,6 @@ function handleFileSelect(evt) {
   if (!files || !files.length) return;
   for (var i = 0, f; i < files.length; i++) {
     var file = files[i];
-    //console.log("loading file", file.name, file);
     var allowFileExtensions = [
       "csv",
       "tsv",
@@ -551,11 +538,9 @@ function handleFileSelect(evt) {
 }
 
 ipc.on("last-file-selected", function(event, file) {
-  //console.log("last file selected was", file);
   var loadConfig = {
     ext: file.name.split(".").pop(),
     filepath: file.path,
-    // fileString: file.contents,
     filename: file.name
   };
   var loaded = Processor.load(loadConfig);
@@ -565,12 +550,10 @@ ipc.on("last-file-selected", function(event, file) {
     input: {},
     loaded: loaded
   };
-  //loadLastFile();
 });
 
 function loadLastFile() {
   renderStep1(lastProcessorConfig);
-  //currentStep = 2;
   renderStep2(lastProcessorConfig);
   currentStep = 3;
   renderNav();
@@ -623,7 +606,6 @@ function handleSpreadsheet() {
     } else if (sheet) {
       //console.log("sheet", sheet);
       var columnHeads = Object.keys(sheet.data[0]);
-      console.log("sheet", sheet);
       var rows = sheet.data;
       var trueRows = rows.length;
       var config = {
@@ -752,7 +734,6 @@ function renderTestEditor(test) {
     // if we had code saved on here, remove it
     delete test.code;
 
-    console.log("save!", newTest);
     ipc.send("save-test", newTest);
     test.name(newTest.name);
     test.description(newTest.description);

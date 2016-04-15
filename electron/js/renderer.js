@@ -4,7 +4,6 @@ var Renderer = require("dataproofer").Rendering;
 var util = require("dataproofertest-js/util");
 
 function HTMLRenderer(config) {
-  //console.log('config', config);
   Renderer.call(this, config);
   var rows = window.rows = config.rows;
   this.rows = rows;
@@ -102,10 +101,7 @@ HTMLRenderer.prototype = Object.create(Renderer.prototype, {});
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
 HTMLRenderer.prototype.addResult = function(suite, test, result) {
-  //console.log("add result", suite, test.name(), result)
-  //this.resultList[suite].push({ suite: suite, test: test, result: result || {} })
   this.resultList.push({ suite: suite, test: test, result: result || {} });
-  // console.log("add result!", test.name(), result)
 };
 
 HTMLRenderer.prototype.done = function() {
@@ -125,7 +121,6 @@ HTMLRenderer.prototype.done = function() {
     that.renderFingerPrint({col: columnIndex });
   });
   handsOnTable.addHook("afterOnCellMouseDown", function(evt, coords) {
-    console.log("clicked", coords);
     that.renderFingerPrint({col: coords.col, row: coords.row });
   });
 
@@ -165,22 +160,6 @@ HTMLRenderer.prototype.done = function() {
       return numPassed + " passed out of " + numTests + " total";
     });
 
-  //console.log("Passed list", passedResults)
-  //console.log("Failed list", failedResults)
-  /*
-  var testsPassed = columnsEnter.append("h4")
-  testsPassed.html("<div class='icon icon-check'></div> " + passedResults.length + " tests passed ")
-  */
-
-  /*
-  var tests = columns.selectAll(".test")
-    .data(function(column) {
-      return failedResults.map(function(d) {
-        return { test: d.test, result: d.result, suite: d.suite, column: column};
-      });
-    });
-  */
-  console.log("resultList", resultList);
   var tests = d3.selectAll(".test")
     .data(resultList, function(d) { return d.suite + "-" + d.test.name(); });
 
@@ -328,7 +307,6 @@ HTMLRenderer.prototype.highlightGrid = function(options) {
   // var rowsToShow = [];
   if (highlightCells && testName) {
     var currentComments = _.filter(comments, function(comment) {
-
       return comment.array.map(function(d) { return d.name }).indexOf(testName) > -1;
     });
     handsOnTable.updateSettings({
@@ -336,7 +314,6 @@ HTMLRenderer.prototype.highlightGrid = function(options) {
       commentedCellClassName: "htCommentCell filtered"
     });
     if (currentComments[0]) {
-      // console.log(currentComments[0]);
       handsOnTable.selectCell(
         currentComments[0].row,
         currentComments[0].col,
@@ -383,10 +360,6 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
   canvas.width = width;
   canvas.height = height;
 
-  // var colorScale = d3.scale.ordinal()
-  //   .domain([1, 2, 3])
-  //   .range(["#ed8282","#da8282", "#d88282"]);
-
   function renderPrint() {
     context.fillStyle = "#fff";
     context.fillRect(0, 0, width, height);
@@ -399,13 +372,13 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
       }
       // only render this cell if its got items in the array
       if(!array.length && !comment.array.length) return;
-      if(!array.length && comment.array.length) { //} || (columnHeads.indexOf(column) !== comment.col)) {
-        context.fillStyle = "#ddd";
+      if(!array.length && comment.array.length) {
+        context.fillStyle = "#ddd"; // default state if info/pass
       } else {
         if(test) {
-          context.fillStyle = "#e03e22";
+          context.fillStyle = "#e03e22"; // if a test is highlighted we show it's cells as red
         } else {
-          context.fillStyle = "#EFE7B8"; //"#e03e22" //colorScale(array.length); //"#d88282"
+          context.fillStyle = "#EFE7B8"; //default state if array has failed/warn elements
         }
       }
 
@@ -451,10 +424,8 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
     if (y < 0) y = 0;
     var row = Math.floor(y / height * rows.length); // for now our cells are 1 pixel high so this works
     var col = Math.floor(x / width * cols.length);
-    //console.log("row, col", row, col)
     handsOnTable.selectCell(row, col, row, col, true);
 
-    //that.renderFingerPrint(row, col);
     renderPrint();
     renderCol(col);
     renderRow(row);
@@ -485,9 +456,7 @@ function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
       _.each(rows, function(row, rowIndex) {
         _.each(columnHeads, function(columnHead) {
           var value = d.result.highlightCells[rowIndex][columnHead];
-          //console.log("value", value, rowIndex, columnHead)
           if(value) {
-            //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
             commentCollector[rowIndex][columnHead].push({name: d.test.name(), testState: d.result.testState});
           }
         });
