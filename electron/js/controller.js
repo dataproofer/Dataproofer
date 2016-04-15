@@ -203,12 +203,8 @@ function renderCurrentStep() {
 
 d3.select("#back-button").on("click", function() {
   currentStep--;
-  if (currentStep == 1) {
-    document.location.reload(true);
-  } else {
     renderNav();
     renderCurrentStep();
-  }
 });
 d3.select("#forward-button").on("click", function() {
   if(currentStep < 3) {
@@ -219,17 +215,16 @@ d3.select("#forward-button").on("click", function() {
 });
 
 // This function updates the step 1 UI once a file has been loaded
-
 function renderStep1(processorConfig) {
-  var step1 = d3.select(".step-1-data");
   clear();
-  step1.style("display", "block");
-  step1.select("#file-loader-button").text("Choose a dataset");
-  // d3.select("#info-top-bar").style("display", "none");
+  // get rid of everything from step 2
+  var step2 = d3.select(".test-sets").selectAll("*").remove()
+  var column1 = d3.select(".column-1")
+  column1.node().scrollTop = 0;
+  column1.select(".test-sets").style('min-height', null);
 }
 
 // This function renders step 2, the UI for selecting which tests to activate
-
 function renderStep2(processorConfig) {
   var container = d3.select(".test-sets");
   clear();
@@ -239,6 +234,21 @@ function renderStep2(processorConfig) {
     // .on("click", function() {
     //   document.location.reload(true);
     // });
+
+  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
+
+  d3.select(".column-1")
+    .transition()
+    .duration(750)
+    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
+
+  function scrollTween(offset) {
+    return function() {
+      offset -= d3.select(".top-bar").property("scrollHeight");
+      var i = d3.interpolateNumber(this.scrollTop, offset);
+      return function(t) { this.scrollTop = i(t); };
+    };
+  }
 
   // Handle large file sizes with a warning
   var loaded = processorConfig.loaded;
@@ -397,18 +407,6 @@ function renderStep2(processorConfig) {
       });
     });
 
-  d3.select(".column-1")
-    .transition()
-    .duration(750)
-    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
-
-  function scrollTween(offset) {
-    return function() {
-      offset -= d3.select(".top-bar").property("scrollHeight");
-      var i = d3.interpolateNumber(this.scrollTop, offset);
-      return function(t) { this.scrollTop = i(t); };
-    };
-  }
 
   function toggleTests(d) {
     console.log("toggle tests", d)
@@ -419,7 +417,6 @@ function renderStep2(processorConfig) {
   }
 
   // testsEnter.append("div").classed("message", true);
-
   testsEnter.append("button").classed("edit-test", true)
     .html(function(d) {
       if (d.local) return "<i class='fa fa-file-code-o'></i>";
@@ -447,32 +444,32 @@ function renderStep2(processorConfig) {
     duplicateTest(d);
   });
   */
-
-  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
-
-  // set the warning states for large file
-  d3.select(".run-tests")
-    .on("click", function() {
-      currentStep = 3;
-      renderNav();
-      renderCurrentStep();
-    });
 }
 
 function renderStep3(processorConfig) {
+  // make sure we can scroll enough to hide the loader/logo
+  d3.select(".test-sets").style('min-height', "100%");
+
   if (renderer) renderer.destroy();
   renderer = Processor.run(processorConfig);
-  // renderer is asynchronous, you can't put any logic here around results.
-  // for that modify renderer.js and do things in addResult() or done()
+
+  // make sure the tests ares still scrolled to the top
+  var topBar = d3.select(".top-bar").property("scrollHeight")
+  var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar
+  console.log("offsetTop 3", offsetTop)
+  var column1 = d3.select(".column-1")
+  column1.node().scrollTop = offsetTop;
 }
 
 function clear() {
   d3.select("#current-file-name").text("");
   d3.select("#file-size-warning").classed("hidden", true);
-  d3.select("#grid").selectAll("*").remove();
-  d3.select(".column-3").classed("hidden", true);
-  d3.select(".grid-footer").classed("hidden", true);
+
   d3.select(".column-1").classed("all-passed", false);
+  d3.select(".column-3").classed("hidden", true);
+  d3.select("#grid").selectAll("*").remove();
+  d3.select(".grid-footer").classed("hidden", true);
+
   d3.selectAll(".test").classed("hidden", false);
   d3.selectAll(".toggle").classed("hidden", false);
   d3.selectAll(".suite-hed").classed("hidden", false);
@@ -483,7 +480,6 @@ function handleDragOver(evt) {
   evt.stopPropagation();
   evt.preventDefault();
   evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-  console.log("DRAG")
 }
 var dropZone = d3.select('.window-content').node();
 dropZone.addEventListener('dragover', handleDragOver, false);
@@ -496,7 +492,6 @@ document.getElementById("file-loader").addEventListener("change", handleFileSele
 function handleFileSelect(evt) {
   evt.stopPropagation();
   evt.preventDefault();
-  console.log("EVT", evt)
   d3.select("#file-loader-button").text("Loading");
   var files = evt.target.files;
   if(!files && evt.dataTransfer) files = evt.dataTransfer.files
