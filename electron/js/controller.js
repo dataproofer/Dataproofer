@@ -409,7 +409,7 @@ function renderStep2(processorConfig) {
 
 
   function toggleTests(d) {
-    console.log("toggle tests", d);
+    // console.log("toggle tests", d);
     d.test.active = !d.test.active;
     saveTestConfig();
     updateTestsActiveState();

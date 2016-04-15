@@ -19,7 +19,6 @@ function Renderer(config) {
  * @return {undefined}
  */
 Renderer.prototype.error = function(error) {
-  console.log("MAY DAY");
   console.error(error);
 };
 
@@ -30,7 +29,7 @@ Renderer.prototype.error = function(error) {
  * @param {Object} the result object.
  */
 Renderer.prototype.addResult = function(suite, test, result) {
-  console.log("add result", suite, test, result);
+  // console.log("add result", suite, test, result);
   this.results[suite][test] = result;
   // TODO: update rendering
 };
