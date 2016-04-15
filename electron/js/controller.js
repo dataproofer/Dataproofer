@@ -203,8 +203,8 @@ function renderCurrentStep() {
 
 d3.select("#back-button").on("click", function() {
   currentStep--;
-    renderNav();
-    renderCurrentStep();
+  renderNav();
+  renderCurrentStep();
 });
 d3.select("#forward-button").on("click", function() {
   if(currentStep < 3) {
@@ -218,8 +218,8 @@ d3.select("#forward-button").on("click", function() {
 function renderStep1(processorConfig) {
   clear();
   // get rid of everything from step 2
-  var step2 = d3.select(".test-sets").selectAll("*").remove()
-  var column1 = d3.select(".column-1")
+  d3.select(".test-sets").selectAll("*").remove();
+  var column1 = d3.select(".column-1");
   column1.node().scrollTop = 0;
   column1.select(".test-sets").style('min-height', null);
 }
@@ -230,7 +230,7 @@ function renderStep2(processorConfig) {
   clear();
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .html("Load New File")
+    .html("Load New File");
     // .on("click", function() {
     //   document.location.reload(true);
     // });
@@ -253,11 +253,11 @@ function renderStep2(processorConfig) {
   // Handle large file sizes with a warning
   var loaded = processorConfig.loaded;
   // arbitrary number, for loops will get more expensive from here...
-  var ncolumns = Object.keys(loaded.rows[0]).length
-  var nrows = loaded.rows.length
-  console.log("cols", ncolumns, "rows", nrows, "cells", nrows * ncolumns)
+  var ncolumns = Object.keys(loaded.rows[0]).length;
+  var nrows = loaded.rows.length;
+  console.log("cols", ncolumns, "rows", nrows, "cells", nrows * ncolumns);
   if(nrows * ncolumns > 100000) {
-    d3.select("#file-size-warning").classed("hidden", false)
+    d3.select("#file-size-warning").classed("hidden", false);
   }
 
   // Remove 'all tests passed' indicator if going back to tests from step 3
@@ -278,7 +278,7 @@ function renderStep2(processorConfig) {
         return d.name;
       },
       class: function(d) {
-        return "suite"
+        return "suite";
       }
     });
 
@@ -293,10 +293,10 @@ function renderStep2(processorConfig) {
     .each(suiteState)
     .on("change", function(d) {
       var dis = d3.select(this);
-      var active = dis.property("checked")
+      var active = dis.property("checked");
       d.tests.forEach(function(test) {
-        test.active = active
-      })
+        test.active = active;
+      });
       updateTestsActiveState();
       saveTestConfig();
     });
@@ -314,40 +314,40 @@ function renderStep2(processorConfig) {
     var activeCount = 0;
     d.tests.forEach(function(test) {
       if(test.active) activeCount++;
-    })
+    });
     if (activeCount === 0) {
       d3.select(this).property({
         checked: false,
         indeterminate: false
-      })
+      });
     } else if (activeCount === d.tests.length) {
       d3.select(this).property({
         checked: true,
         indeterminate: false
-      })
+      });
     } else {
       // we have some active tests
       d3.select(this).property({
         checked: null,
         indeterminate: true
-      })
+      });
     }
   }
 
   // render the tests
   var testWrapper = suitesEnter.append("ul")
-    .attr("class", "tests-wrapper")
+    .attr("class", "tests-wrapper");
 
   var tests = testWrapper
     .selectAll(".test")
     .data(function(d) {
       // we format the data to match closer to what it will look like when we
       // get results
-      var results = d.tests.map(function(t) {return { test: t, suite: d.name }})
+      var results = d.tests.map(function(t) {return { test: t, suite: d.name };});
       return results;
     }, function(d) {
       // key function so we can uniquely update this later
-      return d.suite + "-" + d.test.name()
+      return d.suite + "-" + d.test.name();
     });
 
   var testsEnter = tests.enter().append("li")
@@ -355,7 +355,7 @@ function renderStep2(processorConfig) {
     .classed("onoff", true)
     .attr("id", function(d) {
       return d.test.name().replace(/\s+/g, "-").toLowerCase();
-    })
+    });
 
   testsEnter.append("button").classed("delete-test", true)
     .html("<span class=\"icon icon-cancel-squared\"></span>")
@@ -381,11 +381,11 @@ function renderStep2(processorConfig) {
   function updateTestsActiveState() {
     tests
     .classed("active", function(d) {
-      return d.test.active
-    })
+      return d.test.active;
+    });
     tests.select("input").property("checked", function(d) {
-      return d.test.active
-    })
+      return d.test.active;
+    });
   }
 
   testsEnter.append("label")
@@ -397,8 +397,8 @@ function renderStep2(processorConfig) {
   testsEnter.append("div")
     .attr("class", "info-wrapper")
     .append("i")
-    .attr("original-title", function(d) { return d.test.description() })
-    .attr("class", "fa fa-info-circle")
+    .attr("original-title", function(d) { return d.test.description(); })
+    .attr("class", "fa fa-question-circle")
     .attr("aria-hidden", "true")
     .each(function(d) {
       jQ(this).tipsy({
@@ -409,11 +409,11 @@ function renderStep2(processorConfig) {
 
 
   function toggleTests(d) {
-    console.log("toggle tests", d)
+    console.log("toggle tests", d);
     d.test.active = !d.test.active;
     saveTestConfig();
     updateTestsActiveState();
-    suites.select("input").each(suiteState)
+    suites.select("input").each(suiteState);
   }
 
   // testsEnter.append("div").classed("message", true);
@@ -429,8 +429,8 @@ function renderStep2(processorConfig) {
   testsEnter.on("click", function(d) {
     if (d3.event.shiftKey) {
       renderTestEditor(d.test);
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
     }
   });
 
@@ -454,10 +454,10 @@ function renderStep3(processorConfig) {
   renderer = Processor.run(processorConfig);
 
   // make sure the tests ares still scrolled to the top
-  var topBar = d3.select(".top-bar").property("scrollHeight")
-  var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar
-  console.log("offsetTop 3", offsetTop)
-  var column1 = d3.select(".column-1")
+  var topBar = d3.select(".top-bar").property("scrollHeight");
+  var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar;
+  console.log("offsetTop 3", offsetTop);
+  var column1 = d3.select(".column-1");
   column1.node().scrollTop = offsetTop;
 }
 
@@ -472,6 +472,7 @@ function clear() {
 
   d3.selectAll(".test").classed("hidden", false);
   d3.selectAll(".toggle").classed("hidden", false);
+  d3.selectAll(".test label").style("pointer-events", "auto");
   d3.selectAll(".suite-hed").classed("hidden", false);
 }
 
@@ -481,9 +482,9 @@ function handleDragOver(evt) {
   evt.preventDefault();
   evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
-var dropZone = d3.select('.window-content').node();
-dropZone.addEventListener('dragover', handleDragOver, false);
-dropZone.addEventListener('drop', handleFileSelect, false);
+var dropZone = d3.select(".window-content").node();
+dropZone.addEventListener("dragover", handleDragOver, false);
+dropZone.addEventListener("drop", handleFileSelect, false);
 
 
 // This handles file selection via the button
@@ -494,7 +495,7 @@ function handleFileSelect(evt) {
   evt.preventDefault();
   d3.select("#file-loader-button").text("Loading");
   var files = evt.target.files;
-  if(!files && evt.dataTransfer) files = evt.dataTransfer.files
+  if(!files && evt.dataTransfer) files = evt.dataTransfer.files;
   if (!files || !files.length) return;
   for (var i = 0, f; i < files.length; i++) {
     var file = files[i];

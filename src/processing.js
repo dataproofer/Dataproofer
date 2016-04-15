@@ -84,7 +84,7 @@ exports.run = function(config) {
       //console.log("checking column headers", columnHeads.length);
       var badHeaderCount = 0;
       var badColumnHeads = [];
-      var passed;
+      var testState = "passed";
 
       _.forEach(columnHeads, function(columnHead, counts) {
         if (counts[columnHead] || util.isEmpty(columnHead)) {
@@ -97,17 +97,10 @@ exports.run = function(config) {
         return counts;
       }, {});
 
-      if (badHeaderCount > 0) {
-        passed = false;
-
-      } else if (badHeaderCount === 0) {
-        passed = true;
-      } else {
-        passed = false;
-      }
+      if (badHeaderCount > 0) testState = "failed";
 
       var result = {
-        passed: passed,
+        testState: testState,
         badColumnHeads: badColumnHeads
       };
       return result;

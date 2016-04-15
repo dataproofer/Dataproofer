@@ -16,6 +16,7 @@ function HTMLRenderer(config) {
   d3.selectAll(".test:not(.active)")
     .classed("hidden", true);
   d3.selectAll(".toggle").classed("hidden", true);
+  d3.selectAll(".test label").style("pointer-events", "none");
   d3.selectAll(".suite-hed").classed("hidden", true);
   d3.select(".column-3")
     .classed("hidden", false)
@@ -136,9 +137,9 @@ HTMLRenderer.prototype.done = function() {
     .insert("div", ":first-child")
     .html(function() {
       var headersCheck = resultList[0];
-      var missingHeadersStr = "<div class='info'>";
-      if (!headersCheck.result.passed) {
-        missingHeadersStr += "<i class='fa fa-exclamation-triangle'></i>";
+      var missingHeadersStr = "<div class='header-info'>";
+      if (headersCheck.result.testState === "failed") {
+        missingHeadersStr += "<i class='fa fa-times-circle'></i>";
         missingHeadersStr += " Ignored ";
         missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
         missingHeadersStr += " because it had a missing or duplicate column header. Dataproofer requires unique column header names.";
@@ -151,31 +152,19 @@ HTMLRenderer.prototype.done = function() {
     });
 
   var passedResults = _.filter(resultList, function(d){
-    return d.result.passed;
-  });
-
-  var failedResults = _.filter(resultList, function(d) {
-    return !d.result.passed;
+    return d.result.testState === "passed";
   });
 
   var numPassed = passedResults.length;
-  var numFailed = failedResults.length;
   var numTests = resultList.length; //missing headers counted but not shown
 
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .attr("class", "summary")
     .html(function() {
-      return numPassed + " passed & " + numFailed + " failed out of " + numTests + " total";
+      return numPassed + " passed out of " + numTests + " total";
     });
 
-  if (passedResults.length === resultList.length) {
-    d3.select(".column-1").classed("all-passed", true);
-    d3.select(".test-sets ul").style("display", "none");
-  } else {
-    d3.select(".column-1").classed("all-passed", false);
-    d3.select(".test-sets ul").style("display", "block");
-  }
   //console.log("Passed list", passedResults)
   //console.log("Failed list", failedResults)
   /*
@@ -195,12 +184,12 @@ HTMLRenderer.prototype.done = function() {
   var tests = d3.selectAll(".test")
     .data(resultList, function(d) { return d.suite + "-" + d.test.name(); });
 
-  tests.select("i.fa-info-circle")
+  tests.select("i.fa-question-circle")
     .each(function(d) {
       d3.select(this)
         .attr("original-title", function(d) {
           var tooltipStr = "";
-          if (!d.result.passed) {
+          if (d.result.passed !== "passed") {
             tooltipStr += d.test.conclusion();
           } else {
             tooltipStr += d.test.description();
@@ -227,19 +216,28 @@ HTMLRenderer.prototype.done = function() {
   that.clearFilteredResults = clearFilteredResults;
 
   tests.classed("pass", function(d) {
-    return d.result.passed;
+    return d.result.testState === "passed";
   })
   .classed("fail", function(d) {
-    return !d.result.passed;
+    return d.result.testState === "failed";
+  })
+  .classed("warn", function(d) {
+    return d.result.testState === "warn";
+  })
+  .classed("info", function(d) {
+    return d.result.testState === "info";
   })
   .on("mouseover", filterResults)
   .on("mouseout", clearFilteredResults);
 
   tests.insert("i", "label")
     .attr("class", function(d) {
-      if (d.result.passed) return "result-icon fa fa-check-circle";
-      if (!d.result.passed) return "result-icon fa fa-times-circle";
-    });
+      if (d.result.testState === "passed") return "fa-check-circle";
+      if (d.result.testState === "failed") return "fa-times-circle";
+      if (d.result.testState === "warn") return "fa-exclamation-circle";
+      if (d.result.testState === "info") return "fa-info-circle";
+    })
+    .classed("result-icon fa", true);
 
   // tests.append("div").classed("passfail", true);
   // tests.append("div").classed("summary", true)
