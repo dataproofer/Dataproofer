@@ -62,16 +62,22 @@
   color: #29A03B;
 }
 
-.fail .fa {
+.fail .fa-times-circle {
   color: #D43833;
 }
 
-.warn .fa {
+.warn .fa-exclamation-circle {
   color: #e6c000;
 }
 
-.info .fa {
-  color: #48C2C5;
+.info .fa-info-circle {
+  color: #999999;
+}
+
+.info .fa-question-circle,
+.fail .fa-question-circle,
+.warn .fa-question-circle {
+  color: #000 !important;
 }
 
 /*** NEW CSS ***/
@@ -237,16 +243,17 @@ button.reload {
   float: right;
 }
 
-.test .info-wrapper .filter-btn,
 .test .info-wrapper .fa-question-circle {
   display: inline-block;
   cursor: pointer;
   margin: 0 5px;
   transition: all 0.15s ease;
+  color: #999999;
 }
 
 .test.active .info-wrapper .fa-question-circle {
   margin: 0 10px;
+  color: #999999;
 }
 
 .filter-btn {
@@ -517,10 +524,6 @@ General Suites and test
   border-left-color: #e6c000 !important;
 }
 
-.test.info {
-  border-left-color: #48C2C5 !important;
-}
-
 .test.fail .toggle {
   /*display:none;*/
   opacity: 0;
@@ -542,13 +545,6 @@ General Suites and test
   margin-left: 4px;
   display: inline-block;
   width: 200px;
-}
-
-.all-passed {
-    background-image: url("../img/all-good.png");
-    background-size: 25vh;
-    background-repeat: no-repeat;
-    background-position: bottom center;
 }
 
 .test-sets {

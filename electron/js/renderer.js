@@ -165,13 +165,6 @@ HTMLRenderer.prototype.done = function() {
       return numPassed + " passed out of " + numTests + " total";
     });
 
-  if (passedResults.length === resultList.length) {
-    d3.select(".column-1").classed("all-passed", true);
-    d3.select(".test-sets ul").style("display", "none");
-  } else {
-    d3.select(".column-1").classed("all-passed", false);
-    d3.select(".test-sets ul").style("display", "block");
-  }
   //console.log("Passed list", passedResults)
   //console.log("Failed list", failedResults)
   /*
