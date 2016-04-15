@@ -54,6 +54,7 @@
 
 .result-icon {
   width: 12px;
+  margin-left: 10px;
 }
 
 .pass .fa-check-circle {
@@ -97,7 +98,7 @@
   /*background-color: #F7F6F5;*/
   background-color: #E6E4E3;
   border-right: 1px solid #ccc;
-  padding-bottom: 200px;
+  padding-bottom: 50px;
 
   max-height: 100vh;
   overflow-y: auto;
@@ -152,12 +153,18 @@ button.reload {
   font-size: 16px;
   border: 0;
   padding: 0.4em;
+  padding-bottom: 0;
 }
 
 #file-size-warning {
   font-size: 14px;
-  color: rgba(230, 192, 0, 1);
-  padding: 1em;
+  color: rgba(0,0,0,0.5);
+  padding: 0.9em;
+  margin: 0.6em 1em;
+  line-height: 1.2;
+  /* padding-top: 0; */
+  border: 1px solid rgba(230, 192, 0, 1);
+  text-align: left;
 }
 
 #file-loader-button {
@@ -499,6 +506,10 @@ General Suites and test
 }
 .suite .test .toggle {
   margin-left: 8px;
+}
+
+.suite .suite-hed {
+  height: 30px;
 }
 
 .suite label {
