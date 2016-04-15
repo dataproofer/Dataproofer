@@ -12,7 +12,6 @@ function HTMLRenderer(config) {
   var resultList = [];
   this.resultList = resultList;
 
-
   d3.select(".grid-footer").classed("hidden", false);
   d3.selectAll(".test:not(.active)")
     .classed("hidden", true);
@@ -96,19 +95,6 @@ function HTMLRenderer(config) {
     handsOnTable.search.query(this.value);
     handsOnTable.render();
   });
-  // var resultsHeight = containerHeight + "px";
-  // we just remove everything rather than get into update pattern
-  // d3.select(".step-3-results").selectAll("*").remove();
-  // d3.select(".step-3-results")
-  //   .style("height", resultsHeight)
-  //   .selectAll(".suite")
-  //   .data(config.suites)
-  //   .enter().append("div")
-  //   .attr({
-  //     class: function(d) { return "suite " + d.name + ((d.active) ? " active" : "" );}
-  //   })
-  //   .append("h2").text(function(d) { return d.fullName; });
-  //d3.select(".test-results").selectAll(".test").remove();
 }
 
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {});
@@ -248,6 +234,12 @@ HTMLRenderer.prototype.done = function() {
   })
   .on("mouseover", filterResults)
   .on("mouseout", clearFilteredResults);
+
+  tests.insert("i", "label")
+    .attr("class", function(d) {
+      if (d.result.passed) return "result-icon fa fa-check-circle";
+      if (!d.result.passed) return "result-icon fa fa-times-circle";
+    });
 
   // tests.append("div").classed("passfail", true);
   // tests.append("div").classed("summary", true)
