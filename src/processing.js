@@ -132,6 +132,8 @@ exports.run = function(config) {
             }, 0);
           });
         }
+        // call the test's conclusion function, if any
+        test.conclusion(result)
         // incrementally report as tests run
         renderer.addResult(suite.name, test, result);
       } catch(e) {
