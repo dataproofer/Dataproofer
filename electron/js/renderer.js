@@ -328,7 +328,8 @@ HTMLRenderer.prototype.highlightGrid = function(options) {
   // var rowsToShow = [];
   if (highlightCells && testName) {
     var currentComments = _.filter(comments, function(comment) {
-      return comment.array.indexOf(testName) > -1;
+
+      return comment.array.map(function(d) { return d.name }).indexOf(testName) > -1;
     });
     handsOnTable.updateSettings({
       cell: currentComments,
@@ -392,9 +393,9 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
     comments.forEach(function(comment) {
       var array = [];
       if(test) {
-        array = comment.array.filter(function(d) { return d === test; });
+        array = comment.array.filter(function(d) { return d.name === test; });
       } else {
-        array = comment.array;
+        array = comment.array.filter(function(d) { return d.testState === "failed" || d.testState === "warn" });
       }
       // only render this cell if its got items in the array
       if(!array.length && !comment.array.length) return;
@@ -487,7 +488,7 @@ function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
           //console.log("value", value, rowIndex, columnHead)
           if(value) {
             //commentCollector[rowIndex][columnHead].push({ test: d.test.name(), value: value  })
-            commentCollector[rowIndex][columnHead].push(d.test.name());
+            commentCollector[rowIndex][columnHead].push({name: d.test.name(), testState: d.result.testState});
           }
         });
       });
@@ -498,7 +499,8 @@ function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
     _.each(columnHeads, function(columnHead, columnIndex) {
       var array = commentCollector[rowIndex][columnHead];
       if(array && array.length && array.length > 0) {
-        var string = array.join("\n");
+        var names = array.map(function(d) { return d.name })
+        var string = names.join("\n");
         comments.push({row: rowIndex, col: columnIndex, comment: string, array: array});
       }
     });
