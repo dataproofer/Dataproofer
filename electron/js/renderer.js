@@ -122,6 +122,7 @@ HTMLRenderer.prototype.done = function() {
   var handsOnTable = this.handsOnTable;
 
   this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable);
+  this.highlightGrid();
 
   var that = this;
   setTimeout(function() {
@@ -237,7 +238,14 @@ HTMLRenderer.prototype.highlightGrid = function(options) {
   var highlightCells = options.highlightCells;
   var testName = options.testName;
 
-  var comments = this.comments;
+  var comments = [];
+  if(options.testName) {
+    comments = this.comments;
+  } else {
+    this.comments.filter(function(comment) {
+      return comment.array.filter(function(d) { return d.testState !== "info" }).length > 0
+    });
+  }
   var handsOnTable = this.handsOnTable;
 
   // var rowsToShow = [];
@@ -413,6 +421,5 @@ function renderCellComments(rows, columnHeads, resultList, handsOnTable) {
     });
   });
 
-  handsOnTable.updateSettings({cell: comments});
   return comments;
 }
