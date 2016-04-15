@@ -91,13 +91,11 @@ function HTMLRenderer(config) {
     }
   }
 
-  /*
   var searchFiled = document.getElementById("search-field");
-  Handsontable.Dom.addEvent(searchFiled, "keyup", function (event) {
+  Handsontable.Dom.addEvent(searchFiled, "keydown", function (event) {
     handsOnTable.search.query(this.value);
     handsOnTable.render();
   });
-  */
   // var resultsHeight = containerHeight + "px";
   // we just remove everything rather than get into update pattern
   // d3.select(".step-3-results").selectAll("*").remove();

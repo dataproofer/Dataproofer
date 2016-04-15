@@ -12,6 +12,7 @@
   opacity: 1;
   background-color: #000000;
   box-sizing: border-box;
+  overflow: hidden;
  }
 
  button {
@@ -68,7 +69,7 @@
 
 .top-bar {
   width: 100%;
-  height: 3vh;
+  height: 22px;
   background-color: #000;
 }
 
@@ -268,8 +269,9 @@ td.htCommentCell.filtered {
 
 .overview-title {
   text-align: center;
-  /*min-height: 3vh;*/
-  /*box-shadow: 1px 5px 5px -5px #333; */
+  font-size: 15px;
+  line-height: 1.75;
+  background-color: #EEEEEE;
 }
 
 #fingerprint {

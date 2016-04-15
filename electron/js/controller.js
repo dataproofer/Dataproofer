@@ -399,7 +399,7 @@ function renderStep2(processorConfig) {
 
   d3.select(".column-1")
     .transition()
-    .duration(1000)
+    .duration(750)
     .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
 
   function scrollTween(offset) {
