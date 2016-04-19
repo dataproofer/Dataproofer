@@ -2,7 +2,7 @@
 
 ![](http://i.imgur.com/n38R14S.png)
 
-## A proofreader for your data. Currently in beta. 
+## A proofreader for your data. Currently in beta.
 
 Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights.
 
@@ -26,14 +26,14 @@ Proof your data, get your results, and feel confident about your dataset.
 ## Table of Contents
 
 * [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
-* [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
-  * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
+* [Test Sets](https://github.com/dataproofer/Dataproofer#test-suites)
+  * [Info](https://github.com/dataproofer/Dataproofer#information--diagnostics)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
   * [Stats](https://github.com/dataproofer/Dataproofer#stats-suite)
 * [Development](https://github.com/dataproofer/Dataproofer#development)
   * [How You Can Help](https://github.com/dataproofer/Dataproofer#how-you-can-help)
-  * [Modifying a test suite](https://github.com/dataproofer/Dataproofer#modifying-a-test-suite) 
+  * [Modifying a test suite](https://github.com/dataproofer/Dataproofer#modifying-a-test-suite)
   * [Create a new test](https://github.com/dataproofer/Dataproofer#creating-a-new-test)
     * [name](https://github.com/dataproofer/Dataproofer#name)
     * [description](https://github.com/dataproofer/Dataproofer#description)
@@ -53,6 +53,7 @@ Proof your data, get your results, and feel confident about your dataset.
 A set of tests that infer descriptive information based on the contents of a table's cells. Please click on the link above to see further documentation in the test suite's repository.
 
 + Check for numeric values in columns
++ Check for strings in columns
 
 ### [Core Suite](https://github.com/dataproofer/core-suite)
 A set of tests related to common problems and data checks — namely, making sure data has not been truncated by looking for specific cut-off indicators. Please click on the link above to see further documentation in the test suite's repository.
@@ -184,7 +185,7 @@ For more information, please see the full `util` [documentation](https://github.
 
 ### Troubleshooting a test that won't run
 Tests are run inside a try catch loop in `src/processing.js`. You may wish to temporarily remove the try/catch while iterating on a test.
-Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger. 
+Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger.
 
 ### Iterating on tests
 Dataproofer saves a copy of the most recently loaded file in the Application Data directory provided to it by the OS.
