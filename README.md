@@ -1,4 +1,4 @@
-# Dataproofer - Launching April 19th 2016
+# Dataproofer
 
 ![](http://i.imgur.com/n38R14S.png)
 
