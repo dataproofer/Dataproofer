@@ -50,13 +50,13 @@ Proof your data, get your results, and feel confident about your dataset.
 
 ## Test Suites
 ### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
-A set of tests that infer descriptive information based on the contents of a table's cells. Please click on the link above to see further documentation in the test suite's repository.
+A set of tests that infer descriptive information based on the contents of a table's cells.
 
 + Check for numeric values in columns
 + Check for strings in columns
 
 ### [Core Suite](https://github.com/dataproofer/core-suite)
-A set of tests related to common problems and data checks — namely, making sure data has not been truncated by looking for specific cut-off indicators. Please click on the link above to see further documentation in the test suite's repository.
+A set of tests related to common problems and data checks — namely, making sure data has not been truncated by looking for specific cut-off indicators.
 
 + Check for duplicate rows
 + Check for empty columns (no values)
@@ -68,13 +68,13 @@ data was exported from a database
 + Check for strings that are exactly 255 characters — an indication there may be missing data lost when the data was exported from MySQL
 
 ### [Geo Suite](https://github.com/dataproofer/geo-suite)
-A set of tests related to common geographic data problems. Please click on the link above to see further documentation in the test suite's repository.
+A set of tests related to common geographic data problems.
 
 + Check for invalid latitude and longitude values (values outside the range of -180º to 180º)
 + Check for void latitude and longitude values (values at 0º,0º)
 
 ### [Stats Suite](https://github.com/dataproofer/stats-suite)
-A set of test related to common statistical used to detect outlying data. Please click on the link above to see further documentation in the test suite's repository.
+A set of test related to common statistical used to detect outlying data.
 
 + Check for outliers within a column relative to the column's median
 + Check for outliers within a column relative to the column's mean
@@ -235,6 +235,7 @@ A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation
 * EJ Fox (project lead), Dataviz Editor @ Vocativ
 * Gerald Rich (lead developer), Interactive Producer @ Vocativ
 * Ian Johnson (lead developer), Dataproofer
+* Jason Das (UX and design), Dataproofer
 * Joe Presser (video producer), Dataproofer
 * Julia Kastner (concept & name consulting), Project Manager @ Vocativ
 * Kelli Vanover (design consulting), Product Manager @ Vocativ
