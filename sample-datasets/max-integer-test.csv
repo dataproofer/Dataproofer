@@ -1,0 +1,14 @@
+name,value,tag
+enjalot,"2147483646",good
+enjalot,"2,147,483,647",bad
+enjalot,"2147483647",bad
+gerald,"2,097,151",good
+ejfox,"2,097,152",bad
+ejfox,"2097152",bad
+myersinc,"32767",bad
+myersinc,"32,767",bad
+myersinc,"65,535",bad
+myersinc,"65535",bad
+myersinc,"65535",good
+big,"9,223,372,036,854,775,807", bad
+big,"18,446,744,073,709,551,616", bad

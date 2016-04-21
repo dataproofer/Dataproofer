@@ -1,8 +1,8 @@
-# Dataproofer - Launching April 19th 2016
+# Dataproofer
 
 ![](http://i.imgur.com/n38R14S.png)
 
-## A proofreader for your data. Currently in beta. 
+## A proofreader for your data. Currently in beta.
 
 Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights.
 
@@ -26,14 +26,14 @@ Proof your data, get your results, and feel confident about your dataset.
 ## Table of Contents
 
 * [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
-* [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
-  * [Info](https://github.com/dataproofer/Dataproofer#info-suite)
+* [Test Sets](https://github.com/dataproofer/Dataproofer#test-suites)
+  * [Info](https://github.com/dataproofer/Dataproofer#information--diagnostics)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
   * [Stats](https://github.com/dataproofer/Dataproofer#stats-suite)
 * [Development](https://github.com/dataproofer/Dataproofer#development)
   * [How You Can Help](https://github.com/dataproofer/Dataproofer#how-you-can-help)
-  * [Modifying a test suite](https://github.com/dataproofer/Dataproofer#modifying-a-test-suite) 
+  * [Modifying a test suite](https://github.com/dataproofer/Dataproofer#modifying-a-test-suite)
   * [Create a new test](https://github.com/dataproofer/Dataproofer#creating-a-new-test)
     * [name](https://github.com/dataproofer/Dataproofer#name)
     * [description](https://github.com/dataproofer/Dataproofer#description)
@@ -50,21 +50,32 @@ Proof your data, get your results, and feel confident about your dataset.
 
 ## Test Suites
 ### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
-+ Count the number of rows
-+ Check for empty columns (no values)
+A set of tests that infer descriptive information based on the contents of a table's cells.
+
 + Check for numeric values in columns
++ Check for strings in columns
 
 ### [Core Suite](https://github.com/dataproofer/core-suite)
+A set of tests related to common problems and data checks — namely, making sure data has not been truncated by looking for specific cut-off indicators.
+
 + Check for duplicate rows
-+ Integers at their upper limit (an indication there may be missing data lost when the data was exported)
-+ Check for whether there are exactly 65k rows (an indication there may be missing rows lost when the data was exported)
-+ Check for strings that are exactly 255 characters (an indication there may be missing data lost when the data was exported)
++ Check for empty columns (no values)
++ Check for **big integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
++ Check for **integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
++ Check for **small integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
++ Check for whether there are exactly 65k rows — an indication there may be missing rows lost when the
+data was exported from a database
++ Check for strings that are exactly 255 characters — an indication there may be missing data lost when the data was exported from MySQL
 
 ### [Geo Suite](https://github.com/dataproofer/geo-suite)
+A set of tests related to common geographic data problems.
+
 + Check for invalid latitude and longitude values (values outside the range of -180º to 180º)
 + Check for void latitude and longitude values (values at 0º,0º)
 
 ### [Stats Suite](https://github.com/dataproofer/stats-suite)
+A set of test related to common statistical used to detect outlying data.
+
 + Check for outliers within a column relative to the column's median
 + Check for outliers within a column relative to the column's mean
 
@@ -174,7 +185,7 @@ For more information, please see the full `util` [documentation](https://github.
 
 ### Troubleshooting a test that won't run
 Tests are run inside a try catch loop in `src/processing.js`. You may wish to temporarily remove the try/catch while iterating on a test.
-Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger. 
+Otherwise, for now we recommend heavy doses of console.log and the Chrome debugger.
 
 ### Iterating on tests
 Dataproofer saves a copy of the most recently loaded file in the Application Data directory provided to it by the OS.
@@ -224,6 +235,7 @@ A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation
 * EJ Fox (project lead), Dataviz Editor @ Vocativ
 * Gerald Rich (lead developer), Interactive Producer @ Vocativ
 * Ian Johnson (lead developer), Dataproofer
+* Jason Das (UX and design), Dataproofer
 * Joe Presser (video producer), Dataproofer
 * Julia Kastner (concept & name consulting), Project Manager @ Vocativ
 * Kelli Vanover (design consulting), Product Manager @ Vocativ
