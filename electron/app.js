@@ -35,10 +35,10 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({
     width: 1500,
     height: 900,
-    'min-width': 500,
-    'min-height': 200,
-    'accept-first-mouse': true,
-    'title-bar-style': 'hidden',
+    'minWidth': 500,
+    'minHeight': 200,
+    'acceptFirstMouse': true,
+    // 'titleBarStyle': 'hidden',
     icon: __dirname + '/icons/dataproofer-logo-large.png'
   });
 
