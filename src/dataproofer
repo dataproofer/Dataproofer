@@ -1,0 +1,120 @@
+#!/usr/bin/env node
+
+var Processor = require("./processing");
+var Renderer = require("./rendering");
+
+var pkg = require("./package.json");
+
+var program = require("commander");
+var chalk = require("chalk");
+
+// module.exports = {
+//   Processing: Processor,
+//   Rendering: Renderer,
+//   version: pkg.version
+// };
+
+if(require.main === module) {
+  var SUITES = [
+    require("dataproofer-info-suite"),
+    require("dataproofer-core-suite"),
+    require("dataproofer-stats-suite"),
+    require("dataproofer-geo-suite")
+  ];
+
+  SUITES.forEach(function(suite) {
+    suite.tests.forEach(function(test) {
+      test.active = true;
+    });
+  });
+
+  program
+    .version(pkg.version)
+    .description("A proofreader for your data")
+    .usage("<file>");
+
+  program.on("--help", function(){
+    console.log("  Examples:");
+    console.log("");
+    console.log(chalk.bold("    $ dataproofer my_data.csv"));
+    console.log("");
+  });
+
+  program.parse(process.argv);
+
+  if (!process.argv.slice(2).length) {
+    program.outputHelp(make_red);
+    return;
+  }
+
+  var make_red = function make_red(txt) {
+    return chalk.bold(txt); //display the help text in red on the console
+  };
+
+  var filepath = program.args[0];
+  //READ FILE
+
+  var allowFileExtensions = [
+    "csv",
+    "tsv",
+    "psv",
+    "xlsx",
+    "xls"
+  ];
+  var currFileName = filepath.split("/").pop();
+  var currExt = currFileName.split(".").pop();
+
+  if (allowFileExtensions.indexOf(currExt) > -1) {
+    var loadConfig = {
+      ext: currExt,
+      filepath: filepath,
+      filename: currFileName
+    };
+    var loaded = Processor.load(loadConfig);
+    var processorConfig = {
+      suites: SUITES,
+      renderer: Renderer,
+      loaded: loaded
+    };
+    var results = Processor.run(processorConfig).results;
+    var suiteNames = Object.keys(results);
+
+    var totalTests = 0;
+    var totalPassed = 0;
+    var resultStr = "";
+    suiteNames.forEach(function(suiteName) {
+      var testNames = Object.keys(results[suiteName]);
+      totalTests += testNames.length;
+      testNames.forEach(function(testName) {
+        var test = results[suiteName][testName];
+        resultStr += testName + ": ";
+        switch (test.testState) {
+          case "passed":
+            totalPassed += 1;
+            resultStr += chalk.green(test.testState) + "\n";
+            break;
+          case "warn":
+            resultStr += chalk.yellow(test.testState) + "\n";
+            break;
+          case "failed":
+            resultStr += chalk.red(test.testState) + "\n";
+            break;
+          case "info":
+            resultStr += chalk.cyan(test.testState) + "\n";
+            break;
+        }
+      });
+    });
+
+    var summaryStr = chalk.blue(
+      totalPassed + " tests passed out of " + totalTests + "\n"
+    );
+
+    console.log(summaryStr);
+    console.log(resultStr);
+  } else {
+    console.error(
+      chalk.red("Error: Must use a supported filetype. Currently supported filetypes: " + allowFileExtensions.join(", "))
+    );
+  }
+}

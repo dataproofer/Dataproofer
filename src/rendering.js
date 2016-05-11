@@ -9,7 +9,7 @@ module.exports = Renderer;
 function Renderer(config) {
   var results = this.results = {};
   config.suites.forEach(function(suite) {
-    console.log("suite name", suite);
+    // console.log("suite name", suite);
     results[suite.name] = {};
   });
 }
@@ -30,7 +30,7 @@ Renderer.prototype.error = function(error) {
  * @param {Object} the result object.
  */
 Renderer.prototype.addResult = function(suite, test, result) {
-  this.results[suite][test] = result;
+  this.results[suite][test.name()] = result;
   // TODO: update rendering
 };
 
