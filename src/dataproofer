@@ -35,13 +35,15 @@ if(require.main === module) {
     .option("-j, --json", "Output a JSON of the test result")
     .option("-J, --json-pretty", "Output an indented JSON string of the test results")
     .option("-w, --watch", "(WIP) DOES NOT WORK YET. Automatically re-run DataProofer when the dataset changes.")
-    .option("-s, --summary", "Exclude specific test results from stdout.")
+    .option("-S, --summary", "Output overall test results, excluding specific pass/fail results")
+    .option("-s, --suites", "(WIP) DOES NOT WORK YET. A list of specific data proofing suites of tests Dataproofer will run")
+    .option("-t, --tests", "(WIP) DOES NOT WORK YET. A list of specific data proofing tests Dataproofer will run")
     .option("-v, --verbose", "Include descriptions about each column in stdout.");
 
   program.on("--help", function(){
     console.log("  Examples:");
     console.log("");
-    console.log(chalk.bold("    $ dataproofer my_data.csv"));
+    console.log("    $ dataproofer my_data.csv");
     console.log("");
   });
 
@@ -116,8 +118,8 @@ if(require.main === module) {
     var summaryStr = chalk.cyan(
       totalPassed + " tests passed out of " + totalTests + "\n"
     );
-    if (program.watch === true) {
-      console.log(chalk.red("Error: The 'watch' feature is not currently implemented"));
+    if (program.watch === true || program.suites === true || program.tests === true) {
+      console.log(chalk.red("Error: This feature is not currently implemented"));
       return;
     }
     console.log(summaryStr);
