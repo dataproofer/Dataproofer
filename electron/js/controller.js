@@ -402,7 +402,6 @@ function renderStep2(processorConfig) {
     .attr("aria-hidden", "true")
     .each(function(d) {
       jQ(this).tipsy({
-        html: true,
         gravity: jQ.fn.tipsy.autoNS
       });
     });

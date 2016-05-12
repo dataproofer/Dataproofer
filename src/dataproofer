@@ -100,16 +100,17 @@ if(require.main === module) {
             resultStr += chalk.red(test.testState) + "\n";
             break;
           case "info":
-            resultStr += chalk.cyan(test.testState) + "\n";
+            resultStr += chalk.blue(test.testState) + "\n";
             break;
+        }
+        if (test.testState !== "passed") {
+          resultStr += chalk.dim(test.conclusion.replace(/\<br\>/g, "\n"));
         }
       });
     });
-
-    var summaryStr = chalk.blue(
+    var summaryStr = chalk.cyan(
       totalPassed + " tests passed out of " + totalTests + "\n"
     );
-
     console.log(summaryStr);
     console.log(resultStr);
   } else {

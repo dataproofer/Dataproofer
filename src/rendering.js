@@ -31,7 +31,7 @@ Renderer.prototype.error = function(error) {
  */
 Renderer.prototype.addResult = function(suite, test, result) {
   this.results[suite][test.name()] = result;
-  // TODO: update rendering
+  this.results[suite][test.name()].conclusion = test.conclusion();
 };
 
 /**
