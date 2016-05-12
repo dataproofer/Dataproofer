@@ -5,8 +5,9 @@ var Renderer = require("./rendering");
 
 var pkg = require("./package.json");
 
-var program = require("commander");
 var chalk = require("chalk");
+var program = require("commander");
+var rw = require("rw");
 
 // module.exports = {
 //   Processing: Processor,
@@ -26,16 +27,18 @@ if(require.main === module) {
     .version(pkg.version)
     .description("A proofreader for your data")
     .usage("<file>")
-    .option("-j, --json", "Output a JSON of the test result")
-    .option("-J, --json-pretty", "Output an indented JSON string of the test results")
-    .option("-S, --summary", "Output overall test results, excluding specific pass/fail results")
-    .option("-s, --suites <list>", "(WIP) DOES NOT WORK YET. A comma-separated list of specific data proofing suite names Dataproofer will run")
-    .option("-t, --tests <list>", "(WIP) DOES NOT WORK YET. A comma-separated list of specific data proofing test names Dataproofer will run")
-    .option("-v, --verbose", "Include descriptions about each column in stdout.")
-    .option("--core", "Run tests only from the core suite of data checks")
-    .option("--info", "Run tests only from the info suite of data checks")
-    .option("--stats", "Run tests only from the statistical suite of data checks")
-    .option("--geo", "Run tests only from the geographic suite of data checks");
+    .option("-o, --out", "filename to output results. default stdout")
+    .option("-c, --core", "run tests from the core suite")
+    .option("-i, --info", "run tests from the info suite")
+    .option("-a, --stats", "run tests from the statistical suite")
+    .option("-g, --geo", "run tests from the geographic suite")
+    .option("-s, --suites <list>", "(WIP) comma-separated list test suites to use")
+    .option("-t, --tests <list>", "(WIP) comma-separated list to use")
+    .option("-j, --json", "output JSON of test results")
+    .option("-J, --json-pretty", "output an indented JSON of test results")
+    .option("-S, --summary", "output overall test results, excluding pass/fail results")
+    .option("-v, --verbose", "include descriptions about each column")
+    .option("-e, --exclude", "(WIP) exclude tests that did not fail")
 
   program.on("--help", function(){
     console.log("  Examples:");
@@ -140,16 +143,18 @@ if(require.main === module) {
     }
     console.log(summaryStr);
     // console.log(program);
+
+    var outPath = program.out ? program.out : "/dev/stdout";
     if (program.json === true) {
-      console.log(JSON.stringify(results));
+      rw.writeFileSync(outPath, JSON.stringify(results));
       return;
     }
     if (program.jsonPretty === true) {
-      console.log(JSON.stringify(results, null, 2));
+      rw.writeFileSync(outPath, JSON.stringify(results, null, 2));
       return;
     }
     if (program.summary !== true) {
-      console.log(resultStr);
+      rw.writeFileSync(outPath, resultStr);
       return;
     }
   } else {
