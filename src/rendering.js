@@ -51,5 +51,5 @@ Renderer.prototype.addError = function(suite, test, error) {
  */
 Renderer.prototype.done = function() {
   // finish up
-  console.log("proofed.");
+  console.log("\n### PROOFED ###\n");
 };

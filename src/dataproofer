@@ -23,17 +23,24 @@ if(require.main === module) {
     require("dataproofer-geo-suite")
   ];
 
+  var list = function(val) {
+    return val.split(",");
+  };
+
+  var toLower = function(str) {
+    return str.toLowerCase();
+  };
+
   program
     .version(pkg.version)
     .description("A proofreader for your data")
     .usage("<file>")
-    .option("-o, --out", "filename to output results. default stdout")
+    .option("-o, --out <file>", "file to output results. default stdout")
     .option("-c, --core", "run tests from the core suite")
     .option("-i, --info", "run tests from the info suite")
     .option("-a, --stats", "run tests from the statistical suite")
     .option("-g, --geo", "run tests from the geographic suite")
-    .option("-s, --suites <list>", "(WIP) comma-separated list test suites to use")
-    .option("-t, --tests <list>", "(WIP) comma-separated list to use")
+    .option("-t, --tests <list>", "comma-separated list to use", list)
     .option("-j, --json", "output JSON of test results")
     .option("-J, --json-pretty", "output an indented JSON of test results")
     .option("-S, --summary", "output overall test results, excluding pass/fail results")
@@ -67,11 +74,18 @@ if(require.main === module) {
       suite.tests.forEach(function(test) { test.active = true; });
     } else if (suite.name.indexOf("geo") > -1 && program.geo === true) {
       suite.tests.forEach(function(test) { test.active = true; });
+    } else if (program.tests) {
+      suite.tests.forEach(function(test) {
+        var inputTests = program.tests.map(toLower);
+        var currTest = test.name().toLowerCase();
+        if (inputTests.indexOf(currTest) > -1) test.active = true;
+      });
     } else if (
       program.core !== true &&
       program.info !== true &&
       program.stats !== true &&
-      program.geo !== true
+      program.geo !== true &&
+      program.tests !== true
     ) {
       suite.tests.forEach(function(test) { test.active = true; });
     }
@@ -130,7 +144,9 @@ if(require.main === module) {
             break;
         }
         if (program.verbose === true && test.testState !== "passed") {
-          resultStr += chalk.dim(test.conclusion.replace(/\<br\>/g, "\n"));
+          resultStr += chalk.dim(test.conclusion.replace(/\<br\>/g, "\n")) + "\n";
+        } else {
+          resultStr += "\n";
         }
       });
     });
@@ -144,17 +160,24 @@ if(require.main === module) {
     console.log(summaryStr);
     // console.log(program);
 
+    var done = function() {
+      console.log("\n### DONE ###");
+    };
     var outPath = program.out ? program.out : "/dev/stdout";
+    if (program.out) resultStr = resultStr.replace(/\[\d+m/g, "");
     if (program.json === true) {
-      rw.writeFileSync(outPath, JSON.stringify(results));
+      rw.writeFileSync(outPath, JSON.stringify(results), "utf-8");
+      done();
       return;
     }
     if (program.jsonPretty === true) {
-      rw.writeFileSync(outPath, JSON.stringify(results, null, 2));
+      rw.writeFileSync(outPath, JSON.stringify(results, null, 2), "utf-8");
+      done();
       return;
     }
     if (program.summary !== true) {
-      rw.writeFileSync(outPath, resultStr);
+      rw.writeFileSync(outPath, resultStr, "utf-8");
+      done();
       return;
     }
   } else {
