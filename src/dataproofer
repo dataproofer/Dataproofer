@@ -31,7 +31,12 @@ if(require.main === module) {
   program
     .version(pkg.version)
     .description("A proofreader for your data")
-    .usage("<file>");
+    .usage("<file>")
+    .option("-j, --json", "Output a JSON of the test result")
+    .option("-J, --json-pretty", "Output an indented JSON string of the test results")
+    .option("-w, --watch", "(WIP) DOES NOT WORK YET. Automatically re-run DataProofer when the dataset changes.")
+    .option("-s, --summary", "Exclude specific test results from stdout.")
+    .option("-v, --verbose", "Include descriptions about each column in stdout.");
 
   program.on("--help", function(){
     console.log("  Examples:");
@@ -103,7 +108,7 @@ if(require.main === module) {
             resultStr += chalk.blue(test.testState) + "\n";
             break;
         }
-        if (test.testState !== "passed") {
+        if (program.verbose === true && test.testState !== "passed") {
           resultStr += chalk.dim(test.conclusion.replace(/\<br\>/g, "\n"));
         }
       });
@@ -111,8 +116,24 @@ if(require.main === module) {
     var summaryStr = chalk.cyan(
       totalPassed + " tests passed out of " + totalTests + "\n"
     );
+    if (program.watch === true) {
+      console.log(chalk.red("Error: The 'watch' feature is not currently implemented"));
+      return;
+    }
     console.log(summaryStr);
-    console.log(resultStr);
+    console.log(program);
+    if (program.json === true) {
+      console.log(JSON.stringify(results));
+      return;
+    }
+    if (program.jsonPretty === true) {
+      console.log(JSON.stringify(results, null, 2));
+      return;
+    }
+    if (program.summary !== true) {
+      console.log(resultStr);
+      return;
+    }
   } else {
     console.error(
       chalk.red("Error: Must use a supported filetype. Currently supported filetypes: " + allowFileExtensions.join(", "))
