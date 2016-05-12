@@ -22,23 +22,20 @@ if(require.main === module) {
     require("dataproofer-geo-suite")
   ];
 
-  SUITES.forEach(function(suite) {
-    suite.tests.forEach(function(test) {
-      test.active = true;
-    });
-  });
-
   program
     .version(pkg.version)
     .description("A proofreader for your data")
     .usage("<file>")
     .option("-j, --json", "Output a JSON of the test result")
     .option("-J, --json-pretty", "Output an indented JSON string of the test results")
-    .option("-w, --watch", "(WIP) DOES NOT WORK YET. Automatically re-run DataProofer when the dataset changes.")
     .option("-S, --summary", "Output overall test results, excluding specific pass/fail results")
-    .option("-s, --suites", "(WIP) DOES NOT WORK YET. A list of specific data proofing suites of tests Dataproofer will run")
-    .option("-t, --tests", "(WIP) DOES NOT WORK YET. A list of specific data proofing tests Dataproofer will run")
-    .option("-v, --verbose", "Include descriptions about each column in stdout.");
+    .option("-s, --suites <list>", "(WIP) DOES NOT WORK YET. A comma-separated list of specific data proofing suite names Dataproofer will run")
+    .option("-t, --tests <list>", "(WIP) DOES NOT WORK YET. A comma-separated list of specific data proofing test names Dataproofer will run")
+    .option("-v, --verbose", "Include descriptions about each column in stdout.")
+    .option("--core", "Run tests only from the core suite of data checks")
+    .option("--info", "Run tests only from the info suite of data checks")
+    .option("--stats", "Run tests only from the statistical suite of data checks")
+    .option("--geo", "Run tests only from the geographic suite of data checks");
 
   program.on("--help", function(){
     console.log("  Examples:");
@@ -57,6 +54,25 @@ if(require.main === module) {
   var make_red = function make_red(txt) {
     return chalk.bold(txt); //display the help text in red on the console
   };
+
+  for (suite of SUITES) {
+    if (suite.name.indexOf("core") > -1 && program.core === true) {
+      suite.tests.forEach(function(test) { test.active = true; });
+    } else if (suite.name.indexOf("info") > -1 && program.info === true) {
+      suite.tests.forEach(function(test) { test.active = true; });
+    } else if (suite.name.indexOf("stats") > -1 && program.stats === true) {
+      suite.tests.forEach(function(test) { test.active = true; });
+    } else if (suite.name.indexOf("geo") > -1 && program.geo === true) {
+      suite.tests.forEach(function(test) { test.active = true; });
+    } else if (
+      program.core !== true &&
+      program.info !== true &&
+      program.stats !== true &&
+      program.geo !== true
+    ) {
+      suite.tests.forEach(function(test) { test.active = true; });
+    }
+  }
 
   var filepath = program.args[0];
   //READ FILE
@@ -115,15 +131,15 @@ if(require.main === module) {
         }
       });
     });
-    var summaryStr = chalk.cyan(
-      totalPassed + " tests passed out of " + totalTests + "\n"
+    var summaryStr = chalk.green(
+      totalPassed + " tests passed out of " + totalTests
     );
     if (program.watch === true || program.suites === true || program.tests === true) {
       console.log(chalk.red("Error: This feature is not currently implemented"));
       return;
     }
     console.log(summaryStr);
-    console.log(program);
+    // console.log(program);
     if (program.json === true) {
       console.log(JSON.stringify(results));
       return;
