@@ -1,6 +1,6 @@
 {
   "name": "dataproofer",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A proofreader for your datasets",
   "main": "index.js",
   "scripts": {
