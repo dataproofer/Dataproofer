@@ -30,7 +30,6 @@
     "lodash": "^4.8.2",
     "require-from-string": "^1.1.0",
     "simple-statistics": "^1.0.1",
-    "slickgrid": "^2.1.0",
     "tipsy": "^1.0.0",
     "tipsy-browserify": "^1.0.0",
     "uuid": "^2.0.1"

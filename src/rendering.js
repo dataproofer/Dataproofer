@@ -9,6 +9,7 @@ module.exports = Renderer;
 function Renderer(config) {
   var results = this.results = {};
   config.suites.forEach(function(suite) {
+    // console.log("suite name", suite);
     results[suite.name] = {};
   });
 }
@@ -29,9 +30,8 @@ Renderer.prototype.error = function(error) {
  * @param {Object} the result object.
  */
 Renderer.prototype.addResult = function(suite, test, result) {
-  // console.log("add result", suite, test, result);
-  this.results[suite][test] = result;
-  // TODO: update rendering
+  this.results[suite][test.name()] = result;
+  this.results[suite][test.name()].conclusion = test.conclusion();
 };
 
 /**
@@ -51,5 +51,5 @@ Renderer.prototype.addError = function(suite, test, error) {
  */
 Renderer.prototype.done = function() {
   // finish up
-  console.log("proofed.");
+  process.stdout.write("\n### PROOFED ###\n");
 };
