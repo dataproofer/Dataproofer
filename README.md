@@ -60,6 +60,7 @@ A set of tests related to common problems and data checks — namely, making su
 
 + Check for duplicate rows
 + Check for empty columns (no values)
++ Check for special, non-typical Latin characters/letters in strings
 + Check for **big integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
 + Check for **integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
 + Check for **small integer** cut-offs as defined by MySQL and PostgreSQL, common database programs
