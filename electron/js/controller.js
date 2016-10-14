@@ -433,6 +433,12 @@ function renderStep2(processorConfig) {
       d3.event.stopPropagation();
     }
   });
+
+  testsEnter.on("contextmenu", function(d) {
+    renderTestEditor(d.test);
+    d3.event.preventDefault();
+    d3.event.stopPropagation();
+  });
 }
 
 function renderStep3(processorConfig) {
