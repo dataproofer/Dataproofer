@@ -12,7 +12,7 @@ This used to be a long manual process, using valuable time and introducing the p
 
 Data proofer is built to automate this process of checking a dataset for errors or potential mistakes.
 
-## Getting started
+## Getting Started (Desktop)
 Download a .zip of the latest release [from the Dataproofer releases page](https://github.com/dataproofer/Dataproofer/releases).
 
 Drag the app into your applications folder.
@@ -23,10 +23,34 @@ Once you select your dataset, you can choose which suites and tests run by turni
 
 Proof your data, get your results, and feel confident about your dataset.
 
+## Getting Started (Command Line)
+**OPEN ALPHA**
+Clone the latest & change directories
+```
+git clone git@github.com:dataproofer/Dataproofer.git
+cd Dataproofer/src
+```
+Read the documentation
+```
+node index.js --help
+```
+Run a test
+```
+node index.js data.csv
+```
+Save the results
+```
+node index.js --json data.csv --out data.json
+```
+Learn how to run specific test suites or tests and output longer or shorter summaries, use the `--help` flag.
+
+Found a bug? [Let us know](https://github.com/dataproofer/Dataproofer/issues/new).
+
 ## Table of Contents
 
-* [Getting Started](https://github.com/dataproofer/Dataproofer#getting-started)
-* [Test Sets](https://github.com/dataproofer/Dataproofer#test-suites)
+* [Getting Started (Desktop)](https://github.com/dataproofer/Dataproofer#getting-started-desktop)
+* [Getting Started (Command Line)](https://github.com/dataproofer/Dataproofer#getting-started-command-line)
+* [Test Suites](https://github.com/dataproofer/Dataproofer#test-suites)
   * [Info](https://github.com/dataproofer/Dataproofer#information--diagnostics)
   * [Core](https://github.com/dataproofer/Dataproofer#core-suite)
   * [Geo](https://github.com/dataproofer/Dataproofer#geo-suite)
