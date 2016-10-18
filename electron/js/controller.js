@@ -757,11 +757,10 @@ function renderTestEditor(test) {
 }
 
 // Enable context menu
-// http://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
+// http://electron.atom.io/docs/all/#render-process
 // The remote module is required to call main process modules
-var remote = require("remote");
-var Menu = remote.require("menu");
-var MenuItem = remote.require("menu-item");
+const {remote} = require("electron");
+const {Menu, MenuItem} = remote;
 var rightClickPosition = null;
 var menu = new Menu();
 menu.append(new MenuItem({

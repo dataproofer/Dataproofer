@@ -1,4 +1,3 @@
-
 var _ = require("lodash");
 var d3 = require("d3");
 var xlsx = require("xlsx");
@@ -34,7 +33,7 @@ exports.load = function(config) {
       var sheets = xlsx.readFile(filepath).Sheets;
       var firstSheetName = _.keys(sheets)[0];
       var excelCsvRows = xlsx.utils.sheet_to_csv(sheets[firstSheetName]);
-      rows = d3.csv.parse(excelCsvRows);
+      rows = d3.csvParse(excelCsvRows);
     } else {
       rows = [];
     }
