@@ -1,13 +1,9 @@
-const electron = require("electron");
+const {app, BrowserWindow, Menu, ipcMain} = require("electron");
 // Module to control application life.
-var app = electron.app;
 // Module to create native browser window.
-var BrowserWindow = electron.BrowserWindow;
-var Menu = require("menu");
 var defaultMenu = require("electron-default-menu");
 var uuid = require("uuid");
 // We can listen to messages from the renderer here:
-const ipcMain = electron.ipcMain;
 var fs = require("fs");
 
 var DEVELOPMENT = process.argv[2] && process.argv[2] == "--dev";
@@ -28,10 +24,9 @@ app.on("window-all-closed", function() {
   //}
 });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-app.on("ready", function() {
+function createWindow() {
   // Create the browser window.
+  let mainWindow;
   mainWindow = new BrowserWindow({
     width: 1500,
     height: 900,
@@ -46,7 +41,7 @@ app.on("ready", function() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
 
   // and load the index.html of the app.
-  mainWindow.loadURL("file://' + __dirname + '/index.html");
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
 
   // Emitted when the window is closed.
@@ -163,8 +158,19 @@ app.on("ready", function() {
     });
 
   });
-});
+}
 
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+app.on("ready", createWindow);
+
+app.on("activate", () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    createWindow();
+  }
+});
 // function stripFileName(filename) {
 //   return filename.replace(/s+/g, "-");
 // }
