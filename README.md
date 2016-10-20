@@ -24,15 +24,13 @@ Once you select your dataset, you can choose which suites and tests run by turni
 Proof your data, get your results, and feel confident about your dataset.
 
 ## Getting Started (Command Line)
-**OPEN ALPHA**
 Clone the latest & change directories
 ```
-git clone git@github.com:dataproofer/Dataproofer.git
-cd Dataproofer/src
+npm install dataproofer
 ```
 Read the documentation
 ```
-node index.js --help
+dataproofer --help
 >  Usage: dataproofer <file>
 
   A proofreader for your data
