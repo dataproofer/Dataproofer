@@ -24,7 +24,6 @@ Once you select your dataset, you can choose which suites and tests run by turni
 Proof your data, get your results, and feel confident about your dataset.
 
 ## Getting Started (Command Line)
-Clone the latest & change directories
 ```
 npm install dataproofer
 ```
