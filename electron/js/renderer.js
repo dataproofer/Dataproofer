@@ -14,6 +14,16 @@ function HTMLRenderer(config) {
   d3.select(".grid-footer").classed("hidden", false);
   d3.selectAll(".test:not(.active)")
     .classed("hidden", true);
+  d3.selectAll(".tests-wrapper").classed("hidden", function() {
+    return d3.select(this)
+      .selectAll(".test")
+      .classed("hidden");
+  });
+  d3.selectAll(".suite").classed("hidden", function() {
+    return d3.select(this)
+      .select(".tests-wrapper")
+      .classed("hidden");
+  });
   d3.selectAll(".toggle").classed("hidden", true);
   d3.selectAll(".test label").style("pointer-events", "none");
   d3.selectAll(".suite-hed").classed("hidden", true);

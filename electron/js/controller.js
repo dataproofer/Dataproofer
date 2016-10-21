@@ -451,6 +451,7 @@ function clear() {
   d3.select("#grid").selectAll("*").remove();
   d3.select(".grid-footer").classed("hidden", true);
 
+  d3.selectAll(".tests-wrapper").classed("hidden", false);
   d3.selectAll(".test").classed("hidden", false);
   d3.selectAll(".toggle").classed("hidden", false);
   d3.selectAll(".test label").style("pointer-events", "auto");
