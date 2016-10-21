@@ -25,7 +25,7 @@ Proof your data, get your results, and feel confident about your dataset.
 
 ## Getting Started (Command Line)
 ```
-npm install dataproofer
+npm install -g dataproofer
 ```
 Read the documentation
 ```
