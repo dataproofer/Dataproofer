@@ -1,6 +1,6 @@
 {
   "name": "dataproofer",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "description": "A proofreader for your datasets",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dataproofer/dataproofer.git"
+  },
+  "bin": {
+    "dataproofer": "./index.js"
   },
   "keywords": [
     "data",
@@ -22,9 +25,12 @@
   },
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0",
     "d3": "^4.2.8",
     "dataproofertest-js": "git://github.com/dataproofer/dataproofertest-js.git",
     "indian-ocean": "^1.1.1",
+    "lodash": "^4.16.4",
     "optimist": "^0.6.1",
     "rw": "^1.3.2",
     "xlsx": "^0.8.0"
