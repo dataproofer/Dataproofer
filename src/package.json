@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
-    "d3": "^4.2.7",
+    "d3": "^4.2.8",
     "dataproofertest-js": "git://github.com/dataproofer/dataproofertest-js.git",
     "indian-ocean": "^1.1.1",
     "optimist": "^0.6.1",

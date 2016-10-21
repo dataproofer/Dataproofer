@@ -268,28 +268,17 @@ function renderStep2(processorConfig) {
   var filteredSuites = _.filter(processorConfig.suites, function(suite) {
     return suite.tests.length > 0;
   });
-  var suites = container.append("ul")
+  var suites = container.append("ul");
+  var suitesEnter = suites
     .selectAll(".suite")
-    .data(filteredSuites);
-
-  var suitesEnter = suites.enter().append("li")
-    .attr({
-      id: function(d) {
-        return d.name;
-      },
-      class: function(d) {
-        return "suite";
-      }
-    });
-
+    .data(filteredSuites)
+    .enter().append("li")
+    .attr("id", (d) => { d.name; })
+    .attr("class", "suite");
   suitesEnter.append("input")
-    .attr({
-      "class": "toggle",
-      "type": "checkbox",
-      "id": function(d, i) {
-        return "suite-" + i;
-      }
-    })
+    .attr("class", "toggle")
+    .attr("type", "checkbox")
+    .attr("id", (d, i) => { "suite-" + i; })
     .each(suiteState)
     .on("change", function(d) {
       var dis = d3.select(this);
@@ -368,12 +357,10 @@ function renderStep2(processorConfig) {
     });
 
   testsEnter.append("input")
-    .attr({
-      "class": "toggle",
-      "type": "checkbox",
-      "id": function(d, i) {
-        return d3.select(this.parentNode).attr("id") + "-test-" + i;
-      }
+    .attr("class", "toggle")
+    .attr("type", "checkbox")
+    .attr("id", function(d, i) {
+      d3.select(this.parentNode).attr("id") + "-test-" + i;
     })
     .on("change", toggleTests);
 

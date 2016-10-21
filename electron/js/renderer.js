@@ -377,7 +377,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
     renderRow(row);
   }
 
-  var drag = d3.behavior.drag()
+  var drag = d3.drag()
     .on("drag.fp", selectGridCell);
   d3.select(canvas)
     .call(drag)
