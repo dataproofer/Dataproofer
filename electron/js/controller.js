@@ -395,7 +395,6 @@ function renderStep2(processorConfig) {
 
 
   function toggleTests(d) {
-    console.log("toggle tests", d);
     d.test.active = !d.test.active;
     saveTestConfig();
     updateTestsActiveState();
@@ -432,9 +431,8 @@ function renderStep3(processorConfig) {
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
 
-  if (renderer) renderer.destroy();
+  if (typeof renderer === "function") renderer.destroy();
   renderer = Processor.run(processorConfig);
-
   // make sure the tests ares still scrolled to the top
   var topBar = d3.select(".top-bar").property("scrollHeight");
   var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar;
@@ -596,7 +594,7 @@ function handleSpreadsheet() {
     // console.log(sheet);
     if (err) {
       handleGsheetsError(err);
-      console.log(err);
+      console.log("gsheets error", err);
     } else if (sheet) {
       //console.log("sheet", sheet);
       var columnHeads = Object.keys(sheet.data[0]);

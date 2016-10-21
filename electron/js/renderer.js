@@ -100,7 +100,7 @@ function HTMLRenderer(config) {
     }
   }
 
-  var searchTimeout;
+  var searchTimeout
   this.searchHandler = function (event) {
     if(searchTimeout) clearTimeout(searchTimeout);
     setTimeout(function() {
@@ -110,7 +110,7 @@ function HTMLRenderer(config) {
   }
   var searchField = document.getElementById("search-field");
   Handsontable.Dom.addEvent(searchField, "keydown", this.searchHandler);
-};
+}
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {});
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
@@ -368,7 +368,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
 
   function selectGridCell (d,i) {
     var selectFiltered = d3.selectAll(".filtered");
-    var isFiltered = (selectFiltered[0].length > 0)? true : false;
+    var isFiltered = selectFiltered.empty? true : false;
 
     if (isFiltered) {
       d3.selectAll(".test").classed("filtered", false);

@@ -111,20 +111,28 @@ exports.run = function(config) {
   var cleanedColumnHeads = _.without(columnHeads, result.badColumnHeads.join(", "));
   var cleanedRows = rows;
 
-  // TODO: use async series? can run suites in series for better UX?
-  suites.forEach(function(suite) {
-    //console.log("running suite", suite)
-    // TODO: use async module to run asynchronously?
-    suite.tests.forEach(function(test) {
-      if(!test.active) return;
-      try {
-        // run the test!
+  var testsNestArr = suites.map(function(suite) {
+    var suiteTestsArr = suite.tests.map(function(test) {
+      test.suiteName = suite.name;
+      return test;
+    });
+    return suiteTestsArr;
+  });
+  // do a shallow flatten to get an array of tests
+  var testsFlatArr = _.flatten(testsNestArr);
+  var testPromisesArr = testsFlatArr
+    .filter(function(test) {
+      // run tests flagged test.active === true
+      return test.active === true;
+    })
+    .map(function(test) {
+      var testPromise = new Promise(function(resolve, reject) {
         var result = test.proof(cleanedRows, cleanedColumnHeads, input);
         // aggregate the number of highlighted cells for each column
         result.columnWise = {};
         if(result && result.highlightCells) {
           cleanedColumnHeads.forEach(function(column) {
-            result.columnWise[column] = _.reduce(result.highlightCells, function(count, row) {
+            result.columnWise[column] = result.highlightCells.reduce(function(count, row) {
               // if there is a value in this cell, increment count, otherwise leave it alone
               return !!row[column] ? count + 1 : count;
             }, 0);
@@ -133,13 +141,20 @@ exports.run = function(config) {
         // call the test's conclusion function, if any
         test.conclusion(result)
         // incrementally report as tests run
-        renderer.addResult(suite.name, test, result);
-      } catch(e) {
-        // uh oh! report an error (different from failing a test)
-        renderer.addError(suite.name, test, e);
-      }
+        renderer.addResult(test.suiteName, test, result);
+        resolve(renderer);
+      });
+      testPromise.catch(function(reason) {
+        renderer.addError(test.suiteName, test, reason);
+      });
+      return testPromise;
     });
-  });
-  renderer.done();
-  return renderer;
+  var testsPromise = Promise.all(testPromisesArr)
+    .then(function(values) {
+      renderer.done();
+      return renderer;
+    }, function(reason) {
+      console.log('reason', reason); // Error!
+    });
+  return testsPromise;
 };

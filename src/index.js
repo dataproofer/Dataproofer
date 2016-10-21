@@ -42,7 +42,7 @@ if(require.main === module) {
     .option("-o, --out <file>", "file to output results. default stdout")
     .option("-c, --core", "run tests from the core suite")
     .option("-i, --info", "run tests from the info suite")
-    .option("-a, --stats", "run tests from the statistical suite")
+    .option("-s, --stats", "run tests from the statistical suite")
     .option("-g, --geo", "run tests from the geographic suite")
     .option("-t, --tests <list>", "comma-separated list to use", list)
     .option("-j, --json", "output JSON of test results")
