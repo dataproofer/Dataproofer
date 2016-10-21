@@ -24,15 +24,35 @@ Once you select your dataset, you can choose which suites and tests run by turni
 Proof your data, get your results, and feel confident about your dataset.
 
 ## Getting Started (Command Line)
-**OPEN ALPHA**
-Clone the latest & change directories
 ```
-git clone git@github.com:dataproofer/Dataproofer.git
-cd Dataproofer/src
+npm install -g dataproofer
 ```
 Read the documentation
 ```
-node index.js --help
+dataproofer --help
+>  Usage: dataproofer <file>
+
+  A proofreader for your data
+
+  Options:
+
+    -h, --help          output usage information
+    -V, --version       output the version number
+    -o, --out <file>    file to output results. default stdout
+    -c, --core          run tests from the core suite
+    -i, --info          run tests from the info suite
+    -a, --stats         run tests from the statistical suite
+    -g, --geo           run tests from the geographic suite
+    -t, --tests <list>  comma-separated list to use
+    -j, --json          output JSON of test results
+    -J, --json-pretty   output an indented JSON of test results
+    -S, --summary       output overall test results, excluding pass/fail results
+    -v, --verbose       include descriptions about each column
+    -x, --exclude       exclude tests that passed
+
+  Examples:
+
+    $ dataproofer my_data.csv
 ```
 Run a test
 ```
