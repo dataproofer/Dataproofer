@@ -1,6 +1,6 @@
 {
   "name": "dataproofer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A proofreader for your datasets",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "d3": "^3.5.12",
     "dataproofertest-js": "git://github.com/dataproofer/dataproofertest-js.git",
     "indian-ocean": "^1.1.1",
+    "lodash": "^4.16.4",
     "optimist": "^0.6.1",
     "rw": "^1.3.2",
     "xlsx": "^0.8.0"
