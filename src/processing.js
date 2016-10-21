@@ -10,11 +10,9 @@ exports.load = function(config) {
   var ext = config.ext;
 
   // user can optionally pass in rows and columnHeads already parsed
-  // (i.e. from Tabletop)
   var rows = config.rows;
   var columnHeads = config.columnHeads;
 
-  // console.log("processing!", filename, suites)
   if(!rows && ext) {
     // Parse the csv with d3
     var nonExcelExtensions = [

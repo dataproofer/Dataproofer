@@ -20,14 +20,8 @@
         // Use 4 spaces for indentation,
         "indent": [2, 2, { "SwitchCase": 1 }],
 
-        // Require single quotes for strings.
-        "quotes": [1],
-
         // Allow 'while (true), do something, break' pattern.
         "no-constant-condition": 0,
-
-        // Require semicolons where they should be.
-        "semi": [2],
 
         "no-console": [0],
 

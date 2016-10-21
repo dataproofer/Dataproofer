@@ -273,14 +273,14 @@ function renderStep2(processorConfig) {
     .selectAll(".suite")
     .data(filteredSuites)
     .enter().append("li")
-    .attr("id", (d) => { d.name; })
+    .attr("id", function(d) { return d.name; })
     .attr("class", "suite");
   suitesEnter.append("input")
     .attr("class", "toggle")
     .attr("type", "checkbox")
-    .attr("id", (d, i) => { "suite-" + i; })
+    .attr("id", function(d, i) { return "suite-" + i; })
     .each(suiteState)
-    .on("change", function(d) {
+    .on("change.suite", function(d) {
       var dis = d3.select(this);
       var active = dis.property("checked");
       d.tests.forEach(function(test) {
@@ -305,21 +305,18 @@ function renderStep2(processorConfig) {
       if(test.active) activeCount++;
     });
     if (activeCount === 0) {
-      d3.select(this).property({
-        checked: false,
-        indeterminate: false
-      });
+      d3.select(this)
+        .property("checked", false)
+        .property("indeterminate", false);
     } else if (activeCount === d.tests.length) {
-      d3.select(this).property({
-        checked: true,
-        indeterminate: false
-      });
+      d3.select(this)
+        .property("checked", true)
+        .property("indeterminate", false);
     } else {
       // we have some active tests
-      d3.select(this).property({
-        checked: null,
-        indeterminate: true
-      });
+      d3.select(this)
+        .property("checked", null)
+        .property("indeterminate", true);
     }
   }
 
@@ -360,19 +357,21 @@ function renderStep2(processorConfig) {
     .attr("class", "toggle")
     .attr("type", "checkbox")
     .attr("id", function(d, i) {
-      d3.select(this.parentNode).attr("id") + "-test-" + i;
+      return d3.select(this.parentNode).attr("id") + "-test-" + i;
     })
-    .on("change", toggleTests);
+    .on("change.test", toggleTests);
 
   updateTestsActiveState();
   function updateTestsActiveState() {
-    tests
-    .classed("active", function(d) {
-      return d.test.active;
-    });
-    tests.select("input").property("checked", function(d) {
-      return d.test.active;
-    });
+    testWrapper.selectAll(".test")
+      .classed("active", function(d) {
+        return d.test.active;
+      });
+    testWrapper.selectAll(".test")
+      .select("input")
+      .property("checked", function(d) {
+        return d.test.active;
+      });
   }
 
   testsEnter.append("label")
@@ -396,11 +395,12 @@ function renderStep2(processorConfig) {
 
 
   function toggleTests(d) {
-    // console.log("toggle tests", d);
+    console.log("toggle tests", d);
     d.test.active = !d.test.active;
     saveTestConfig();
     updateTestsActiveState();
-    suites.select("input").each(suiteState);
+    suitesEnter.select("input")
+      .each(suiteState);
   }
 
   // testsEnter.append("div").classed("message", true);
@@ -421,11 +421,11 @@ function renderStep2(processorConfig) {
     }
   });
 
-  testsEnter.on("contextmenu", function(d) {
-    renderTestEditor(d.test);
-    d3.event.preventDefault();
-    d3.event.stopPropagation();
-  });
+  // testsEnter.on("contextmenu", function(d) {
+  //   renderTestEditor(d.test);
+  //   d3.event.preventDefault();
+  //   d3.event.stopPropagation();
+  // });
 }
 
 function renderStep3(processorConfig) {
