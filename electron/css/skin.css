@@ -1,0 +1,312 @@
+.column-1 {
+  background-color: whitesmoke;
+  border-right: 1px solid #e6e6e6;
+}
+.column-2 {
+  background-color: #e6e6e6;
+}
+
+.file-info {
+  /*background-color: #242943;*/
+  background: linear-gradient(to right, #242943,#352c51);
+}
+
+#intro-logo {
+  -webkit-filter: invert(1);
+  mix-blend-mode: color-dodge;
+  opacity: .9;
+}
+
+#filetypes-accepted p {
+  color: rgba(255,255,255,.6);
+  margin: 20px 0;
+  line-height: 1.5em;
+}
+
+#spreadsheet-input:active, #spreadsheet-input:focus {
+  background-color: rgba(255,255,255,.3);
+}
+
+.spreadsheet-input-wrapper {
+  text-align: left;
+  display: flex;
+}
+
+#gsheets-response {
+  background-color: white;
+  margin-top: 0;
+}
+
+#info-top-bar {
+  background-color: whitesmoke;
+}
+
+#info-top-bar #current-file-name:not(:empty) {
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,.1);
+  background: linear-gradient(to right, #242943,#352c51);
+  color: white;
+  padding: 1em 0;
+  opacity: .95;
+  width: 100%;
+}
+
+#current-file-name:not(:empty):before {
+    content: "\f016";
+    font-family: FontAwesome;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    /*opacity: 0;*/
+    /*float: left;*/
+    margin: 0 6px 0 0;
+}
+
+::-webkit-input-placeholder {
+   color: rgba(255,255,255,.6);
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: rgba(255,255,255,.6);
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: rgba(255,255,255,.6);
+}
+
+:-ms-input-placeholder {
+   color: rgba(255,255,255,.6);
+}
+
+hr { display: none; }
+.test-sets ul { padding: 0 5px 5px 5px; }
+
+#nav-buttons {
+  padding-top: 15px;
+}
+
+#nav-buttons button#back-button {
+    color: rgba(36, 41, 67, 1);
+    background-color: rgba(36, 41, 67, .1);
+    border: 1px solid rgba(36, 41, 67, .15);
+    display: inline-block;
+    margin-right: -2px;
+    border-radius: 5px 0 0 5px;
+}
+
+#nav-buttons button#forward-button {
+  border: 1px solid rgba(53, 44, 81, .1);
+  background-color: rgba(53, 44, 81, .1);
+  color: rgba(53, 44, 81, 1);
+  border-radius: 0 5px 5px 0;
+}
+
+#nav-buttons button#back-button:hover {
+  background-color: rgba(36, 41, 67, .15);
+}
+
+#nav-buttons button#forward-button:hover {
+  background-color: rgba(53, 44, 81, .15);
+}
+
+#nav-buttons button {
+  display: inline-block;
+  font-weight: normal;
+  transition: background-color .5s ease;
+  padding: .75em;
+}
+#nav-buttons button:hover .fa-chevron-circle-right {
+    animation: mover_right .5s infinite  alternate;
+}
+#nav-buttons button:hover .fa-chevron-circle-left {
+    animation: mover_left .5s infinite  alternate;
+}
+
+#file-loader-button {
+  background-color: transparent;
+  border-top: 1px solid rgba(255,255,255,.1);
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  width: 100%;
+  background-color: rgba(100,149,237,.05);
+  cursor: pointer;
+  padding: 1.5em .5em;
+  transition: background-color .5s ease;
+}
+#file-loader-button:hover {
+    background-color: rgba(100,149,237,.1);
+}
+#file-loader-button:hover .fa {
+    animation: mover_down .5s infinite  alternate;
+}
+
+#spreadsheet-input {
+  border-right: 1px solid rgba(255,255,255,.1);
+  padding: 20px;
+  width: 55%;
+  color: white;
+  background-color: rgba(100,149,237,.2);
+  transition: background-color .5s ease;
+}
+#spreadsheet-button {
+    background: transparent;
+    width: 40%;
+    padding: 0;
+    display: inline;
+    line-height: 50px;
+    margin-top: 0;
+    cursor: pointer;
+    transition: background-color .5s ease;
+}
+
+#spreadsheet-button:hover {
+  background-color: rgba(100,149,237,.1);
+}
+
+#spreadsheet-button:hover .fa {
+    animation: mover_down .5s infinite  alternate;
+}
+
+#file-size-warning {
+  background-color: rgba(230, 192, 0, .1);
+  border-radius: 5px;
+  margin-bottom: 0;
+}
+
+input.toggle {
+    vertical-align: top;
+}
+input[type=checkbox] { display:none; }
+input[type=checkbox] + label:before { font-family: FontAwesome; }
+input[type=checkbox] + label:before { content: "\f10c"; } /* unchecked icon */
+input[type=checkbox] + label:before { letter-spacing: 5px; } /* space between checkbox and label */
+
+input[type=checkbox]:checked + label:before { content: "\f05d"; } /* checked icon */
+input[type=checkbox]:checked + label:before { letter-spacing: 5px; } /* allow space for check mark */
+
+input[type=checkbox] + label {
+    margin-left: 20px;
+    text-indent: -20px;
+}
+
+.suite {
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #f2f2f2;
+}
+
+.suite .test {
+  border-color: rgba(53, 44, 81, .9);
+  color: darkgray;
+}
+
+.suite label {
+  vertical-align: top;
+}
+
+.suite .test.active label:before {
+  color: rgba(53, 44, 81, .9);
+}
+
+.suite .test.active {
+  color: black;
+}
+
+.suite .test.active.info {
+  color: darkgray;
+  border-color:darkgray;
+}
+
+.fa-question-circle:before {
+  color: darkgray;
+}
+
+.suite .suite-hed {
+    border-bottom-width: 3px;
+    border-bottom-color: rgba(255,255,255,.1);
+    border-bottom-style: solid;
+    font-weight: bold;
+    width: 95%;
+}
+
+.tests-wrapper .test {
+  width: 100%;
+  margin-left: 0;
+  padding-left: 3px;
+}
+.tests-wrapper .test:last-of-type {
+  margin-bottom: 0;
+}
+
+.test.warn {
+    border-left-color: gold !important;
+}
+
+.tests-wrapper .test.active.warn,
+.tests-wrapper .test.active.pass,
+.tests-wrapper .test.active.fail {
+  color: black;
+}
+
+.test.warn .fa-exclamation-circle {
+    color: gold;
+}
+
+.test.pass {
+    border-left-color: limegreen !important;
+}
+.test.pass .fa-check-circle {
+    vertical-align: top;
+    margin-top: 2px;
+    color: limegreen;
+}
+
+#grid-container {
+  background-color: #F7F6F5;
+}
+
+.handsontable td {
+  padding: 5px;
+  border-color: #f2f2f2;
+}
+
+.handsontable th {
+  background-color: whitesmoke;
+  border-color: #f2f2f2;
+}
+
+.handsontable thead th .relative {
+    padding: 8px;
+}
+
+.handsontable th:first-child,
+.handsontable th:last-child,
+.handsontable td:first-of-type,
+.handsontable.htRowHeaders thead tr th:nth-child(2),
+.handsontable tr:first-child td {
+  border-color: #f2f2f2;
+}
+
+.handsontable.htRowHeaders thead tr th:nth-child(2) {
+    border-color: #f2f2f2;
+}
+
+.handsontable tr:first-child th {
+  border-top: none;
+}
+
+@keyframes mover_left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-3px); }
+}
+
+@keyframes mover_right {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(3px); }
+}
+
+@keyframes mover_down {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-2px); }
+}
