@@ -1,6 +1,6 @@
 {
   "name": "dataproofer",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "A proofreader for your datasets",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dataproofer/dataproofer.git"
+  },
+  "bin": {
+    "dataproofer": "./bin/dataproofer"
   },
   "keywords": [
     "data",
