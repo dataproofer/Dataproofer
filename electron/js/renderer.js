@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var d3 = require("d3");
+var pluralize = require("pluralize");
 var Renderer = require("dataproofer").Rendering;
 var util = require("dataproofertest-js/util");
 
@@ -156,10 +157,10 @@ HTMLRenderer.prototype.done = function() {
       var headersCheck = resultList[0];
       var missingHeadersStr = "<div class='header-info'>";
       if (headersCheck.result.testState === "failed") {
-        missingHeadersStr += "<i class='fa fa-times-circle'></i>";
-        missingHeadersStr += " Ignored ";
+        missingHeadersStr += "<i class='fa fa-info-circle'></i>";
+        missingHeadersStr += " Renamed ";
         missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
-        missingHeadersStr += " because it had a missing or duplicate column header. Dataproofer requires unique column header names.";
+        missingHeadersStr += " because of missing or duplicate column headers.";
         missingHeadersStr += "</div>";
       } else {
         missingHeadersStr += "<i class='fa fa-check-circle'></i>";
@@ -179,7 +180,8 @@ HTMLRenderer.prototype.done = function() {
     .insert("div", ":first-child")
     .attr("class", "summary")
     .html(function() {
-      return numPassed + " passed out of " + numTests + " total";
+      var tests = pluralize("test", numPassed);
+      return `${numPassed} ${tests} passed out of ${numTests}`;
     });
 
   var tests = d3.selectAll(".test")
@@ -229,7 +231,7 @@ HTMLRenderer.prototype.done = function() {
     return d.result.testState === "info";
   })
   .on("mouseover", filterResults)
-  .on("mouseout", clearFilteredResults);
+  .on("click", clearFilteredResults);
 
   tests.insert("i", "label")
     .attr("class", function(d) {

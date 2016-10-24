@@ -179,8 +179,10 @@ button.reload {
 }
 
 #file-loader-button {
+  box-sizing: border-box;
   display: block;
   width: 90%;
+
   margin-left: auto;
   margin-right: auto;
 }

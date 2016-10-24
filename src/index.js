@@ -49,7 +49,10 @@ if(require.main === module) {
     .option("-J, --json-pretty", "output an indented JSON of test results")
     .option("-S, --summary", "output overall test results, excluding pass/fail results")
     .option("-v, --verbose", "include descriptions about each column")
-    .option("-x, --exclude", "exclude tests that passed");
+    .option("-x, --exclude", "exclude tests that passed")
+    .option("-m, --sampleMin <int>", "minimum number of rows to sample and test. default 1000", Number.toInteger)
+    .option("-M, --sampleMax <int>", "maximum number of rows to sample and test. default 10000", Number.toInteger)
+    .option("-r, --sampleRatio <float>", "ratio of rows to sample from total rows. default 0.25 (i.e. sample 25% of the total rows)", Number.toFloat)
 
   program.on("--help", function(){
     console.log("  Examples:");
@@ -105,14 +108,23 @@ if(require.main === module) {
     "xlsx",
     "xls"
   ];
-  var currFileName = filepath.split("/").pop();
-  var currExt = currFileName.split(".").pop();
+  var currFileName = filepath.split("/").pop(),
+    currExt = currFileName.split(".").pop(),
+    currSampleRatio = program.sampleRatio ? program.sampleRatio : 0.25,
+    currSampleMin = program.sampleMin ? program.sampleMin : 1000,
+    currSampleMax = program.sampleMax ? program.sampleMax : 10000,
+    sampleOpts = {
+      sampleRatio: currSampleRatio,
+      sampleMin: currSampleMin,
+      sampleMax: currSampleMax
+    };
 
   if (allowFileExtensions.indexOf(currExt) > -1) {
     var loadConfig = {
       ext: currExt,
       filepath: filepath,
-      filename: currFileName
+      filename: currFileName,
+      sampleOpts: sampleOpts
     };
     var loaded = Processing.load(loadConfig);
     var processorConfig = {
@@ -179,7 +191,7 @@ if(require.main === module) {
     var done = function() {
       process.stdout.write("\n### DONE ###");
     };
-    var outPath = program.out ? program.out : "/dev/stdout";
+    outPath = program.out ? program.out : "/dev/stdout";
     if (program.out) resultStr = resultStr.replace(/\[\d+m/g, "");
     if (program.json === true) {
       rw.writeFileSync(outPath, JSON.stringify(results), "utf-8");

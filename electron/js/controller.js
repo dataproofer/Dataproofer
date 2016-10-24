@@ -170,18 +170,16 @@ function renderNav() {
       forward.style("display", "none");
       break;
     case 2:
-      back.style("display", "inline-block")
+      back.style("display", "none")
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
-        .html("Run checks <i class='fa fa-chevron-circle-right'></i>");
+        .html("Run tests <i class='fa fa-chevron-circle-right'></i>");
       break;
     case 3:
       back.style("display", "inline-block")
-        .html("<i class='fa fa-chevron-circle-left'></i> Select checks");
-
-      forward.style("display", "none")
-        .html("Re-run checks <i class='fa fa-chevron-circle-right'></i>");
-      //forward.style("display", "none");
+        .html("<i class='fa fa-chevron-circle-left'></i> Pick tests");
+      forward.style("display", "inline-block")
+        .html("Test again <i class='fa fa-refresh'></i>");
       break;
   }
 }
@@ -430,8 +428,18 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
+  /* var loadConfig = {
+       ext: file.name.split(".").pop(),
+       filepath: file.path,
+       filename: file.name,
+       sampleSize: 0.25,
+       sampleMin: 10,
+       sampleMax: 300
+     };
 
-  if (typeof renderer === "function") renderer.destroy();
+     loaded = Processor.load(loadConfig);
+     processorConfig.loaded = loaded;
+  */
   renderer = Processor.run(processorConfig);
   // make sure the tests ares still scrolled to the top
   var topBar = d3.select(".top-bar").property("scrollHeight");
@@ -446,8 +454,15 @@ function clear() {
 
   d3.select(".column-1").classed("all-passed", false);
   d3.select(".column-3").classed("hidden", true);
-  d3.select("#grid").selectAll("*").remove();
   d3.select(".grid-footer").classed("hidden", true);
+
+  if (typeof renderer === "object") {
+    renderer.then(
+      function(htmlRenderer) {
+        htmlRenderer.destroy();
+      }
+    );
+  }
 
   d3.selectAll(".tests-wrapper").classed("hidden", false);
   d3.selectAll(".test").classed("hidden", false);
@@ -506,7 +521,10 @@ function handleFileSelect(evt) {
           ext: currExt,
           filepath: file.path,
           // fileString: contents,
-          filename: currFileName
+          filename: currFileName,
+          sampleSize: 0.25,
+          sampleMin: 10,
+          sampleMax: 300
         };
         var loaded = Processor.load(loadConfig);
         var processorConfig = {
@@ -533,7 +551,10 @@ ipc.on("last-file-selected", function(event, file) {
   var loadConfig = {
     ext: file.name.split(".").pop(),
     filepath: file.path,
-    filename: file.name
+    filename: file.name,
+    sampleSize: 0.25,
+    sampleMin: 10,
+    sampleMax: 300
   };
   var loaded = Processor.load(loadConfig);
   lastProcessorConfig = {

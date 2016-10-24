@@ -28,6 +28,7 @@
     "handsontable": "^0.24.1",
     "jquery": "^2.2.3",
     "lodash": "^4.8.2",
+    "pluralize": "^3.0.0",
     "require-from-string": "^1.1.0",
     "simple-statistics": "^1.0.1",
     "tipsy": "^1.0.0",
