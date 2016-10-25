@@ -7,10 +7,13 @@ function HTMLRenderer(config) {
   Renderer.call(this, config);
   var rows = window.rows = config.rows;
   this.rows = rows;
+  console.log("render config", config, this);
+  this.sampleProgress = config.sampleProgress;
+  this.totalRows = config.totalRows;
   this.columnHeads = config.columnHeads;
   var resultList = [];
   this.resultList = resultList;
-
+  d3.selectAll("#nav-buttons button").classed("rounded", false);
   d3.select(".grid-footer").classed("hidden", false);
   d3.selectAll(".test:not(.active)")
     .classed("hidden", true);
@@ -128,8 +131,25 @@ HTMLRenderer.prototype.destroy = function() {
 HTMLRenderer.prototype.done = function() {
   var columnHeads = this.columnHeads;
   var rows = this.rows;
+  var sampleProgress = this.sampleProgress;
+  var totalRows = d3.format(",")(this.totalRows);
+  var rowsTestedPct = d3.format(".0%")(sampleProgress);
   var resultList = this.resultList;
   var handsOnTable = this.handsOnTable;
+  var colorScale = d3.scaleThreshold()
+    .domain(_.range(0,1.1,0.1))
+    .range([
+      '#342c51',
+      '#5a314a',
+      '#7a3543',
+      '#99393b',
+      '#b73c32',
+      '#d63e26',
+      '#cf6824',
+      '#b18f27',
+      '#87b02c',
+      '#32cd32'
+    ]);
 
   this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable);
   this.highlightGrid();
@@ -146,6 +166,30 @@ HTMLRenderer.prototype.done = function() {
     that.renderFingerPrint({col: coords.col, row: coords.row });
   });
 
+  var progressWrapper = d3.select("div#progress-bar")
+  progressWrapper.classed("hidden", false)
+    .selectAll("*").remove();
+  progressWrapper.append("div")
+    .attr("id", "progress-info")
+    .text(function() { return `${rowsTestedPct} of ${totalRows} rows tested`; });
+
+  progressWrapper.append("div")
+    .attr("id", "progress-wrapper")
+    .append("div")
+    .attr("id", "progress")
+    .style("width", function() {
+      var widthInt = d3.select("#progress-wrapper").style("width").replace("px", "") * sampleProgress;
+      return widthInt + "px";
+    })
+    .style("background-color", function() {
+      return colorScale(sampleProgress);
+    });
+
+  if (sampleProgress === 1) {
+    d3.select("#back-button").classed("rounded", true);
+    d3.select("#forward-button").classed("hidden", true);
+  }
+
   // We want to separate out tests that failed and tests that passed here
   // Summarize testsPassed.length, and then append all failed tests like normal
 
@@ -155,14 +199,13 @@ HTMLRenderer.prototype.done = function() {
       var headersCheck = resultList[0];
       var missingHeadersStr = "<div class='header-info'>";
       if (headersCheck.result.testState === "failed") {
-        missingHeadersStr += "<i class='fa fa-info-circle'></i>";
-        missingHeadersStr += " Renamed ";
+        missingHeadersStr += "<i class='fa fa-times-circle'></i>";
+        missingHeadersStr += " Failed: Missing or duplicate column headers: ";
         missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
-        missingHeadersStr += " because of missing or duplicate column headers.";
         missingHeadersStr += "</div>";
       } else {
         missingHeadersStr += "<i class='fa fa-check-circle'></i>";
-        missingHeadersStr += " No missing or duplicate column headers";
+        missingHeadersStr += " Passed: No missing or duplicate column headers";
       }
       return missingHeadersStr;
     });
@@ -173,23 +216,10 @@ HTMLRenderer.prototype.done = function() {
 
   var numPassed = passedResults.length;
   var numTests = resultList.length;
-  var gradeColor = d3.scaleThreshold()
-    .range([
-      '#342c51',
-      '#57324b',
-      '#723b45',
-      '#874740',
-      '#96573b',
-      '#9f6b36',
-      '#a18032',
-      '#98982f',
-      '#7fb22e',
-      '#32cd32'
-    ]);
   var finalRate = numPassed/numTests;
   console.log("finalRate",finalRate);
   var finalGrade = d3.format('.0%')(finalRate);
-  var finalColor = gradeColor(finalRate);
+  var finalColor = colorScale(finalRate);
 
   d3.select(".test-sets")
     .insert("div", ":first-child")
@@ -246,9 +276,10 @@ HTMLRenderer.prototype.done = function() {
   })
   .classed("info", function(d) {
     return d.result.testState === "info";
-  })
-  .on("mouseover", filterResults)
-  .on("click", clearFilteredResults);
+  });
+  d3.selectAll(".active.test:not(.pass)")
+    .on("mouseover", filterResults)
+    .on("click", filterResults);
 
   tests.insert("i", "label")
     .attr("class", function(d) {

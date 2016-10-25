@@ -179,7 +179,7 @@ function renderNav() {
       back.style("display", "inline-block")
         .html("<i class='fa fa-chevron-circle-left'></i> Pick tests");
       forward.style("display", "inline-block")
-        .html("Test again <i class='fa fa-refresh'></i>");
+        .html("Test again <i class='fa fa-chevron-circle-right'></i>");
       break;
   }
 }
@@ -422,7 +422,6 @@ function renderStep2(processorConfig) {
 function renderStep3(processorConfig) {
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
-  console.log("renderStep3 processor", processorConfig);
   var loadConfig = processorConfig.loaded.config;
   var loaded = Processor.load(loadConfig);
   processorConfig.loaded = loaded;
@@ -437,10 +436,13 @@ function renderStep3(processorConfig) {
 function clear() {
   d3.select("#current-file-name").text("");
   d3.select("#file-size-warning").classed("hidden", true);
-  d3.select("#forward-button").classed("rounded", false);
+  d3.select("#progress-bar").classed("hidden", true);
   d3.select(".column-1").classed("all-passed", false);
   d3.select(".column-3").classed("hidden", true);
   d3.select(".grid-footer").classed("hidden", true);
+  d3.selectAll("#nav-buttons button")
+    .classed("rounded", false)
+    .classed("hidden", false);
 
   if (typeof renderer === "object") {
     renderer.then(

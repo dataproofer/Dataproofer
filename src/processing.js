@@ -13,7 +13,7 @@ var Processor = {
       sampleRatio = sampleOpts.sampleRatio,
       totalRows = rows.length;
 
-    var sampleSize = sampleRatio * totalRows;
+    var sampleSize = Math.round(sampleRatio * totalRows);
     console.log("sampleRatio", sampleRatio)
     console.log("totalRows", totalRows)
     console.log("possible sampleSize", sampleSize)
@@ -112,20 +112,22 @@ var Processor = {
 
     var columnHeads = loaded.columnHeads;
     var rows = loaded.rows;
-
+    var sampleProgress = loaded.sampleProgress;
+    var totalRows = loaded.totalRows;
     // Initialize the renderer
     var renderer = new Renderer({
       filename: loaded.filename,
       suites: suites,
       columnHeads: columnHeads,
-      rows: rows
+      rows: rows,
+      sampleProgress: sampleProgress,
+      totalRows: totalRows
     });
 
     var badColumnHeadsTest = new DataprooferTest()
       .name("Missing or duplicate column headers")
       .description("Check for errors in the header of the spreadsheet")
       .methodology(function(rows, columnHeads) {
-        //console.log("checking column headers", columnHeads.length);
         var badHeaderCount = 0;
         var badColumnHeads = [];
         var testState = "passed";
