@@ -6,7 +6,7 @@ var DataprooferTest = require("dataproofertest-js");
 var util = require("dataproofertest-js/util");
 
 var Processor = {
-  sampleRows: function (rows, sampleOpts, currFilepath) {
+  sampleRows: function(rows, sampleOpts, currFilepath) {
     var self = this,
       sampleMin = sampleOpts.sampleMin,
       sampleMax = sampleOpts.sampleMax,
@@ -14,45 +14,50 @@ var Processor = {
       totalRows = rows.length;
 
     var sampleSize = sampleRatio * totalRows;
+    console.log("sampleRatio", sampleRatio)
+    console.log("totalRows", totalRows)
+    console.log("possible sampleSize", sampleSize)
     if (sampleSize < sampleMin && totalRows < sampleMin) {
       // test all the rows if there's less than a thousand in total
       sampleSize = totalRows;
     } else if (sampleSize < sampleMin) {
       // test at least 1000 rows
-      sampleSize = sampleMin
+      sampleSize = sampleMin;
     } else if (sampleSize > sampleMax) {
       // test at most 10,000 rows
-      sampleSize = sampleMax
+      sampleSize = sampleMax;
     } else {
-      // and anywhere in between, test all rows
-      sampleSize = totalRows;
+      // otherwise, sample rows
+      sampleSize = sampleSize;
     }
 
-    var currRemainingRows, rowsToSample;
+    var currRemainingRows, sampledRows;
     if (self.remainingRows && self.filepath === currFilepath) {
       currRemainingRows = self.remainingRows;
     } else {
       self.filepath = currFilepath;
       currRemainingRows = self.remainingRows = rows;
     }
-    rowsToSample = currRemainingRows.slice(0, sampleSize);
-    self.sampleProgress = ( rowsToSample.length / currRemainingRows.length );
+    sampledRows = currRemainingRows.slice(0, sampleSize);
+    self.sampleProgress = ( sampledRows.length / currRemainingRows.length );
     self.remainingRows = currRemainingRows;
-    console.log("sampleSize", sampleSize);
-    console.log("processor", self);
-    return rowsToSample;
+    self.sampledRows = sampledRows;
+    self.totalRows = totalRows;
+    console.log("full sampleSize", sampleSize);
+    console.log("sampleSize processor", self);
+    return self;
   },
 
   load: function(config) {
     var filepath = config.filepath,
       ext = config.ext,
-  // user can optionally pass in rows and columnHeads already parsed
+      // user can optionally pass in rows and columnHeads already parsed
       rows = config.rows,
       columnHeads = config.columnHeads,
-  // user can change sample sizes in the CLI
-      sampleMin = config.sampleOpts? config.sampleOpts.sampleMin : 1000,
-      sampleMax = config.sampleOpts? config.sampleOpts.sampleMax : 10000,
-      sampleRatio = config.sampleOpts? config.sampleOpts.sampleRatio : 0.25;
+      // user can change sample sizes in the CLI
+      sampleMin = config.sampleOpts.sampleMin || 1000,
+      sampleMax = config.sampleOpts.sampleMax || 10000,
+      sampleRatio = config.sampleOpts.sampleRatio || 0.25;
     var sampleOpts = {
       sampleRatio: sampleRatio,
       sampleMin: sampleMin,
@@ -72,7 +77,6 @@ var Processor = {
       ];
       if (nonExcelExtensions.indexOf(ext) > -1) {
         rows = indianOcean.readDataSync(filepath);
-        //console.log("rows", rows);
       } else if (excelExtensions.indexOf(ext) > -1) {
         var sheets = xlsx.readFile(filepath).Sheets;
         var firstSheetName = _.keys(sheets)[0];
@@ -83,17 +87,18 @@ var Processor = {
       }
     }
     if(!columnHeads || !columnHeads.length) {
-      // TODO: we may want to turn this into an array
       columnHeads = Object.keys(rows[0]);
     }
 
     // TODO: use webworkers or something so we don't need an upper limit
-    //var trueRows = rows.length;
-    var sampledRows = Processor.sampleRows(rows, sampleOpts, filepath);
+    // for now, use sampling
+    var sampleConfig = Processor.sampleRows(rows, sampleOpts, filepath);
+    var { sampledRows, totalRows, sampleProgress } = sampleConfig;
     return {
       rows: sampledRows,
+      totalRows: totalRows,
+      sampleProgress: sampleProgress,
       columnHeads: columnHeads,
-      //trueRows: trueRows,
       config: config
     };
   },
@@ -114,7 +119,6 @@ var Processor = {
       suites: suites,
       columnHeads: columnHeads,
       rows: rows
-      //trueRows: loaded.trueRows
     });
 
     var badColumnHeadsTest = new DataprooferTest()

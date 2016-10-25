@@ -1,6 +1,5 @@
 var _ = require("lodash");
 var d3 = require("d3");
-var pluralize = require("pluralize");
 var Renderer = require("dataproofer").Rendering;
 var util = require("dataproofertest-js/util");
 
@@ -89,7 +88,7 @@ function HTMLRenderer(config) {
   window.handsOnTable = handsOnTable;
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File");
+    .html("<i class='fa fa-search' aria-hidden='true'></i> Select New File");
     // .on("click", function() {
     //   document.location.reload(true);
     // });
@@ -147,8 +146,7 @@ HTMLRenderer.prototype.done = function() {
     that.renderFingerPrint({col: coords.col, row: coords.row });
   });
 
-  // Want to separate out tests that failed and tests that passed here
-
+  // We want to separate out tests that failed and tests that passed here
   // Summarize testsPassed.length, and then append all failed tests like normal
 
   d3.select(".test-sets")
@@ -174,15 +172,34 @@ HTMLRenderer.prototype.done = function() {
   });
 
   var numPassed = passedResults.length;
-  var numTests = resultList.length; //missing headers counted but not shown
+  var numTests = resultList.length;
+  var gradeColor = d3.scaleThreshold()
+    .range([
+      '#342c51',
+      '#57324b',
+      '#723b45',
+      '#874740',
+      '#96573b',
+      '#9f6b36',
+      '#a18032',
+      '#98982f',
+      '#7fb22e',
+      '#32cd32'
+    ]);
+  var finalRate = numPassed/numTests;
+  console.log("finalRate",finalRate);
+  var finalGrade = d3.format('.0%')(finalRate);
+  var finalColor = gradeColor(finalRate);
 
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .attr("class", "summary")
     .html(function() {
-      var tests = pluralize("test", numPassed);
-      return `${numPassed} ${tests} passed out of ${numTests}`;
-    });
+      var scoreHtml = `<span id="final-grade">${finalGrade}</span><span class="block header-info">(${numPassed}/${numTests}) passed</span>`;
+      return scoreHtml;
+    })
+    .select("#final-grade")
+    .style("color", finalColor);
 
   var tests = d3.selectAll(".test")
     .data(resultList, function(d) { return d.suite + "-" + d.test.name(); });

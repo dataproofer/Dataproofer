@@ -32,6 +32,10 @@
   border-bottom: transparent;
  }
 
+.block {
+  display: block;
+}
+
 .hidden {
   display: none !important;
   pointer-events: none;
@@ -234,6 +238,12 @@ button.reload {
   text-align: center;
   font-weight: bold;
   margin-top: 15px;
+  font-size: 24px;
+}
+
+.summary #final-grade {
+  line-height: 1;
+  font-size: 4em;
 }
 
 .test * {

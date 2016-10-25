@@ -228,23 +228,25 @@ function renderStep2(processorConfig) {
   clear();
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .html("Load New File");
+    .html("<i class='fa fa-search' aria-hidden='true'></i> Select New File");
     // .on("click", function() {
     //   document.location.reload(true);
     // });
 
-  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
+  d3.select("#forward-button").classed("rounded", true);
 
+  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
+  var infoOffsetTop = d3.select("#info-top-bar").property("offsetTop");
   d3.select(".column-1")
     .transition()
     .duration(750)
-    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
+    .tween("scroll.info", scrollTween(infoOffsetTop));
 
   function scrollTween(offset) {
     return function() {
       offset -= d3.select(".top-bar").property("scrollHeight");
       var i = d3.interpolateNumber(this.scrollTop, offset);
-      return function(t) { this.scrollTop = i(t); };
+      return function(t) { d3.select(".column-1").node().scrollTop = i(t); };
     };
   }
 
@@ -410,36 +412,20 @@ function renderStep2(processorConfig) {
       renderTestEditor(d.test);
     });
 
-  testsEnter.on("click", function(d) {
-    if (d3.event.shiftKey) {
-      renderTestEditor(d.test);
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
+  testsEnter.on("dblclick", function(d) {
+    renderTestEditor(d.test);
+    d3.event.preventDefault();
+    d3.event.stopPropagation();
   });
-
-  // testsEnter.on("contextmenu", function(d) {
-  //   renderTestEditor(d.test);
-  //   d3.event.preventDefault();
-  //   d3.event.stopPropagation();
-  // });
 }
 
 function renderStep3(processorConfig) {
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
-  /* var loadConfig = {
-       ext: file.name.split(".").pop(),
-       filepath: file.path,
-       filename: file.name,
-       sampleSize: 0.25,
-       sampleMin: 10,
-       sampleMax: 300
-     };
-
-     loaded = Processor.load(loadConfig);
-     processorConfig.loaded = loaded;
-  */
+  console.log("renderStep3 processor", processorConfig);
+  var loadConfig = processorConfig.loaded.config;
+  var loaded = Processor.load(loadConfig);
+  processorConfig.loaded = loaded;
   renderer = Processor.run(processorConfig);
   // make sure the tests ares still scrolled to the top
   var topBar = d3.select(".top-bar").property("scrollHeight");
@@ -451,7 +437,7 @@ function renderStep3(processorConfig) {
 function clear() {
   d3.select("#current-file-name").text("");
   d3.select("#file-size-warning").classed("hidden", true);
-
+  d3.select("#forward-button").classed("rounded", false);
   d3.select(".column-1").classed("all-passed", false);
   d3.select(".column-3").classed("hidden", true);
   d3.select(".grid-footer").classed("hidden", true);
@@ -522,9 +508,11 @@ function handleFileSelect(evt) {
           filepath: file.path,
           // fileString: contents,
           filename: currFileName,
-          sampleSize: 0.25,
-          sampleMin: 10,
-          sampleMax: 300
+          sampleOpts: {
+            sampleSize: 0.25,
+            sampleMin: 1000,
+            sampleMax: 10000
+          }
         };
         var loaded = Processor.load(loadConfig);
         var processorConfig = {
@@ -552,9 +540,11 @@ ipc.on("last-file-selected", function(event, file) {
     ext: file.name.split(".").pop(),
     filepath: file.path,
     filename: file.name,
-    sampleSize: 0.25,
-    sampleMin: 10,
-    sampleMax: 300
+    sampleOpts: {
+      sampleSize: 0.25,
+      sampleMin: 1000,
+      sampleMax: 10000
+    }
   };
   var loaded = Processor.load(loadConfig);
   lastProcessorConfig = {
