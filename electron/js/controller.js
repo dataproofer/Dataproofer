@@ -26,12 +26,6 @@ var SUITES = [
 
 // turn on all tests by default
 SUITES.forEach(function(suite) {
-  /*
-  if (suite.active !== false) {
-    // only set it to active if the property doesn't exist or is already true
-    suite.active = true;
-  }
-  */
   suite.tests.forEach(function(test) {
     if (test.active === false) return; // don't overwrite a test's default setting if it's set to false
     test.active = true;
@@ -42,7 +36,6 @@ SUITES.forEach(function(suite) {
 // happen after step 2 & 3, thereby missing the saved ones until next rerendering.
 ipc.on("load-saved-tests", function(evt, loaded) {
   //console.log("Loading saved checks", loaded);
-
   var suite = {
     name: "local-tests",
     fullName: "Custom Checks",
@@ -133,7 +126,6 @@ function saveTestConfig() {
   var testConfig = {};
   SUITES.forEach(function(suite) {
     testConfig[suite.name] = {
-      //active: suite.active,
       tests: {}
     };
     suite.tests.forEach(function(test) {

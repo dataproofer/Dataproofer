@@ -5,7 +5,10 @@ var indianOcean = require("indian-ocean");
 var DataprooferTest = require("dataproofertest-js");
 var util = require("dataproofertest-js/util");
 
-var Processor = {
+var Processor = function() {
+  return this;
+};
+Processor.prototype = {
   sampleRows: function(rows, sampleOpts, currFilepath) {
     var self = this,
       sampleMin = sampleOpts.sampleMin,
@@ -38,9 +41,9 @@ var Processor = {
       self.filepath = currFilepath;
       currRemainingRows = self.remainingRows = rows;
     }
-    sampledRows = currRemainingRows.slice(0, sampleSize);
+    sampledRows = currRemainingRows.slice(0, (sampleSize));
     self.sampleProgress = ( sampledRows.length / currRemainingRows.length );
-    self.remainingRows = currRemainingRows;
+    self.remainingRows = currRemainingRows.slice(sampleSize, currRemainingRows.length);
     self.sampledRows = sampledRows;
     self.totalRows = totalRows;
     console.log("full sampleSize", sampleSize);
@@ -49,7 +52,8 @@ var Processor = {
   },
 
   load: function(config) {
-    var filepath = config.filepath,
+    var self = this,
+      filepath = config.filepath,
       ext = config.ext,
       // user can optionally pass in rows and columnHeads already parsed
       rows = config.rows,
@@ -64,7 +68,7 @@ var Processor = {
       sampleMax: sampleMax
     };
 
-    if(!rows && ext) {
+    if(ext) {
       // Parse the csv with d3
       var nonExcelExtensions = [
         "csv",
@@ -92,7 +96,7 @@ var Processor = {
 
     // TODO: use webworkers or something so we don't need an upper limit
     // for now, use sampling
-    var sampleConfig = Processor.sampleRows(rows, sampleOpts, filepath);
+    var sampleConfig = self.sampleRows(rows, sampleOpts, filepath);
     var { sampledRows, totalRows, sampleProgress } = sampleConfig;
     return {
       rows: sampledRows,
@@ -211,5 +215,4 @@ var Processor = {
   }
 };
 
-exports.load = Processor.load;
-exports.run = Processor.run;
+module.exports = Processor;

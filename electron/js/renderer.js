@@ -193,6 +193,7 @@ HTMLRenderer.prototype.done = function() {
   // We want to separate out tests that failed and tests that passed here
   // Summarize testsPassed.length, and then append all failed tests like normal
 
+  d3.selectAll(".header-info").remove();
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .html(function() {
@@ -220,7 +221,7 @@ HTMLRenderer.prototype.done = function() {
   console.log("finalRate",finalRate);
   var finalGrade = d3.format('.0%')(finalRate);
   var finalColor = colorScale(finalRate);
-
+  d3.select(".summary").remove();
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .attr("class", "summary")
@@ -244,7 +245,6 @@ HTMLRenderer.prototype.done = function() {
           } else {
             tooltipStr += d.test.description();
           }
-
           return tooltipStr;
         });
     });
@@ -281,6 +281,7 @@ HTMLRenderer.prototype.done = function() {
     .on("mouseover", filterResults)
     .on("click", filterResults);
 
+  d3.selectAll(".result-icon").remove()
   tests.insert("i", "label")
     .attr("class", function(d) {
       if (d.result.testState === "passed") return "fa-check-circle";

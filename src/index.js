@@ -3,8 +3,9 @@
  * CLI Interface to Dataproofer
  */
 
-var Processing = require("./processing");
+var Processor = require("./processing");
 var Rendering = require("./rendering");
+var Processing = new Processor();
 
 var pkg = require("./package.json");
 
