@@ -42,7 +42,7 @@ Processor.prototype = {
       currRemainingRows = self.remainingRows = rows;
     }
     sampledRows = currRemainingRows.slice(0, (sampleSize));
-    self.sampleProgress = ( sampledRows.length / currRemainingRows.length );
+    self.sampleProgress = (sampledRows.length / currRemainingRows.length );
     self.remainingRows = currRemainingRows.slice(sampleSize, currRemainingRows.length);
     self.sampledRows = sampledRows;
     self.totalRows = totalRows;

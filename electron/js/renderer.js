@@ -103,7 +103,7 @@ function HTMLRenderer(config) {
     }
   }
 
-  var searchTimeout
+  var searchTimeout;
   this.searchHandler = function (event) {
     if(searchTimeout) clearTimeout(searchTimeout);
     setTimeout(function() {
@@ -112,7 +112,7 @@ function HTMLRenderer(config) {
     }, 500)
   }
   var searchField = document.getElementById("search-field");
-  Handsontable.Dom.addEvent(searchField, "keydown", this.searchHandler);
+  Handsontable.Dom.addEvent(searchField, "keyup", this.searchHandler);
 }
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {});
 HTMLRenderer.prototype.constructor = HTMLRenderer;
@@ -123,7 +123,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
 HTMLRenderer.prototype.destroy = function() {
   var searchField = document.getElementById("search-field");
-  Handsontable.Dom.removeEvent(searchField, "keydown", this.searchHandler)
+  Handsontable.Dom.removeEvent(searchField, "keyup", this.searchHandler)
   this.handsOnTable.destroy();
   d3.select("#grid").selectAll("*").remove();
 }
@@ -185,7 +185,7 @@ HTMLRenderer.prototype.done = function() {
       return colorScale(sampleProgress);
     });
 
-  if (sampleProgress === 1) {
+  if (sampleProgress >= 1) {
     d3.select("#back-button").classed("rounded", true);
     d3.select("#forward-button").classed("hidden", true);
   }

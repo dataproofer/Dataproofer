@@ -150,6 +150,7 @@ var lastProcessorConfig = {};
 
 // the current step in the process we are on
 var currentStep = 1;
+var rerunFlag = false;
 renderNav();
 
 // update the navigation depending on what step we are on
@@ -412,6 +413,28 @@ function renderStep2(processorConfig) {
 }
 
 function renderStep3(processorConfig) {
+  // rerun if there's more rows
+  if (rerunFlag) {
+    rerunStep3(processorConfig);
+    return;
+  }
+  console.log("step 3 config", processorConfig);
+  // set the flag to true after the first run if there's more rows
+  if (processorConfig.loaded.sampleProgress < 1) rerunFlag = true;
+  // make sure we can scroll enough to hide the loader/logo
+  d3.select(".test-sets").style('min-height', "100%");
+  // var loaded = Processor.load(loadConfig);
+  // processorConfig.loaded = loaded;
+  renderer = Processor.run(processorConfig);
+  // make sure the tests ares still scrolled to the top
+  var topBar = d3.select(".top-bar").property("scrollHeight");
+  var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar;
+  var column1 = d3.select(".column-1");
+  column1.node().scrollTop = offsetTop;
+}
+
+function rerunStep3(processorConfig) {
+  console.log("rerun 3")
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
   var loadConfig = processorConfig.loaded.config;
@@ -440,8 +463,9 @@ function clear() {
     renderer.then(
       function(htmlRenderer) {
         htmlRenderer.destroy();
-      }
-    );
+      }, function(reason) {
+        console.log("handsOnTable destroy", reason);
+    });
   }
 
   d3.selectAll(".tests-wrapper").classed("hidden", false);
