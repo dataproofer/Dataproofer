@@ -26,12 +26,6 @@ var SUITES = [
 
 // turn on all tests by default
 SUITES.forEach(function(suite) {
-  /*
-  if (suite.active !== false) {
-    // only set it to active if the property doesn't exist or is already true
-    suite.active = true;
-  }
-  */
   suite.tests.forEach(function(test) {
     if (test.active === false) return; // don't overwrite a test's default setting if it's set to false
     test.active = true;
@@ -42,7 +36,6 @@ SUITES.forEach(function(suite) {
 // happen after step 2 & 3, thereby missing the saved ones until next rerendering.
 ipc.on("load-saved-tests", function(evt, loaded) {
   //console.log("Loading saved checks", loaded);
-
   var suite = {
     name: "local-tests",
     fullName: "Custom Checks",
@@ -133,7 +126,6 @@ function saveTestConfig() {
   var testConfig = {};
   SUITES.forEach(function(suite) {
     testConfig[suite.name] = {
-      //active: suite.active,
       tests: {}
     };
     suite.tests.forEach(function(test) {
@@ -158,6 +150,7 @@ var lastProcessorConfig = {};
 
 // the current step in the process we are on
 var currentStep = 1;
+var rerunFlag = false;
 renderNav();
 
 // update the navigation depending on what step we are on
@@ -170,18 +163,16 @@ function renderNav() {
       forward.style("display", "none");
       break;
     case 2:
-      back.style("display", "inline-block")
+      back.style("display", "none")
         .html("<i class='fa fa-chevron-circle-left'></i> Load data");
       forward.style("display", "inline-block")
-        .html("Run checks <i class='fa fa-chevron-circle-right'></i>");
+        .html("Run tests <i class='fa fa-chevron-circle-right'></i>");
       break;
     case 3:
       back.style("display", "inline-block")
-        .html("<i class='fa fa-chevron-circle-left'></i> Select checks");
-
-      forward.style("display", "none")
-        .html("Re-run checks <i class='fa fa-chevron-circle-right'></i>");
-      //forward.style("display", "none");
+        .html("<i class='fa fa-chevron-circle-left'></i> Pick tests");
+      forward.style("display", "inline-block")
+        .html("Test again <i class='fa fa-chevron-circle-right'></i>");
       break;
   }
 }
@@ -228,25 +219,29 @@ function renderStep1(processorConfig) {
 function renderStep2(processorConfig) {
   var container = d3.select(".test-sets");
   clear();
+  d3.select(".column-2")
+    .style("background-image", "url(img/empty-state-2.png)");
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .html("Load New File");
+    .html("<i class='fa fa-search' aria-hidden='true'></i> Select New File");
     // .on("click", function() {
     //   document.location.reload(true);
     // });
 
-  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
+  d3.select("#forward-button").classed("rounded", true);
 
+  d3.select("#current-file-name").text(processorConfig.loaded.config.filename);
+  var infoOffsetTop = d3.select("#info-top-bar").property("offsetTop");
   d3.select(".column-1")
     .transition()
     .duration(750)
-    .tween("scroll", scrollTween(d3.select("#info-top-bar").property("offsetTop")));
+    .tween("scroll.info", scrollTween(infoOffsetTop));
 
   function scrollTween(offset) {
     return function() {
       offset -= d3.select(".top-bar").property("scrollHeight");
       var i = d3.interpolateNumber(this.scrollTop, offset);
-      return function(t) { this.scrollTop = i(t); };
+      return function(t) { d3.select(".column-1").node().scrollTop = i(t); };
     };
   }
 
@@ -273,14 +268,14 @@ function renderStep2(processorConfig) {
     .selectAll(".suite")
     .data(filteredSuites)
     .enter().append("li")
-    .attr("id", (d) => { d.name; })
+    .attr("id", function(d) { return d.name; })
     .attr("class", "suite");
   suitesEnter.append("input")
     .attr("class", "toggle")
     .attr("type", "checkbox")
-    .attr("id", (d, i) => { "suite-" + i; })
+    .attr("id", function(d, i) { return "suite-" + i; })
     .each(suiteState)
-    .on("change", function(d) {
+    .on("change.suite", function(d) {
       var dis = d3.select(this);
       var active = dis.property("checked");
       d.tests.forEach(function(test) {
@@ -305,21 +300,18 @@ function renderStep2(processorConfig) {
       if(test.active) activeCount++;
     });
     if (activeCount === 0) {
-      d3.select(this).property({
-        checked: false,
-        indeterminate: false
-      });
+      d3.select(this)
+        .property("checked", false)
+        .property("indeterminate", false);
     } else if (activeCount === d.tests.length) {
-      d3.select(this).property({
-        checked: true,
-        indeterminate: false
-      });
+      d3.select(this)
+        .property("checked", true)
+        .property("indeterminate", false);
     } else {
       // we have some active tests
-      d3.select(this).property({
-        checked: null,
-        indeterminate: true
-      });
+      d3.select(this)
+        .property("checked", null)
+        .property("indeterminate", true);
     }
   }
 
@@ -360,19 +352,21 @@ function renderStep2(processorConfig) {
     .attr("class", "toggle")
     .attr("type", "checkbox")
     .attr("id", function(d, i) {
-      d3.select(this.parentNode).attr("id") + "-test-" + i;
+      return d3.select(this.parentNode).attr("id") + "-test-" + i;
     })
-    .on("change", toggleTests);
+    .on("change.test", toggleTests);
 
   updateTestsActiveState();
   function updateTestsActiveState() {
-    tests
-    .classed("active", function(d) {
-      return d.test.active;
-    });
-    tests.select("input").property("checked", function(d) {
-      return d.test.active;
-    });
+    testWrapper.selectAll(".test")
+      .classed("active", function(d) {
+        return d.test.active;
+      });
+    testWrapper.selectAll(".test")
+      .select("input")
+      .property("checked", function(d) {
+        return d.test.active;
+      });
   }
 
   testsEnter.append("label")
@@ -396,11 +390,11 @@ function renderStep2(processorConfig) {
 
 
   function toggleTests(d) {
-    // console.log("toggle tests", d);
     d.test.active = !d.test.active;
     saveTestConfig();
     updateTestsActiveState();
-    suites.select("input").each(suiteState);
+    suitesEnter.select("input")
+      .each(suiteState);
   }
 
   // testsEnter.append("div").classed("message", true);
@@ -413,15 +407,7 @@ function renderStep2(processorConfig) {
       renderTestEditor(d.test);
     });
 
-  testsEnter.on("click", function(d) {
-    if (d3.event.shiftKey) {
-      renderTestEditor(d.test);
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  });
-
-  testsEnter.on("contextmenu", function(d) {
+  testsEnter.on("dblclick", function(d) {
     renderTestEditor(d.test);
     d3.event.preventDefault();
     d3.event.stopPropagation();
@@ -429,12 +415,32 @@ function renderStep2(processorConfig) {
 }
 
 function renderStep3(processorConfig) {
+  // rerun if there's more rows
+  if (rerunFlag) {
+    rerunStep3(processorConfig);
+    return;
+  }
+  // set the flag to true after the first run if there's more rows
+  if (processorConfig.loaded.sampleProgress < 1) rerunFlag = true;
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
-
-  if (renderer) renderer.destroy();
+  // var loaded = Processor.load(loadConfig);
+  // processorConfig.loaded = loaded;
   renderer = Processor.run(processorConfig);
+  // make sure the tests ares still scrolled to the top
+  var topBar = d3.select(".top-bar").property("scrollHeight");
+  var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar;
+  var column1 = d3.select(".column-1");
+  column1.node().scrollTop = offsetTop;
+}
 
+function rerunStep3(processorConfig) {
+  // make sure we can scroll enough to hide the loader/logo
+  d3.select(".test-sets").style('min-height', "100%");
+  var loadConfig = processorConfig.loaded.config;
+  var loaded = Processor.load(loadConfig);
+  processorConfig.loaded = loaded;
+  renderer = Processor.run(processorConfig);
   // make sure the tests ares still scrolled to the top
   var topBar = d3.select(".top-bar").property("scrollHeight");
   var offsetTop = d3.select("#info-top-bar").property("offsetTop") - topBar;
@@ -445,12 +451,26 @@ function renderStep3(processorConfig) {
 function clear() {
   d3.select("#current-file-name").text("");
   d3.select("#file-size-warning").classed("hidden", true);
-
+  d3.select("#progress-bar").classed("hidden", true);
   d3.select(".column-1").classed("all-passed", false);
   d3.select(".column-3").classed("hidden", true);
-  d3.select("#grid").selectAll("*").remove();
   d3.select(".grid-footer").classed("hidden", true);
+  d3.selectAll("#nav-buttons button")
+    .classed("rounded", false)
+    .classed("hidden", false);
+  d3.select(".column-2")
+    .style("background-image", "none")
 
+  if (typeof renderer === "object") {
+    renderer.then(
+      function(htmlRenderer) {
+        htmlRenderer.destroy();
+      }, function(reason) {
+        console.log("handsOnTable destroy", reason);
+    });
+  }
+
+  d3.selectAll(".tests-wrapper").classed("hidden", false);
   d3.selectAll(".test").classed("hidden", false);
   d3.selectAll(".toggle").classed("hidden", false);
   d3.selectAll(".test label").style("pointer-events", "auto");
@@ -507,7 +527,12 @@ function handleFileSelect(evt) {
           ext: currExt,
           filepath: file.path,
           // fileString: contents,
-          filename: currFileName
+          filename: currFileName,
+          sampleOpts: {
+            sampleSize: 0.25,
+            sampleMin: 1000,
+            sampleMax: 10000
+          }
         };
         var loaded = Processor.load(loadConfig);
         var processorConfig = {
@@ -534,7 +559,12 @@ ipc.on("last-file-selected", function(event, file) {
   var loadConfig = {
     ext: file.name.split(".").pop(),
     filepath: file.path,
-    filename: file.name
+    filename: file.name,
+    sampleOpts: {
+      sampleSize: 0.25,
+      sampleMin: 1000,
+      sampleMax: 10000
+    }
   };
   var loaded = Processor.load(loadConfig);
   lastProcessorConfig = {
@@ -595,7 +625,7 @@ function handleSpreadsheet() {
     // console.log(sheet);
     if (err) {
       handleGsheetsError(err);
-      console.log(err);
+      console.log("gsheets error", err);
     } else if (sheet) {
       //console.log("sheet", sheet);
       var columnHeads = Object.keys(sheet.data[0]);

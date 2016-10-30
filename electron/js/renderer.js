@@ -7,13 +7,26 @@ function HTMLRenderer(config) {
   Renderer.call(this, config);
   var rows = window.rows = config.rows;
   this.rows = rows;
+  // console.log("render config", config, this);
+  this.sampleProgress = config.sampleProgress;
+  this.totalRows = config.totalRows;
   this.columnHeads = config.columnHeads;
   var resultList = [];
   this.resultList = resultList;
-
+  d3.selectAll("#nav-buttons button").classed("rounded", false);
   d3.select(".grid-footer").classed("hidden", false);
   d3.selectAll(".test:not(.active)")
     .classed("hidden", true);
+  d3.selectAll(".tests-wrapper").classed("hidden", function() {
+    return d3.select(this)
+      .selectAll(".test")
+      .classed("hidden");
+  });
+  d3.selectAll(".suite").classed("hidden", function() {
+    return d3.select(this)
+      .select(".tests-wrapper")
+      .classed("hidden");
+  });
   d3.selectAll(".toggle").classed("hidden", true);
   d3.selectAll(".test label").style("pointer-events", "none");
   d3.selectAll(".suite-hed").classed("hidden", true);
@@ -78,7 +91,7 @@ function HTMLRenderer(config) {
   window.handsOnTable = handsOnTable;
   d3.select("#file-loader-button")
     .classed("loaded", true)
-    .html("<i class='fa fa-arrow-up' aria-hidden='true'></i> Load New File");
+    .html("<i class='fa fa-search' aria-hidden='true'></i> Select New File");
     // .on("click", function() {
     //   document.location.reload(true);
     // });
@@ -99,8 +112,8 @@ function HTMLRenderer(config) {
     }, 500)
   }
   var searchField = document.getElementById("search-field");
-  Handsontable.Dom.addEvent(searchField, "keydown", this.searchHandler);
-};
+  Handsontable.Dom.addEvent(searchField, "keyup", this.searchHandler);
+}
 HTMLRenderer.prototype = Object.create(Renderer.prototype, {});
 HTMLRenderer.prototype.constructor = HTMLRenderer;
 
@@ -110,7 +123,7 @@ HTMLRenderer.prototype.addResult = function(suite, test, result) {
 
 HTMLRenderer.prototype.destroy = function() {
   var searchField = document.getElementById("search-field");
-  Handsontable.Dom.removeEvent(searchField, "keydown", this.searchHandler)
+  Handsontable.Dom.removeEvent(searchField, "keyup", this.searchHandler)
   this.handsOnTable.destroy();
   d3.select("#grid").selectAll("*").remove();
 }
@@ -118,8 +131,25 @@ HTMLRenderer.prototype.destroy = function() {
 HTMLRenderer.prototype.done = function() {
   var columnHeads = this.columnHeads;
   var rows = this.rows;
+  var sampleProgress = this.sampleProgress;
+  var totalRows = d3.format(",")(this.totalRows);
+  var rowsTestedPct = d3.format(".0%")(sampleProgress);
   var resultList = this.resultList;
   var handsOnTable = this.handsOnTable;
+  var colorScale = d3.scaleThreshold()
+    .domain(_.range(0,1.1,0.1))
+    .range([
+      '#342c51',
+      '#5a314a',
+      '#7a3543',
+      '#99393b',
+      '#b73c32',
+      '#d63e26',
+      '#cf6824',
+      '#b18f27',
+      '#87b02c',
+      '#32cd32'
+    ]);
 
   this.comments = renderCellComments(rows, columnHeads, resultList, handsOnTable);
   this.highlightGrid();
@@ -136,10 +166,34 @@ HTMLRenderer.prototype.done = function() {
     that.renderFingerPrint({col: coords.col, row: coords.row });
   });
 
-  // Want to separate out tests that failed and tests that passed here
+  var progressWrapper = d3.select("div#progress-bar")
+  progressWrapper.classed("hidden", false)
+    .selectAll("*").remove();
+  progressWrapper.append("div")
+    .attr("id", "progress-info")
+    .text(function() { return `${rowsTestedPct} of ${totalRows} rows tested`; });
 
+  progressWrapper.append("div")
+    .attr("id", "progress-wrapper")
+    .append("div")
+    .attr("id", "progress")
+    .style("width", function() {
+      var widthInt = d3.select("#progress-wrapper").style("width").replace("px", "") * sampleProgress;
+      return widthInt + "px";
+    })
+    .style("background-color", function() {
+      return colorScale(sampleProgress);
+    });
+
+  if (sampleProgress >= 1) {
+    d3.select("#back-button").classed("rounded", true);
+    d3.select("#forward-button").classed("hidden", true);
+  }
+
+  // We want to separate out tests that failed and tests that passed here
   // Summarize testsPassed.length, and then append all failed tests like normal
 
+  d3.selectAll(".header-info").remove();
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .html(function() {
@@ -147,13 +201,12 @@ HTMLRenderer.prototype.done = function() {
       var missingHeadersStr = "<div class='header-info'>";
       if (headersCheck.result.testState === "failed") {
         missingHeadersStr += "<i class='fa fa-times-circle'></i>";
-        missingHeadersStr += " Ignored ";
+        missingHeadersStr += " Failed: Missing or duplicate column headers: ";
         missingHeadersStr += headersCheck.result.badColumnHeads.join(", ");
-        missingHeadersStr += " because it had a missing or duplicate column header. Dataproofer requires unique column header names.";
         missingHeadersStr += "</div>";
       } else {
         missingHeadersStr += "<i class='fa fa-check-circle'></i>";
-        missingHeadersStr += " No missing or duplicate column headers";
+        missingHeadersStr += " Passed: No missing or duplicate column headers";
       }
       return missingHeadersStr;
     });
@@ -163,14 +216,21 @@ HTMLRenderer.prototype.done = function() {
   });
 
   var numPassed = passedResults.length;
-  var numTests = resultList.length; //missing headers counted but not shown
-
+  var numTests = resultList.length;
+  var finalRate = numPassed/numTests;
+  // console.log("finalRate",finalRate);
+  var finalGrade = d3.format('.0%')(finalRate);
+  var finalColor = colorScale(finalRate);
+  d3.select(".summary").remove();
   d3.select(".test-sets")
     .insert("div", ":first-child")
     .attr("class", "summary")
     .html(function() {
-      return numPassed + " passed out of " + numTests + " total";
-    });
+      var scoreHtml = `<span id="final-grade">${finalGrade}</span><span class="block header-info">(${numPassed}/${numTests}) passed</span>`;
+      return scoreHtml;
+    })
+    .select("#final-grade")
+    .style("color", finalColor);
 
   var tests = d3.selectAll(".test")
     .data(resultList, function(d) { return d.suite + "-" + d.test.name(); });
@@ -185,7 +245,6 @@ HTMLRenderer.prototype.done = function() {
           } else {
             tooltipStr += d.test.description();
           }
-
           return tooltipStr;
         });
     });
@@ -217,10 +276,12 @@ HTMLRenderer.prototype.done = function() {
   })
   .classed("info", function(d) {
     return d.result.testState === "info";
-  })
-  .on("mouseover", filterResults)
-  .on("mouseout", clearFilteredResults);
+  });
+  d3.selectAll(".active.test:not(.pass)")
+    .on("mouseover", filterResults)
+    .on("click", filterResults);
 
+  d3.selectAll(".result-icon").remove()
   tests.insert("i", "label")
     .attr("class", function(d) {
       if (d.result.testState === "passed") return "fa-check-circle";
@@ -358,7 +419,7 @@ HTMLRenderer.prototype.renderFingerPrint = function(options) {
 
   function selectGridCell (d,i) {
     var selectFiltered = d3.selectAll(".filtered");
-    var isFiltered = (selectFiltered[0].length > 0)? true : false;
+    var isFiltered = selectFiltered.empty? true : false;
 
     if (isFiltered) {
       d3.selectAll(".test").classed("filtered", false);

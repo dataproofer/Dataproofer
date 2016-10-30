@@ -1,6 +1,6 @@
 {
   "name": "dataproofer-electron",
-  "version": "1.1.0",
+  "version": "1.5.0",
   "description": "DataProofer",
   "main": "app.js",
   "author": "DataProofer <dataproofer@dataproofer.org>",
@@ -28,6 +28,7 @@
     "handsontable": "^0.24.1",
     "jquery": "^2.2.3",
     "lodash": "^4.8.2",
+    "pluralize": "^3.0.0",
     "require-from-string": "^1.1.0",
     "simple-statistics": "^1.0.1",
     "tipsy": "^1.0.0",
@@ -36,7 +37,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",
-    "electron-packager": "^6.0.0",
+    "electron-packager": "^8.2.0",
     "eslint": "^2.7.0"
   }
 }
