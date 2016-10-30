@@ -210,6 +210,8 @@ function renderStep1(processorConfig) {
   clear();
   // get rid of everything from step 2
   d3.select(".test-sets").selectAll("*").remove();
+  d3.select(".column-2")
+    .attr("background-image", "../img/empty-state-1.png")
   var column1 = d3.select(".column-1");
   column1.node().scrollTop = 0;
   column1.select(".test-sets").style('min-height', null);
@@ -418,7 +420,6 @@ function renderStep3(processorConfig) {
     rerunStep3(processorConfig);
     return;
   }
-  console.log("step 3 config", processorConfig);
   // set the flag to true after the first run if there's more rows
   if (processorConfig.loaded.sampleProgress < 1) rerunFlag = true;
   // make sure we can scroll enough to hide the loader/logo
@@ -434,7 +435,6 @@ function renderStep3(processorConfig) {
 }
 
 function rerunStep3(processorConfig) {
-  console.log("rerun 3")
   // make sure we can scroll enough to hide the loader/logo
   d3.select(".test-sets").style('min-height', "100%");
   var loadConfig = processorConfig.loaded.config;

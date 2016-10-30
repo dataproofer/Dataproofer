@@ -7,7 +7,7 @@ function HTMLRenderer(config) {
   Renderer.call(this, config);
   var rows = window.rows = config.rows;
   this.rows = rows;
-  console.log("render config", config, this);
+  // console.log("render config", config, this);
   this.sampleProgress = config.sampleProgress;
   this.totalRows = config.totalRows;
   this.columnHeads = config.columnHeads;
@@ -218,7 +218,7 @@ HTMLRenderer.prototype.done = function() {
   var numPassed = passedResults.length;
   var numTests = resultList.length;
   var finalRate = numPassed/numTests;
-  console.log("finalRate",finalRate);
+  // console.log("finalRate",finalRate);
   var finalGrade = d3.format('.0%')(finalRate);
   var finalColor = colorScale(finalRate);
   d3.select(".summary").remove();

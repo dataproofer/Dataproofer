@@ -274,6 +274,9 @@ button.reload {
 .column-2 {
   flex: 1 1 auto;
   background-color: #F7F6F5;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50%;
 }
 
 #grid {

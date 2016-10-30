@@ -17,9 +17,9 @@ Processor.prototype = {
       totalRows = rows.length;
 
     var sampleSize = Math.round(sampleRatio * totalRows);
-    console.log("sampleRatio", sampleRatio)
-    console.log("totalRows", totalRows)
-    console.log("possible sampleSize", sampleSize)
+    // console.log("sampleRatio", sampleRatio)
+    // console.log("totalRows", totalRows)
+    // console.log("possible sampleSize", sampleSize)
     if (sampleSize < sampleMin && totalRows < sampleMin) {
       // test all the rows if there's less than a thousand in total
       sampleSize = totalRows;
@@ -46,8 +46,8 @@ Processor.prototype = {
     self.remainingRows = currRemainingRows.slice(sampleSize, currRemainingRows.length);
     self.sampledRows = sampledRows;
     self.totalRows = totalRows;
-    console.log("full sampleSize", sampleSize);
-    console.log("sampleSize processor", self);
+    // console.log("full sampleSize", sampleSize);
+    // console.log("sampleSize processor", self);
     return self;
   },
 
@@ -209,7 +209,7 @@ Processor.prototype = {
         renderer.done();
         return renderer;
       }, function(reason) {
-        console.log('reason', reason); // Error!
+        console.log('Tests failed! Reason: ', reason); // Error!
       });
     return testsPromise;
   }
