@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",
-    "electron-packager": "^6.0.0",
+    "electron-packager": "^8.2.0",
     "eslint": "^2.7.0"
   }
 }
