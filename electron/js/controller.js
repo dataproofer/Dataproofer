@@ -210,8 +210,6 @@ function renderStep1(processorConfig) {
   clear();
   // get rid of everything from step 2
   d3.select(".test-sets").selectAll("*").remove();
-  d3.select(".column-2")
-    .attr("background-image", "../img/empty-state-1.png")
   var column1 = d3.select(".column-1");
   column1.node().scrollTop = 0;
   column1.select(".test-sets").style('min-height', null);
@@ -222,7 +220,7 @@ function renderStep2(processorConfig) {
   var container = d3.select(".test-sets");
   clear();
   d3.select(".column-2")
-    .attr("background-image", "../img/empty-state-2.png")
+    .style("background-image", "url(img/empty-state-2.png)");
   d3.select("#file-loader-button")
     .classed("loaded", true)
     .html("<i class='fa fa-search' aria-hidden='true'></i> Select New File");
@@ -461,8 +459,7 @@ function clear() {
     .classed("rounded", false)
     .classed("hidden", false);
   d3.select(".column-2")
-    .attr("background-image", "none")
-
+    .style("background-image", "none")
 
   if (typeof renderer === "object") {
     renderer.then(
