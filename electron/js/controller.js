@@ -221,6 +221,8 @@ function renderStep1(processorConfig) {
 function renderStep2(processorConfig) {
   var container = d3.select(".test-sets");
   clear();
+  d3.select(".column-2")
+    .attr("background-image", "../img/empty-state-2.png")
   d3.select("#file-loader-button")
     .classed("loaded", true)
     .html("<i class='fa fa-search' aria-hidden='true'></i> Select New File");
@@ -458,6 +460,9 @@ function clear() {
   d3.selectAll("#nav-buttons button")
     .classed("rounded", false)
     .classed("hidden", false);
+  d3.select(".column-2")
+    .attr("background-image", "none")
+
 
   if (typeof renderer === "object") {
     renderer.then(
