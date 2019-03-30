@@ -53,27 +53,27 @@ if(require.main === module) {
     .option("-x, --exclude", "exclude tests that passed")
     .option("-m, --sampleMin <int>", "minimum number of rows to sample and test. default 1000", Number.toInteger)
     .option("-M, --sampleMax <int>", "maximum number of rows to sample and test. default 10000", Number.toInteger)
-    .option("-r, --sampleRatio <float>", "ratio of rows to sample from total rows. default 0.25 (i.e. sample 25% of the total rows)", Number.toFloat)
+    .option("-r, --sampleRatio <float>", "ratio of rows to sample from total rows. default 0.25 (i.e. sample 25% of the total rows)", Number.toFloat);
 
   program.on("--help", function(){
     console.log("  Examples:");
     console.log("");
-    console.log("    $ dataproofer my_data.csv");
+    console.log(" $ dataproofer my_data.csv");
     console.log("");
   });
 
   program.parse(process.argv);
+
+  var make_red = function make_red(txt) {
+    return chalk.bold(txt); //display the help text in red on the console
+  };
 
   if (!process.argv.slice(2).length) {
     program.outputHelp(make_red);
     return;
   }
 
-  var make_red = function make_red(txt) {
-    return chalk.bold(txt); //display the help text in red on the console
-  };
-
-  for (suite of SUITES) {
+  for (var suite of SUITES) {
     if (suite.name.indexOf("core") > -1 && program.core === true) {
       suite.tests.forEach(function(test) { test.active = true; });
     } else if (suite.name.indexOf("info") > -1 && program.info === true) {
@@ -109,6 +109,7 @@ if(require.main === module) {
     "xlsx",
     "xls"
   ];
+
   var currFileName = filepath.split("/").pop(),
     currExt = currFileName.split(".").pop(),
     currSampleRatio = program.sampleRatio ? program.sampleRatio : 0.25,
@@ -172,7 +173,7 @@ if(require.main === module) {
             break;
         }
         if (program.verbose === true && test.testState !== "passed") {
-          resultStr += chalk.dim(test.conclusion.replace(/\<br\>/g, "\n")) + "\n";
+          resultStr += chalk.dim(test.conclusion.replace(/<br\>/g, "\n")) + "\n";
         }
       });
     });
@@ -180,8 +181,7 @@ if(require.main === module) {
     var summaryStr = chalk.green(
       totalPassed + " tests passed out of " + totalTests + "\n"
     );
-    var outPath = program.out ? program.out : "/dev/stdout";
-
+    
     if (program.watch === true || program.suites === true || program.tests === true) {
       process.stderr.write(chalk.red("Error: This feature is not currently implemented"));
       return;
@@ -192,7 +192,9 @@ if(require.main === module) {
     var done = function() {
       process.stdout.write("\n### DONE ###");
     };
-    outPath = program.out ? program.out : "/dev/stdout";
+
+    var outPath = program.out ? program.out : "/dev/stdout";
+    
     if (program.out) resultStr = resultStr.replace(/\[\d+m/g, "");
     if (program.json === true) {
       rw.writeFileSync(outPath, JSON.stringify(results), "utf-8");
