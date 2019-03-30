@@ -617,7 +617,9 @@ function handleSpreadsheet() {
   gsheets.getWorksheetById(gid, "od6", process);
 
   function handleGsheetsError(err) {
-    alert(err.toString());
+    var message = "There was an error downloading the spreadsheet from Google. \
+Please make sure it is shared to public.\n\nDetails:\n" + err.toString();
+    alert(message);
   }
 
   function process(err, sheet) {
