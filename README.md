@@ -130,7 +130,7 @@ A set of test related to common statistical used to detect outlying data.
 
 This repo contains two pieces of code, the core library that runs tests and the electron app which houses the UI. You can get them ready like so:
 ```
-git clone git@github.com:dataproofer/Dataproofer.git
+git clone https://github.com/dataproofer/Dataproofer.git 
 cd Dataproofer
 cd src
 npm install
