@@ -33,7 +33,11 @@
     "lodash": "^4.16.4",
     "optimist": "^0.6.1",
     "rw": "^1.3.2",
-    "xlsx": "^0.8.0"
+    "xlsx": "^0.8.0",
+    "dataproofer-info-suite": "dataproofer/info-suite",
+    "dataproofer-core-suite": "dataproofer/core-suite",
+    "dataproofer-stats-suite": "dataproofer/stats-suite",
+    "dataproofer-geo-suite": "dataproofer/geo-suite"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",
