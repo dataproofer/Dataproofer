@@ -9,7 +9,7 @@ var ipc = require("electron").ipcRenderer;
 // libraries required to run test inline
 // var requireFromString = require("require-from-string");
 var DataprooferTest = require("dataproofertest-js");
-var uuid = require("uuid");
+var uuidV4 = require("uuid/v4");
 
 console.log("dataproofer app version", require("./package.json").version);
 console.log("dataproofer lib version", require("dataproofer").version);
@@ -84,7 +84,7 @@ function duplicateTest(test) {
   var newTest = {
     name: test.name() + " copy",
     description: test.description(),
-    filename: uuid.v1(),
+    filename: uuidV4(),
     local: true,
     active: true,
     methodology: test._methodology.toString()
@@ -689,7 +689,7 @@ function renderTestEditor(test) {
       // saving without passing in the filename will inform the server
       // to generate a new filename
       /*
-    var newTestFile = save(uuid.v1());
+    var newTestFile = save(uuidV4());
     var newTest = loadTest(newTestFile);
     SUITES[0].tests.push(newTest); // assuming the first suite is always local
     renderCurrentStep(); // we should only be here on step 2
