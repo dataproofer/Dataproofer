@@ -2,7 +2,7 @@ const {app, BrowserWindow, Menu, ipcMain} = require("electron");
 // Module to control application life.
 // Module to create native browser window.
 var defaultMenu = require("electron-default-menu");
-var uuid = require("uuid");
+var uuidV4 = require("uuid/v4");
 // We can listen to messages from the renderer here:
 var fs = require("fs");
 
@@ -126,7 +126,7 @@ function createWindow() {
       var filename = test.filename;
       if(!filename) {
         // we need to create a filename
-        filename = uuid.v1();
+        filename = uuidV4();
       }
       fs.writeFile(savedTestsStorage + "/" + filename, JSON.stringify(test));
     });

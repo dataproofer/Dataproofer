@@ -33,7 +33,7 @@
     "simple-statistics": "^1.0.1",
     "tipsy": "^1.0.0",
     "tipsy-browserify": "^1.0.0",
-    "uuid": "^2.0.1"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",
