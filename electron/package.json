@@ -22,7 +22,7 @@
     "dataproofer-info-suite": "git://github.com/dataproofer/info-suite.git",
     "dataproofer-stats-suite": "git://github.com/dataproofer/stats-suite.git",
     "dataproofertest-js": "git://github.com/dataproofer/dataproofertest-js.git",
-    "electron": "^7.2.4",
+    "electron": "^9.4.0",
     "electron-default-menu": "^0.1.1",
     "gsheets": "^1.2.3",
     "handsontable": "^0.24.1",
