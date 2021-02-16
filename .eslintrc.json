@@ -33,6 +33,12 @@
         "vars": "all",
         "args": "none"
       }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
     ]
   },
   "ignorePatterns": [
