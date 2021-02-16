@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "dataproofer": "yarn node src/index.js",
-    "lint": "yarn eslint . --ext *.js"
+    "lint": "yarn eslint . --ext .js"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
