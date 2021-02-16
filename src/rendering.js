@@ -1,5 +1,3 @@
-
-module.exports = Renderer;
 /**
  * Render the results for all tests in a given set of suites for a dataset
  * @class
@@ -7,8 +5,8 @@ module.exports = Renderer;
  * @return {undefined}
  */
 function Renderer(config) {
-  var results = this.results = {};
-  config.suites.forEach(function(suite) {
+  var results = (this.results = {});
+  config.suites.forEach(function (suite) {
     // console.log("suite name", suite);
     results[suite.name] = {};
   });
@@ -19,7 +17,7 @@ function Renderer(config) {
  * @param  {Object} error object. should contain a `message` property
  * @return {undefined}
  */
-Renderer.prototype.error = function(error) {
+Renderer.prototype.error = function (error) {
   console.error(error);
 };
 
@@ -29,7 +27,7 @@ Renderer.prototype.error = function(error) {
  * @param {String} the name of the test
  * @param {Object} the result object.
  */
-Renderer.prototype.addResult = function(suite, test, result) {
+Renderer.prototype.addResult = function (suite, test, result) {
   this.results[suite][test.name()] = result;
   this.results[suite][test.name()].conclusion = test.conclusion();
 };
@@ -40,8 +38,8 @@ Renderer.prototype.addResult = function(suite, test, result) {
  * @param {String} the name of the test
  * @param {Object} the error object. should contain a `message` property
  */
-Renderer.prototype.addError = function(suite, test, error) {
-  console.log("Test error:\n", suite, "\n", test.name());
+Renderer.prototype.addError = function (suite, test, error) {
+  console.warn("Test error:\n", suite, "\n", test.name());
   console.error(error.stack || error);
 };
 
@@ -49,7 +47,9 @@ Renderer.prototype.addError = function(suite, test, error) {
  * Indicate that we are finished rendering
  * @return {undefined}
  */
-Renderer.prototype.done = function() {
+Renderer.prototype.done = function () {
   // finish up
   process.stdout.write("\n### PROOFED ###\n");
 };
+
+module.exports = Renderer;

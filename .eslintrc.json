@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "parser": "@babel/eslint-parser",
+  "plugins": [
+    "@babel",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "requireConfigFile": false
+  },
+  "env": {
+    "es6": true,
+    "browser": false,
+    "commonjs": true,
+    "node": true
+  },
+  // Start with rules from eslint recommended setting, and override below.
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
+  // Linting rules are enforced based on the following levels:
+  // (Reference: http://eslint.org/docs/user-guide/configuring)
+  // 0: turn the rule off
+  // 1: turn the rule on as a warning (doesn't affect exit code)
+  // 2: turn the rule on as an error (exit code is 1 when triggered)
+  "rules": {
+    // Disallow littering with unused variables (except function args).
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "all",
+        "args": "none"
+      }
+    ]
+  },
+  "ignorePatterns": [
+    "dist/",
+    "node_modules/"
+  ]
+}

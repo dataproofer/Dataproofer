@@ -3,3 +3,9 @@ node_modules/
 electron/node_modules/
 executables/
 npm-debug.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
