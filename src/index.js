@@ -211,7 +211,9 @@ if (require.main === module) {
         }
       };
       var testStr = totalPassed > 1 ? "tests" : "test";
-      var summaryStr = chalk`\n{${summaryColor()} {bold ${Math.round(summaryPct * 100)}%}\n${totalPassed} ${testStr} passed out of ${totalTests}}\n`;
+      var summaryStr = chalk`\n{${summaryColor()} {bold ${Math.round(
+        summaryPct * 100
+      )}%}\n${totalPassed} ${testStr} passed out of ${totalTests}}\n`;
 
       if (
         program.opts().watch === true ||
