@@ -40,7 +40,7 @@ jobs:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
 
-      - run: yarn install --frozen-lockfile --force
+      - run: yarn install --immutable
 
       - run: yarn lint
       - run: yarn dataproofer
