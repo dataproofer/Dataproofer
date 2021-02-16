@@ -33,12 +33,14 @@ jobs:
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
     steps:
       - name: Checkout
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
+
       - run: yarn install --frozen-lockfile --force
+
       - run: yarn lint
       - run: yarn dataproofer
