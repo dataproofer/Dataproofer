@@ -1,0 +1,38 @@
+{
+  "name": "dataproofertest-js",
+  "version": "1.0.0",
+  "description": "Core JS class for Dataproofer tests",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "npm install && npm install -g documentation",
+    "docs": "yarn run documentation/bin/documentation.js index.js util.js -f md -g -o DOCUMENTATION.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dataproofer/dataproofertest-js.git"
+  },
+  "keywords": [
+    "dataproofer",
+    "data",
+    "analysis"
+  ],
+  "author": "DataProofer <dataproofer@dataproofer.org>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dataproofer/dataproofertest.js/issues"
+  },
+  "homepage": "https://github.com/dataproofer/dataproofertest.js",
+  "dependencies": {
+    "d3": "^4.2.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@babel/eslint-plugin": "^7.12.13",
+    "documentation": "^13.1.1",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
+  }
+}
