@@ -20,7 +20,7 @@
   "dependencies": {
     "dataproofertest-js": "workspace:*",
     "lodash": "^4.17.20",
-    "simple-statistics": "^1.0.1"
+    "simple-statistics": "^7.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
