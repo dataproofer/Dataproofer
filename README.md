@@ -2,8 +2,7 @@
 
 ![](http://i.imgur.com/n38R14S.png)
 
-## A proofreader for your data. Currently in beta.
-
+## A proofreader for your data.
 Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights.
 
 But before you can make use of any data, you need to know if it’s reliable. Is it weird? Is it clean? Can I use it to write or make a viz?
