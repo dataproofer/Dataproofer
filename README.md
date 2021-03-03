@@ -56,11 +56,11 @@ dataproofer --help
 ```
 Run a test
 ```
-node index.js data.csv
+dataproofer data.csv
 ```
 Save the results
 ```
-node index.js --json data.csv --out data.json
+dataproofer --json data.csv --out data.json
 ```
 Learn how to run specific test suites or tests and output longer or shorter summaries, use the `--help` flag.
 
@@ -128,23 +128,11 @@ A set of test related to common statistical used to detect outlying data.
 
 ## Development
 
-This repo contains two pieces of code, the core library that runs tests and the electron app which houses the UI. You can get them ready like so:
 ```
 git clone https://github.com/dataproofer/Dataproofer.git 
 cd Dataproofer
-cd src
-npm install
-cd ../electron
-npm install
+yarn
 ```
-
-You can run the development version of the app from the `electron` folder:
-```
-cd Dataproofer/electron
-npm run electron
-```
-
-If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
 
 ### How You Can Help
 
