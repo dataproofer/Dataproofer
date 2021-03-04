@@ -25,7 +25,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "commander": "^7.1.0",
-    "d3": "^4.2.7",
+    "d3": "^6.5.0",
     "dataproofer-core-suite": "workspace:*",
     "dataproofer-geo-suite": "workspace:*",
     "dataproofer-info-suite": "workspace:*",
