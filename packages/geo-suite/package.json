@@ -19,7 +19,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "dataproofertest-js": "workspace:*",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
