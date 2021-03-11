@@ -18,7 +18,7 @@
   "author": "DataProofer <dataproofer@dataproofer.org>",
   "license": "GPL-3.0",
   "dependencies": {
-    "dataproofertest-js": "workspace:*",
+    "dataproofertest-js": "*",
     "lodash": "^4.17.20",
     "simple-statistics": "^1.0.1"
   },
