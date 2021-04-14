@@ -4,7 +4,7 @@ Fixes #[INSERT GITHUB ISSUE NUMBER HERE]
 
 Tell us what you are thinking.
 
-**Proposed changes**
+### Proposed changes**
 
 Provide a few more details like what files were modified, added or removed.
 
