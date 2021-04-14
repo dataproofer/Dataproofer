@@ -1,4 +1,3 @@
 {
-  "eslint.packageManager": "yarn",
-  "eslint.nodePath": ".yarn/sdks"
+  "eslint.packageManager": "yarn"
 }
