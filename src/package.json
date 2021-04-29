@@ -24,7 +24,7 @@
   "homepage": "https://github.com/dataproofer/dataproofer#readme",
   "dependencies": {
     "chalk": "^4.1.0",
-    "commander": "^7.1.0",
+    "commander": "^7.2.0",
     "d3": "^4.2.7",
     "dataproofer-core-suite": "*",
     "dataproofer-geo-suite": "*",
