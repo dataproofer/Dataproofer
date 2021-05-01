@@ -1,6 +1,5 @@
 {
   "name": "dataproofer-geo-suite",
-  "private": true,
   "version": "2.0.3",
   "description": "Suite of geographic and mapping related tests for dataproofer",
   "main": "index.js",

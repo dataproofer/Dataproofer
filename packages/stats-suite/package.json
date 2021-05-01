@@ -1,6 +1,5 @@
 {
   "name": "dataproofer-stats-suite",
-  "private": true,
   "version": "2.0.3",
   "description": "Suite of advanced statistics tests for dataproofer",
   "main": "index.js",

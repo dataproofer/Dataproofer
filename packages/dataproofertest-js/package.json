@@ -1,6 +1,5 @@
 {
   "name": "dataproofertest-js",
-  "private": true,
   "version": "2.0.3",
   "description": "Core JS class for Dataproofer tests",
   "main": "index.js",

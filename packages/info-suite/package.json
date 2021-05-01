@@ -1,6 +1,5 @@
 {
   "name": "dataproofer-info-suite",
-  "private": true,
   "version": "2.0.3",
   "description": "A set of informational scripts about Dataproofer spreadsheets",
   "main": "index.js",
