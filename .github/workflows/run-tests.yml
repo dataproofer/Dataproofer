@@ -9,6 +9,7 @@ on:
   pull_request:
 
 jobs:
+  needs: build
   run_tests:
     runs-on: ${{ matrix.os }}
     env:
@@ -40,4 +41,4 @@ jobs:
 
       - name: Run tests
         run: |
-          find ${{github.workspace}}/sample-datasets/ -maxdepth 1 -type f -exec dataproofer {} \;
+          find ${{github.workspace}}/sample-datasets -maxdepth 1 -type f -exec yarn dataproofer {} \;
