@@ -2,8 +2,7 @@
 
 ![](http://i.imgur.com/n38R14S.png)
 
-## A proofreader for your data. Currently in beta.
-
+## A proofreader for your data.
 Every day, more and more data is created. Journalists, analysts, and data visualizers turn that data into stories and insights.
 
 But before you can make use of any data, you need to know if it’s reliable. Is it weird? Is it clean? Can I use it to write or make a viz?
@@ -56,11 +55,11 @@ dataproofer --help
 ```
 Run a test
 ```
-node index.js data.csv
+dataproofer data.csv
 ```
 Save the results
 ```
-node index.js --json data.csv --out data.json
+dataproofer --json data.csv --out data.json
 ```
 Learn how to run specific test suites or tests and output longer or shorter summaries, use the `--help` flag.
 
@@ -93,13 +92,13 @@ Found a bug? [Let us know](https://github.com/dataproofer/Dataproofer/issues/new
 ![](http://i.imgur.com/3YekdjW.png)
 
 ## Test Suites
-### [Information & Diagnostics](https://github.com/dataproofer/info-suite)
+### [Information & Diagnostics](https://github.com/dataproofer/Dataproofer/tree/dev/packages/info-suite)
 A set of tests that infer descriptive information based on the contents of a table's cells.
 
 + Check for numeric values in columns
 + Check for strings in columns
 
-### [Core Suite](https://github.com/dataproofer/core-suite)
+### [Core Suite](https://github.com/dataproofer/Dataproofer/tree/dev/packages/core-suite)
 A set of tests related to common problems and data checks — namely, making sure data has not been truncated by looking for specific cut-off indicators.
 
 + Check for duplicate rows
@@ -112,13 +111,13 @@ A set of tests related to common problems and data checks — namely, making su
 data was exported from a database
 + Check for strings that are exactly 255 characters — an indication there may be missing data lost when the data was exported from MySQL
 
-### [Geo Suite](https://github.com/dataproofer/geo-suite)
+### [Geo Suite](https://github.com/dataproofer/Dataproofer/tree/dev/packages/geo-suite)
 A set of tests related to common geographic data problems.
 
 + Check for invalid latitude and longitude values (values outside the range of -180º to 180º)
 + Check for void latitude and longitude values (values at 0º,0º)
 
-### [Stats Suite](https://github.com/dataproofer/stats-suite)
+### [Stats Suite](https://github.com/dataproofer/Dataproofer/tree/dev/packages/stats-suite)
 A set of test related to common statistical used to detect outlying data.
 
 + Check for outliers within a column relative to the column's median
@@ -128,23 +127,11 @@ A set of test related to common statistical used to detect outlying data.
 
 ## Development
 
-This repo contains two pieces of code, the core library that runs tests and the electron app which houses the UI. You can get them ready like so:
 ```
 git clone https://github.com/dataproofer/Dataproofer.git 
 cd Dataproofer
-cd src
-npm install
-cd ../electron
-npm install
+yarn
 ```
-
-You can run the development version of the app from the `electron` folder:
-```
-cd Dataproofer/electron
-npm run electron
-```
-
-If you update the core library (`index.js` or `src/*`) you will need to `npm install` inside `Dataproofer/electron` for it to be updated, as we are relying on the "file:" dependency which copies the source instead of downloading it.
 
 ### How You Can Help
 
@@ -163,20 +150,6 @@ See our [medium-sized issues](https://github.com/dataproofer/Dataproofer/issues?
 #### Plenty of time?
 See our [larger issues](https://github.com/dataproofer/Dataproofer/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Alarge) and leave a comment
 
-### Modifying a test suite
-All tests belong to a suite, which is essentially just a node module that packages a group of tests together. In order to modify a test or add a new test to a suite, you will want to clone the project and link it. Let's say we want to modify the [core-suite](https://github.com/dataproofer/core-suite).
-```
-git clone https://github.com/dataproofer/core-suite.git
-cd core-suite
-npm install
-npm link
-
-cd ../Dataproofer
-cd electron
-npm link dataproofer-core-suite
-```
-Now when you change anything inside `core-suite` (like editing a test or making a new one) you can see your changes reflected when you run the app. Follow the instructions below for creating a new test in your suite!
-
 ![](http://i.imgur.com/3YekdjW.png)
 
 ### Creating a new test
@@ -186,7 +159,7 @@ Now when you change anything inside `core-suite` (like editing a test or making 
 + `require` that test in a suite's [index.js](https://github.com/dataproofer/suite-template/blob/master/index.js)
 + Add that test to the `exports` in [index.js](https://github.com/dataproofer/suite-template/blob/master/index.js)
 
-Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/dataproofertest-js/blob/master/DOCUMENTATION.md#util).
+Tests are made up of a few parts. Here's a brief over-view. For a more in-depth look, dive into the [documentation](https://github.com/dataproofer/Dataproofer/tree/dev/packages/dataproofertest-js).
 
 #### .name()
 This is the name of your test. It shows up in the test-selection screen as well as on the results page
