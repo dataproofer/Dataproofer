@@ -1,0 +1,56 @@
+name: build
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches: [dev]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    env:
+      CI: true
+      TZ: America/New_York
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        node_version:
+          - 10
+          - 12
+          - 14
+        architecture:
+          - x64
+        # an extra windows-x86 run:
+        include:
+          - os: windows-2016
+            node_version: 12
+            architecture: x86
+    name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node_version }}
+          architecture: ${{ matrix.architecture }}
+
+      - name: Use Yarn cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - run: yarn lint
+      - run: yarn dataproofer
