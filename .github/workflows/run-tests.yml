@@ -9,7 +9,6 @@ on:
   pull_request:
 
 jobs:
-  needs: build
   run_tests:
     runs-on: ${{ matrix.os }}
     env:
