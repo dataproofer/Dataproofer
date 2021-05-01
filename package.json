@@ -12,7 +12,8 @@
     "dataproofer": "./src/index.js"
   },
   "scripts": {
-    "lint": "yarn eslint . --ext .js"
+    "lint": "yarn eslint . --ext .js",
+    "release": "release-it"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
@@ -21,6 +22,8 @@
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "release-it": "^14.6.1",
+    "release-it-yarn-workspaces": "^2.0.1"
   }
 }
