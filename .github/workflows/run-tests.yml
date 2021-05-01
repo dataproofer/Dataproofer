@@ -1,4 +1,4 @@
-name: Run Dataproofer tests
+name: Run tests
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
         architecture:
           - x64
 
-    name: Running tests on Node ${{ matrix.node_version }}
+    name: Node ${{ matrix.node_version }}
     steps:
       - name: Use Yarn cache
         uses: actions/cache@v2
@@ -40,4 +40,4 @@ jobs:
 
       - name: Run tests
         run: |
-          find ./sample-datasets/ -maxdepth 1 -type f -exec dataproofer {} \;
+          find ${{github.workspace}}/sample-datasets/ -maxdepth 1 -type f -exec dataproofer {} \;
