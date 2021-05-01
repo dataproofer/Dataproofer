@@ -1,6 +1,6 @@
 {
   "name": "dataproofer-core-suite",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Core suite of tests for dataproofer",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "DataProofer <dataproofer@dataproofer.org>",
   "license": "GPL-3.0",
   "dependencies": {
-    "dataproofertest-js": "2.0.3",
+    "dataproofertest-js": "2.0.4",
     "lodash": "^4.17.20"
   },
   "devDependencies": {
