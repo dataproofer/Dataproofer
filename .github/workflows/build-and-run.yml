@@ -46,4 +46,5 @@ jobs:
       - run: yarn dataproofer
       # Runs a single command using the runners shell
       - name: Run dataproofer on all sample datasets
-        run: find ./sample-datasets/ -maxdepth 1 -type f -exec cmd option {} \; > dataproofer_test_results.log
+        run: |
+          sh find ./sample-datasets/ -maxdepth 1 -type f -exec dataproofer {} \;
