@@ -1,11 +1,18 @@
 {
+  "name": "dataproofer",
+  "version": "2.0.0",
+  "description": "A proofreader for your data",
+
   "private": true,
   "workspaces": [
     "src",
     "packages/*"
   ],
+  "main": "./src/index.js",
+  "bin": {
+    "dataproofer": "./src/index.js"
+  },
   "scripts": {
-    "dataproofer": "yarn node src/index.js",
     "lint": "yarn eslint . --ext .js"
   },
   "devDependencies": {

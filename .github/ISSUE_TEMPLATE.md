@@ -1,5 +1,5 @@
 ## Summary
-What are you thinking?
+What's on your mind?
 
 ---
 ### Steps to reproduce
