@@ -20,9 +20,6 @@ Processor.prototype = {
 
     var sampleSize = Math.round(sampleRatio * totalRows);
 
-    console.info("\ntotal rows", totalRows);
-    console.info("rows sampled", sampleSize);
-
     if (sampleSize < 1000 && totalRows < 1000) {
       // test all the rows if there's less than a thousand in total
       sampleSize = totalRows;
@@ -119,6 +116,7 @@ Processor.prototype = {
       rows: rows,
       sampleProgress: sampleProgress,
       totalRows: totalRows,
+      json: config.json,
     });
 
     var badColumnHeadsTest = new DataprooferTest()

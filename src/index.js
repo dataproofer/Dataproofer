@@ -149,6 +149,7 @@ if (require.main === module) {
       suites: SUITES,
       renderer: Rendering,
       loaded: loaded,
+      json: program.opts().json || program.opts().jsonPretty,
     };
     Processing.run(processorConfig).then(function (processor) {
       const { results } = processor;
@@ -225,10 +226,10 @@ if (require.main === module) {
         );
         return;
       }
-      process.stdout.write(summaryStr);
 
       var done = function () {
-        process.stdout.write("\n### DONE ###\n\n");
+        process.stdout.write(summaryStr);
+        process.stdout.write("\n### PROOFED ###\n\n");
       };
 
       var outPath = program.opts().out ? program.opts().out : "/dev/stdout";
@@ -236,12 +237,10 @@ if (require.main === module) {
       if (program.opts().out) resultStr = resultStr.replace(/\[\d+m/g, "");
       if (program.opts().json === true) {
         rw.writeFileSync(outPath, JSON.stringify(results), "utf-8");
-        done();
         return;
       }
       if (program.opts().jsonPretty === true) {
         rw.writeFileSync(outPath, JSON.stringify(results, null, 2), "utf-8");
-        done();
         return;
       }
       if (program.opts().summary !== true) {

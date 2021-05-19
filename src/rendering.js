@@ -5,6 +5,7 @@
  * @return {undefined}
  */
 function Renderer(config) {
+  Object.assign(this, config);
   var results = (this.results = {});
   config.suites.forEach(function (suite) {
     // console.log("suite name", suite);
@@ -49,7 +50,10 @@ Renderer.prototype.addError = function (suite, test, error) {
  */
 Renderer.prototype.done = function () {
   // finish up
-  process.stdout.write("\n### PROOFED ###\n");
+  if (!this.json) {
+    console.info("\ntotal rows", this.totalRows);
+    console.info("rows sampled", this.rows.length);
+  }
 };
 
 module.exports = Renderer;
