@@ -233,7 +233,7 @@ if (require.main === module) {
         return;
       }
 
-      let exit = program.opts().error && totalFailed > 0;
+      let exit = program.opts().exit && totalFailed > 0;
       var done = function () {
         process.stdout.write(summaryStr);
         process.stdout.write("\n### PROOFED ###\n\n");
@@ -257,7 +257,6 @@ if (require.main === module) {
       }
       if (program.opts().summary !== true) {
         rw.writeFile(outPath, resultStr, done);
-        return;
       } else {
         done();
       }
