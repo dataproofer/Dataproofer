@@ -235,24 +235,23 @@ if (require.main === module) {
 
       let exit = program.opts().exit && totalFailed > 0;
       var done = function () {
-        process.stdout.write(summaryStr);
-        process.stdout.write("\n### PROOFED ###\n\n");
+        if (!program.opts().json || program.opts().jsonPretty) {
+          process.stdout.write(summaryStr);
+          process.stdout.write("\n### PROOFED ###\n\n");
+        }
         if (exit) process.exit(1);
+        return;
       };
 
       var outPath = program.opts().out ? program.opts().out : "/dev/stdout";
 
       if (program.opts().out) resultStr = resultStr.replace(/\[\d+m/g, "");
       if (program.opts().json === true) {
-        rw.writeFile(outPath, JSON.stringify(results), () => {
-          if (exit) process.exit(1);
-        });
+        rw.writeFile(outPath, JSON.stringify(results), done);
         return;
       }
       if (program.opts().jsonPretty === true) {
-        rw.writeFile(outPath, JSON.stringify(results, null, 2), () => {
-          if (exit) process.exit(1);
-        });
+        rw.writeFile(outPath, JSON.stringify(results, null, 2), done);
         return;
       }
       if (program.opts().summary !== true) {
