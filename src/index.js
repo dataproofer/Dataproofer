@@ -47,8 +47,8 @@ if (require.main === module) {
     )
     .option("-v, --verbose", "include descriptions about each column")
     .option(
-      "-e, --error",
-      "throw an error to the console if any tests fail (useful for CI)"
+      "-e, --exit",
+      "exit with a console error if any tests fail (useful for CI)"
     )
     .option("-x, --exclude", "exclude tests that passed")
     .option(
