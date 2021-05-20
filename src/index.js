@@ -46,6 +46,10 @@ if (require.main === module) {
       "output overall test results, excluding pass/fail results"
     )
     .option("-v, --verbose", "include descriptions about each column")
+    .option(
+      "-e, --error",
+      "throw an error to the console if any tests fail (useful for CI)"
+    )
     .option("-x, --exclude", "exclude tests that passed")
     .option(
       "-m, --sampleMin <int>",
@@ -168,6 +172,7 @@ if (require.main === module) {
 
       var totalTests = 0;
       var totalPassed = 0;
+      var totalFailed = 0;
       var resultStr = "\n";
       suiteNames.forEach(function (suiteName) {
         var testNames = Object.keys(results[suiteName]);
@@ -185,6 +190,7 @@ if (require.main === module) {
               break;
             case "failed":
               resultStr += chalk.red(test.testState) + "\n";
+              totalFailed += 1;
               break;
             case "info":
               totalTests -= 1;
@@ -227,26 +233,33 @@ if (require.main === module) {
         return;
       }
 
+      let exit = program.opts().error && totalFailed > 0;
       var done = function () {
         process.stdout.write(summaryStr);
         process.stdout.write("\n### PROOFED ###\n\n");
+        if (exit) process.exit(1);
       };
 
       var outPath = program.opts().out ? program.opts().out : "/dev/stdout";
 
       if (program.opts().out) resultStr = resultStr.replace(/\[\d+m/g, "");
       if (program.opts().json === true) {
-        rw.writeFileSync(outPath, JSON.stringify(results), "utf-8");
+        rw.writeFile(outPath, JSON.stringify(results), () => {
+          if (exit) process.exit(1);
+        });
         return;
       }
       if (program.opts().jsonPretty === true) {
-        rw.writeFileSync(outPath, JSON.stringify(results, null, 2), "utf-8");
+        rw.writeFile(outPath, JSON.stringify(results, null, 2), () => {
+          if (exit) process.exit(1);
+        });
         return;
       }
       if (program.opts().summary !== true) {
-        rw.writeFileSync(outPath, resultStr, "utf-8");
-        done();
+        rw.writeFile(outPath, resultStr, done);
         return;
+      } else {
+        done();
       }
     });
   } else {
@@ -254,7 +267,7 @@ if (require.main === module) {
       chalk.red(
         "Error: Must use a supported filetype. Currently supported filetypes: " +
           allowFileExtensions.join(", "),
-        "utf-8"
+        "utf8"
       )
     );
   }
