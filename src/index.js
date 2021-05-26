@@ -46,6 +46,10 @@ if (require.main === module) {
       "output overall test results, excluding pass/fail results"
     )
     .option("-v, --verbose", "include descriptions about each column")
+    .option(
+      "-e, --exit",
+      "exit with a console error if any tests fail (useful for CI)"
+    )
     .option("-x, --exclude", "exclude tests that passed")
     .option(
       "-m, --sampleMin <int>",
@@ -149,6 +153,7 @@ if (require.main === module) {
       suites: SUITES,
       renderer: Rendering,
       loaded: loaded,
+      json: program.opts().json || program.opts().jsonPretty,
     };
     Processing.run(processorConfig).then(function (processor) {
       const { results } = processor;
@@ -167,6 +172,7 @@ if (require.main === module) {
 
       var totalTests = 0;
       var totalPassed = 0;
+      var totalFailed = 0;
       var resultStr = "\n";
       suiteNames.forEach(function (suiteName) {
         var testNames = Object.keys(results[suiteName]);
@@ -184,6 +190,7 @@ if (require.main === module) {
               break;
             case "failed":
               resultStr += chalk.red(test.testState) + "\n";
+              totalFailed += 1;
               break;
             case "info":
               totalTests -= 1;
@@ -225,29 +232,32 @@ if (require.main === module) {
         );
         return;
       }
-      process.stdout.write(summaryStr);
 
+      let exit = program.opts().exit && totalFailed > 0;
       var done = function () {
-        process.stdout.write("\n### DONE ###\n\n");
+        if (!program.opts().json || program.opts().jsonPretty) {
+          process.stdout.write(summaryStr);
+          process.stdout.write("\n### PROOFED ###\n\n");
+        }
+        if (exit) process.exit(1);
+        return;
       };
 
       var outPath = program.opts().out ? program.opts().out : "/dev/stdout";
 
       if (program.opts().out) resultStr = resultStr.replace(/\[\d+m/g, "");
       if (program.opts().json === true) {
-        rw.writeFileSync(outPath, JSON.stringify(results), "utf-8");
-        done();
+        rw.writeFile(outPath, JSON.stringify(results), done);
         return;
       }
       if (program.opts().jsonPretty === true) {
-        rw.writeFileSync(outPath, JSON.stringify(results, null, 2), "utf-8");
-        done();
+        rw.writeFile(outPath, JSON.stringify(results, null, 2), done);
         return;
       }
       if (program.opts().summary !== true) {
-        rw.writeFileSync(outPath, resultStr, "utf-8");
+        rw.writeFile(outPath, resultStr, done);
+      } else {
         done();
-        return;
       }
     });
   } else {
@@ -255,7 +265,7 @@ if (require.main === module) {
       chalk.red(
         "Error: Must use a supported filetype. Currently supported filetypes: " +
           allowFileExtensions.join(", "),
-        "utf-8"
+        "utf8"
       )
     );
   }
