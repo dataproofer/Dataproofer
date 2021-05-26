@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/dataproofer/dataproofertest.js",
   "dependencies": {
-    "d3": "^4.2.7"
+    "d3": "^6.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
