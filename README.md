@@ -282,6 +282,7 @@ A huge thank you to the [Vocativ](http://vocativ.com) and the [Knight Foundation
 - Joe Presser (video producer), Dataproofer
 - Julia Kastner (concept & name consulting), Project Manager @ Vocativ
 - Kelli Vanover (design consulting), Product Manager @ Vocativ
+- Nicu Calcea (developer), Data Projects Editor @ GlobalData Media / New Statesman
 - Markham Nolan (interviewee), Visuals Editor @ Vocativ
 - Rob Di Ieso (design consulting), Art Director @ Vocativ
 
